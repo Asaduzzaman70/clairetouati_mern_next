@@ -1,9 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 
 const Hero = () => {
+    const [bgTextColors, setBgTextColors] = useState({
+        s: "#D0D0D0",
+        h: "#D0D0D0",
+        r: "#D0D0D0",
+        k: "#D0D0D0",
+        o: "#D0D0D0",
+        g: "#D0D0D0",
+    });
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const engineRef = useRef<Matter.Engine | null>(null);
@@ -15,7 +23,7 @@ const Hero = () => {
 
         const canvas = canvasRef.current;
         const container = containerRef.current;
-        const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint } = Matter;
+        const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint, Events } = Matter;
 
         // Create engine with gravity
         const engine = Engine.create({
@@ -41,33 +49,13 @@ const Hero = () => {
         renderRef.current = render;
 
         // Create boundaries (walls)
-        const wallThickness = 50;
-        const walls = [
-            // Bottom
-            Bodies.rectangle(
-                width / 2,
-                height + wallThickness / 2,
-                width,
-                wallThickness,
-                { isStatic: true, render: { fillStyle: "transparent" } }
-            ),
-            // Left
-            Bodies.rectangle(
-                -wallThickness / 2,
-                height / 2,
-                wallThickness,
-                height,
-                { isStatic: true, render: { fillStyle: "transparent" } }
-            ),
-            // Right
-            Bodies.rectangle(
-                width + wallThickness / 2,
-                height / 2,
-                wallThickness,
-                height,
-                { isStatic: true, render: { fillStyle: "transparent" } }
-            )
-        ];
+        const wallThickness = 500;
+        const bottomWall = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 5, wallThickness, { isStatic: true, render: { fillStyle: "transparent" } });
+        const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 5, { isStatic: true, render: { fillStyle: "transparent" } });
+        const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 5, { isStatic: true, render: { fillStyle: "transparent" } });
+        const topWall = Bodies.rectangle(width / 2, -wallThickness * 20, width * 5, wallThickness, { isStatic: true, render: { fillStyle: "transparent" } });
+
+        const walls = [bottomWall, leftWall, rightWall, topWall];
 
         // Shape configurations matching the image
         const shapeConfigs = [
@@ -162,6 +150,24 @@ const Hero = () => {
         Composite.add(engine.world, mouseConstraint);
         render.mouse = mouse;
 
+        // Change specific background text colors when a shape is clicked
+        Events.on(mouseConstraint, "mousedown", () => {
+            const body = mouseConstraint.body;
+            if (body && (body as any).customText && body.render.fillStyle) {
+                const color = body.render.fillStyle as string;
+                setBgTextColors(prev => {
+                    if (color === "#0066CC") return { ...prev, s: color };
+                    if (color === "#FFD700") return { ...prev, h: color };
+                    if (color === "#DC143C") return { ...prev, r: color };
+                    if (color === "#FF7F50") return { ...prev, o: color };
+                    if (color === "#8B5CF6") return { ...prev, k: color };
+                    if (color === "#047857") return { ...prev, g: color };
+                    // For other colors (green, orange, purple), update 'k'
+                    return { ...prev, s: "#D0D0D0", h: "#D0D0D0", r: "#D0D0D0", o: "#D0D0D0", k: "#D0D0D0", g: "#D0D0D0" };
+                });
+            }
+        });
+
         // Run the engine and renderer
         const runner = Runner.create();
         runnerRef.current = runner;
@@ -218,6 +224,12 @@ const Hero = () => {
             render.canvas.height = newHeight;
             render.options.width = newWidth;
             render.options.height = newHeight;
+
+            // Reposition walls to match new dimensions
+            Matter.Body.setPosition(bottomWall, { x: newWidth / 2, y: newHeight + wallThickness / 2 });
+            Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: newHeight / 2 });
+            Matter.Body.setPosition(rightWall, { x: newWidth + wallThickness / 2, y: newHeight / 2 });
+            Matter.Body.setPosition(topWall, { x: newWidth / 2, y: -wallThickness * 1 });
         };
 
         window.addEventListener("resize", handleResize);
@@ -241,13 +253,34 @@ const Hero = () => {
         };
     }, []);
 
+
+
+
+    const svgBg = `
+      <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+        <text x="10" y="30" font-family="Arial" font-size="40" font-weight="bold"
+          fill="${bgTextColors.s}">T</text>
+        <text x="50" y="70" font-family="Arial" font-size="35" font-weight="bold"
+          fill="${bgTextColors.h}">U</text>
+        <text x="20" y="90" font-family="Arial" font-size="30" font-weight="bold"
+          fill="${bgTextColors.r}">R</text>
+        <text x="34" y="34" font-family="Arial" font-size="30" font-weight="bold"
+          fill="${bgTextColors.k}">R</text>
+        <text x="44" y="44" font-family="Arial" font-size="30" font-weight="bold"
+          fill="${bgTextColors.o}">I</text>
+        <text x="74" y="74" font-family="Arial" font-size="30" font-weight="bold"
+          fill="${bgTextColors.g}">M</text>
+      </svg>
+    `.trim()
+
+
     return (
         <section
             ref={containerRef}
             className="relative w-full h-[700px] overflow-hidden bg-[#E8E8E8]"
             style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='30' font-family='Arial' font-size='40' font-weight='bold' fill='%23D0D0D0' opacity='0.3'%3ES%3C/text%3E%3Ctext x='50' y='70' font-family='Arial' font-size='35' font-weight='bold' fill='%23D0D0D0' opacity='0.3'%3EH%3C/text%3E%3Ctext x='20' y='90' font-family='Arial' font-size='30' font-weight='bold' fill='%23D0D0D0' opacity='0.3'%3ER%3C/text%3E%3C/svg%3E")`,
-                backgroundSize: "200px 200px",
+                backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svgBg)}")`,
+                backgroundSize: "200px",
                 backgroundRepeat: "repeat"
             }}
         >
