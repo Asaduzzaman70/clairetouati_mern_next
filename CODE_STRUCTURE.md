@@ -58,3 +58,9 @@ This document serves as a reference for the project structure and coding standar
 - When adding new features, ensure they align with the existing directory hierarchy.
 - For every change, refer back to this document to maintain consistency.
 - Document any significant changes to this structure here.
+
+## 📝 Recent Updates
+
+### 2026-02-11
+- **Carousel Component (`components/ui/carousel.tsx`)**: Updated `CarouselPrevious` and `CarouselNext` to support rendering children. This allows for custom icon implementation, replacing the default Lucide arrows when needed.
+- **Curiosity Carousel (`components/page/Home/CuriosityCarousel.tsx`)**: Implemented custom solid triangle SVG icons for navigation buttons. Updated styles to remove default shadcn button styling (border, background, hover effects) and adjusted colors to a specific brown tone (`#996300`) to match design requirements.

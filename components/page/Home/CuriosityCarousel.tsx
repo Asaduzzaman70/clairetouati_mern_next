@@ -67,9 +67,9 @@ export function CuriosityCarousel() {
                     >
                         <CarouselContent className="-ml-4 md:-ml-6">
                             {curiosityItems.map((item, index) => (
-                                <CarouselItem key={index} className="pl-4 md:pl-6 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-[28%]">
+                                <CarouselItem key={index} className="pl-4 md:pl-6 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-[28%] select-none">
                                     <div
-                                        className="relative overflow-hidden rounded-[2rem] min-h-[480px] h-full p-10 flex flex-col justify-start gap-8 transition-transform duration-500 hover:-translate-y-2 group"
+                                        className="relative overflow-hidden rounded-[2rem] min-h-[480px] h-full p-10 flex flex-col justify-start gap-8 transition-transform duration-500 group"
                                         style={{ backgroundColor: item.color }}
                                     >
                                         {/* Background Letter - Matching image positioning */}
@@ -83,7 +83,6 @@ export function CuriosityCarousel() {
                                                 item.color === "#FF7E4D" && "text-white",
                                                 item.color === "#8B0D1B" && "text-white",
                                                 item.color === "#4C259D" && "text-white",
-                                                item.color === "#DC9F12" && "text-white"
                                             )}>
                                                 {item.title}
                                             </h3>
@@ -92,7 +91,6 @@ export function CuriosityCarousel() {
                                                 item.color === "#FF7E4D" && "text-white",
                                                 item.color === "#8B0D1B" && "text-white",
                                                 item.color === "#4C259D" && "text-white",
-                                                item.color === "#DC9F12" && "text-white"
                                             )}>
                                                 {item.description}
                                             </p>
@@ -103,13 +101,13 @@ export function CuriosityCarousel() {
                         </CarouselContent>
 
                         {/* Arrows - Solid Triangles like the image */}
-                        <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 size-12 border-none bg-transparent hover:bg-transparent shadow-none [&_svg]:size-10 text-[#8B6A00] transition-transform active:scale-90 flex items-center justify-center">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 border-none text-[#996300]">
+                            <svg className="size-20" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M18 5L6 12L18 19V5Z" />
                             </svg>
                         </CarouselPrevious>
-                        <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 size-12 border-none bg-transparent hover:bg-transparent shadow-none [&_svg]:size-10 text-[#8B6A00] transition-transform active:scale-90 flex items-center justify-center">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 border-none text-[#996300]">
+                            <svg className="size-20" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6 5L18 12L6 19V5Z" />
                             </svg>
                         </CarouselNext>
