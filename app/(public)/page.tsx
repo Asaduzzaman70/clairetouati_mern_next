@@ -3,6 +3,7 @@ import { CuriosityCarousel } from "@/components/page/Home/CuriosityCarousel";
 import { Testimonials } from "@/components/page/Home/Testimonials";
 import { TurrimCTA } from "@/components/page/Home/TurrimCTA";
 import { PlayroomSection } from "@/components/page/Home/PlayroomSection";
+import { TurrimInfoSection } from "@/components/page/Home/TurrimInfoSection";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <CuriosityCarousel />
       <PlayroomSection />
+      <TurrimInfoSection />
       <Testimonials />
       <TurrimCTA />
     </div>
