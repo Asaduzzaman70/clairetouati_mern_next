@@ -21,9 +21,11 @@ const Navbar = () => {
                 {/* Left Section */}
                 <div className="flex items-center gap-4">
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Button variant="secondary" className="font-semibold text-lg">
-                            Who are we?
-                        </Button>
+                        <Link href="/about">
+                            <Button variant="secondary" className="font-semibold text-lg">
+                                Who are we?
+                            </Button>
+                        </Link>
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                         <Button variant="secondary" className="font-semibold text-lg">
