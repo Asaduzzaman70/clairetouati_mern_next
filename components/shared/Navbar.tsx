@@ -57,9 +57,11 @@ const Navbar = () => {
                         </Button>
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Button variant="outline" className="font-semibold text-lg">
-                            Get Turim
-                        </Button>
+                        <Link href="/sign-in">
+                            <Button variant="outline" className="font-semibold text-lg">
+                                Get Turim
+                            </Button>
+                        </Link>
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                         <Button variant="default" className="font-semibold text-lg">
