@@ -39,7 +39,7 @@ export function OurValuesSection() {
     ];
 
     return (
-        <section className="w-full bg-white py-20 px-6 md:px-12 lg:px-24">
+        <section className="w-full bg-[#F8F8F8] py-20 px-6 md:px-12 lg:px-24">
             <div className="container mx-auto space-y-16">
 
                 {/* Header */}

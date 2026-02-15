@@ -10,12 +10,14 @@ import { CommunityInclusionSection } from "@/components/page/About/CommunityIncl
 import { ScienceDesignSection } from "@/components/page/About/ScienceDesignSection";
 import { MethodInActionSection } from "@/components/page/About/MethodInActionSection";
 import { CallToActionSection } from "@/components/page/About/CallToActionSection";
+import { TurrimCTA } from "@/components/page/Home/TurrimCTA";
 
 export default function AboutPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between bg-white">
             <AboutSection />
             <BioTextSection />
+            <FoundersLetterSection />
             <ArchitectureABCSection />
             <ScienceOfPlaySection />
             <LearningHumanSection />
@@ -24,8 +26,8 @@ export default function AboutPage() {
             <CommunityInclusionSection />
             <ScienceDesignSection />
             <MethodInActionSection />
-            <FoundersLetterSection />
             <CallToActionSection />
+            <TurrimCTA />
         </main>
     );
 }
