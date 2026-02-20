@@ -10,7 +10,7 @@ import { CommunityInclusionSection } from "@/components/page/About/CommunityIncl
 import { ScienceDesignSection } from "@/components/page/About/ScienceDesignSection";
 import { MethodInActionSection } from "@/components/page/About/MethodInActionSection";
 import { CallToActionSection } from "@/components/page/About/CallToActionSection";
-import { TurrimCTA } from "@/components/page/Home/TurrimCTA";
+import { TurrimCTA } from "@/components/shared/TurrimCTA";
 
 export default function AboutPage() {
     return (

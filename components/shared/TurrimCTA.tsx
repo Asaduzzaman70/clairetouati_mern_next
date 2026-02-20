@@ -5,7 +5,7 @@ import Image from "next/image";
 import bgImage from "@/assets/bg_image.jpg";
 import { Roboto_Flex } from "next/font/google";
 
-export function TurrimCTA() {
+export function TurrimCTA({ content = "Recevoir Turrim" }: { content?: string }) {
     return (
         <section className="relative w-full py-40 md:py-64 flex items-center justify-center overflow-hidden">
             {/* Background Image */}
@@ -25,7 +25,7 @@ export function TurrimCTA() {
                     className="bg-black text-white px-16 py-6 md:px-24 md:py-8 rounded-[8px] hover:bg-zinc-800 transition-colors duration-300 font-normal tracking-wide shadow-xl overflow-hidden group"
                     aria-label="Recevoir Turrim"
                 >
-                    <InteractiveText text="Recevoir Turrim" />
+                    <InteractiveText text={content} />
                 </button>
             </div>
         </section>

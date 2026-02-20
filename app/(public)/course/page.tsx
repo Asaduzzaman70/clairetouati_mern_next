@@ -1,0 +1,11 @@
+import CoursePage from "@/components/page/Course/CoursePage";
+import { TurrimCTA } from "@/components/shared/TurrimCTA";
+
+export default function Course() {
+    return (
+        <div>
+            <CoursePage />
+            <TurrimCTA content="Randcandintheir Tinrrim" />
+        </div>
+    )
+}

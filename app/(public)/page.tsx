@@ -1,7 +1,7 @@
 import Hero from "@/components/page/Home/Hero";
 import { CuriosityCarousel } from "@/components/page/Home/CuriosityCarousel";
 import { Testimonials } from "@/components/page/Home/Testimonials";
-import { TurrimCTA } from "@/components/page/Home/TurrimCTA";
+import { TurrimCTA } from "@/components/shared/TurrimCTA";
 import { PlayroomSection } from "@/components/page/Home/PlayroomSection";
 import { TurrimInfoSection } from "@/components/page/Home/TurrimInfoSection";
 

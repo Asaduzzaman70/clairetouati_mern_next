@@ -3,19 +3,34 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 const Navbar = () => {
     const [isEnglish, setIsEnglish] = useState(true)
+    const { scrollY } = useScroll()
+    const [hidden, setHidden] = useState(false)
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const previous = scrollY.getPrevious() ?? 0
+        if (latest > previous && latest > 150) {
+            setHidden(true)
+        } else {
+            setHidden(false)
+        }
+    })
 
     return (
         <motion.nav
+            variants={{
+                visible: { y: 0, opacity: 1 },
+                hidden: { y: "-100%", opacity: 0 },
+            }}
             initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="sticky top-0 left-0 right-0 z-50 w-full bg-background/50 backdrop-blur-xl border-b border-border/50"
+            animate={hidden ? "hidden" : "visible"}
+            transition={{ duration: 0.55, ease: "easeInOut" }}
+            className="sticky top-0 left-0 right-0 z-50 w-full bg-background/50 backdrop-blur-xl"
         >
             <div className="container mx-auto flex items-center justify-between px-4 py-4 md:py-6">
                 {/* Left Section */}
@@ -28,9 +43,11 @@ const Navbar = () => {
                         </Link>
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Button variant="secondary" className="font-semibold text-lg">
-                            Who It&apos;s for?
-                        </Button>
+                        <Link href="/course">
+                            <Button variant="secondary" className="font-semibold text-lg">
+                                Who It&apos;s for?
+                            </Button>
+                        </Link>
                     </motion.div>
                 </div>
 
@@ -64,9 +81,11 @@ const Navbar = () => {
                         </Link>
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Button variant="default" className="font-semibold text-lg">
-                            Sign Up
-                        </Button>
+                        <Link href="/sign-up">
+                            <Button variant="default" className="font-semibold text-lg">
+                                Sign Up
+                            </Button>
+                        </Link>
                     </motion.div>
 
                     {/* Language Switcher */}
