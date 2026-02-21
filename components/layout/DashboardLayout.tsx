@@ -127,7 +127,7 @@ const Sidebar = ({ pathname }: { pathname: string }) => {
                     <SidebarItem
                         key={link.name}
                         link={link}
-                        isActive={pathname === link.href}
+                        isActive={pathname.startsWith(link.href)}
                         index={index}
                     />
                 ))}
