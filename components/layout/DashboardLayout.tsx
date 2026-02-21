@@ -42,6 +42,10 @@ const headerContent: Record<string, { title: string; description: string }> = {
     '/dashboard/settings': {
         title: 'Account Settings',
         description: "Manage your profile, preferences, and account security."
+    },
+    '/dashboard/notifications': {
+        title: 'Notification',
+        description: "Stay updated with the latest activity and announcements."
     }
 }
 
@@ -179,14 +183,16 @@ const Header = ({ pathname }: { pathname: string }) => {
             </div>
 
             <div className="flex items-center gap-5">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative w-10 h-10 flex items-center justify-center rounded-full bg-white text-slate-600 hover:text-[#064228] transition-colors"
-                >
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full" />
-                </motion.button>
+                <Link href="/dashboard/notifications">
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="relative w-10 h-10 flex items-center justify-center rounded-full bg-white text-slate-600 hover:text-[#064228] transition-colors"
+                    >
+                        <Bell className="w-5 h-5" />
+                        <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full" />
+                    </motion.button>
+                </Link>
 
                 <motion.div
                     whileHover={{ scale: 1.05 }}
