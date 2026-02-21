@@ -1,34 +1,16 @@
 "use client";
 
+import ThreeModelViewer from "@/components/shared/ThreeModelViewer";
+
 export function PlayroomSection() {
     return (
         <section className="w-full bg-white py-20 md:py-32">
             <div className="container mx-auto px-6 md:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
                     {/* Left Column - Large Letter A */}
-                    <div className="flex items-center justify-center bg-gray-50 rounded-lg p-12 md:p-20">
-                        <div className="relative">
-                            <svg
-                                viewBox="0 0 400 400"
-                                className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <text
-                                    x="50%"
-                                    y="50%"
-                                    dominantBaseline="middle"
-                                    textAnchor="middle"
-                                    className="fill-[#9B8B2E] font-bold"
-                                    style={{
-                                        fontSize: "520px",
-                                        fontFamily: "system-ui, -apple-system, sans-serif",
-                                        fontWeight: 900,
-                                    }}
-                                >
-                                    A
-                                </text>
-                            </svg>
+                    <div className="flex items-center justify-center bg-gray-50 rounded-lg">
+                        <div className="relative h-full w-full">
+                            <ThreeModelViewer />
                         </div>
                     </div>
 
