@@ -3,9 +3,10 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import logo from '@/assets/logo.png'
 
 const Navbar = () => {
     const [isEnglish, setIsEnglish] = useState(true)
@@ -55,7 +56,7 @@ const Navbar = () => {
                 <Link href="/" className="flex items-center gap-3 cursor-pointer transition-transform hover:scale-105 active:scale-95">
                     <div className="w-14 h-14 flex items-center justify-center relative">
                         <Image
-                            src="/assets/logo.png"
+                            src={logo}
                             alt="Turrim Logo"
                             width={56}
                             height={56}
