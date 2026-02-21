@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CourseCard, type Course } from "./CourseCard";
+import { CourseCard, type Course } from "../../shared/CourseCard";
 
 const courses: Course[] = [
     {
