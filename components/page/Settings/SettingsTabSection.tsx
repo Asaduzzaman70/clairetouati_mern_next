@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import ProfileSettingsForm from "./ProfileSettingsForm";
 import PasswordSettingsForm from "./PasswordSettingsForm";
@@ -61,12 +61,18 @@ export default function SettingsTabSection() {
             </div>
 
             {/* Content Section */}
-            <div
-                key={activeTab}
-                className="py-9"
-            >
-                {content}
-            </div>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="py-9"
+                >
+                    {content}
+                </motion.div>
+            </AnimatePresence>
         </section>
     );
 }

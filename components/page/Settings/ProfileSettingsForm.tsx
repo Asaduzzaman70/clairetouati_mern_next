@@ -28,8 +28,8 @@ export default function ProfileSettingsForm() {
 
             {/* Avatar */}
             <div className="mb-8">
-                <div className="relative w-[72px] h-[72px]">
-                    <div className="w-[72px] h-[72px] rounded-full overflow-hidden bg-gray-200 border border-gray-200">
+                <div className="relative w-[90px] h-[90px]">
+                    <div className="w-[90px] h-[90px] rounded-full overflow-hidden bg-gray-200 border border-gray-200">
                         {avatarSrc ? (
                             <img
                                 src={avatarSrc}
@@ -65,7 +65,7 @@ export default function ProfileSettingsForm() {
                 {/* Full Name + Email Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Full Name */}
-                    <div className="space-y-2.5">
+                    <div>
                         <label className="text-xl font-medium text-[#4B5563]">Full Name</label>
                         <input
                             type="text"
@@ -75,7 +75,7 @@ export default function ProfileSettingsForm() {
                     </div>
 
                     {/* Email */}
-                    <div className="space-y-2.5">
+                    <div>
                         <label className="text-xl font-medium text-[#4B5563]">Email</label>
                         <input
                             type="email"
@@ -86,7 +86,7 @@ export default function ProfileSettingsForm() {
                 </div>
 
                 {/* Address */}
-                <div className="space-y-2.5">
+                <div>
                     <label className="text-xl block font-medium text-[#4B5563]">Address</label>
                     <input
                         type="text"

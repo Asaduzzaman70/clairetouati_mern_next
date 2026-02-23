@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Star, Clock, BookOpen, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export interface Course {
     id: number;
@@ -89,13 +90,15 @@ export function CourseCard({ course }: CourseCardProps) {
             </div>
 
             {/* Action Button */}
-            <Button
-                size="lg"
-                className="w-full bg-[#0F0F0F] hover:bg-black text-white rounded-full gap-3 font-normal transition-all active:scale-[0.97] h-12! text-base"
-            >
-                <Play className="size-4 stroke-white text-white ml-0.5" />
-                Continue Learning
-            </Button>
+            <Link href={`/dashboard/my-courses/${course.id}`}>
+                <Button
+                    size="lg"
+                    className="w-full bg-[#0F0F0F] hover:bg-black text-white rounded-full gap-3 font-normal transition-all active:scale-[0.97] h-12! text-base"
+                >
+                    <Play className="size-4 stroke-white text-white ml-0.5" />
+                    Continue Learning
+                </Button>
+            </Link>
         </motion.div>
     );
 }
