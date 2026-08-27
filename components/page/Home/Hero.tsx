@@ -3,6 +3,37 @@
 import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 
+const baseShapeConfigs = [
+    // Blue circle (large)
+    { type: "circle", color: "#0066CC", baseSize: 200, text: "Cure Through\nwonder" },
+    // Yellow circle (large)
+    { type: "circle", color: "#FFD700", baseSize: 200, text: "Cure Through\nwonder" },
+    // Red circle (large)
+    { type: "circle", color: "#DC143C", baseSize: 200, text: "Cure Through\nwonder" },
+    // Orange circle (medium)
+    { type: "circle", color: "#FF7F50", baseSize: 180, text: "Cure Through\nwonder" },
+    // Purple circle (medium)
+    { type: "circle", color: "#8B5CF6", baseSize: 180, text: "Cure Through\nwonder" },
+
+    // Green rectangles
+    { type: "rectangle", color: "#047857", baseSize: 200, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#047857", baseSize: 180, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#047857", baseSize: 170, text: "Cure Through\nwonder" },
+
+    // Yellow rectangles
+    { type: "rectangle", color: "#FFD700", baseSize: 190, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#FFD700", baseSize: 175, text: "Cure Through\nwonder" },
+
+    // Blue rectangle
+    { type: "rectangle", color: "#0066CC", baseSize: 185, text: "Cure Through\nwonder" },
+
+    // Yellow triangle
+    { type: "triangle", color: "#FFD700", baseSize: 250, text: "Cure Through\nwonder" },
+
+    // Red triangle
+    { type: "triangle", color: "#DC143C", baseSize: 240, text: "Cure Through\nwonder" },
+];
+
 const Hero = () => {
     const [bgTextColors, setBgTextColors] = useState({
         s: "#D0D0D0",
@@ -27,13 +58,29 @@ const Hero = () => {
 
         // Create engine with gravity
         const engine = Engine.create({
-            gravity: { x: 0, y: 0.8 }
+            gravity: { x: 0, y: 0.85 }
         });
         engineRef.current = engine;
 
         // Get container dimensions
         const width = container.clientWidth;
         const height = container.clientHeight;
+
+        // Calculate responsive scale factor for shapes
+        const getScaleFactor = (w: number) => {
+            if (w < 400) return 0.52;
+            if (w < 640) return 0.62;
+            if (w < 768) return 0.72;
+            if (w < 1024) return 0.85;
+            return 1;
+        };
+
+        const scaleFactor = getScaleFactor(width);
+
+        // Filter shapes on very small screens to avoid overcrowding
+        const activeShapeConfigs = width < 540
+            ? baseShapeConfigs.slice(0, 8)
+            : baseShapeConfigs;
 
         // Create renderer
         const render = Render.create({
@@ -43,83 +90,63 @@ const Hero = () => {
                 width: width,
                 height: height,
                 wireframes: false,
-                background: "transparent"
+                background: "transparent",
             }
         });
         renderRef.current = render;
 
         // Create boundaries (walls)
         const wallThickness = 500;
-        const bottomWall = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 5, wallThickness, { isStatic: true, render: { fillStyle: "transparent" } });
-        const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 5, { isStatic: true, render: { fillStyle: "transparent" } });
-        const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 5, { isStatic: true, render: { fillStyle: "transparent" } });
-        const topWall = Bodies.rectangle(width / 2, -wallThickness * 20, width * 5, wallThickness, { isStatic: true, render: { fillStyle: "transparent" } });
+        const bottomWall = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 5, wallThickness, {
+            isStatic: true,
+            render: { fillStyle: "transparent" }
+        });
+        const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 5, {
+            isStatic: true,
+            render: { fillStyle: "transparent" }
+        });
+        const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 5, {
+            isStatic: true,
+            render: { fillStyle: "transparent" }
+        });
+        const topWall = Bodies.rectangle(width / 2, -wallThickness * 2, width * 5, wallThickness, {
+            isStatic: true,
+            render: { fillStyle: "transparent" }
+        });
 
         const walls = [bottomWall, leftWall, rightWall, topWall];
-
-        // Shape configurations matching the image
-        const shapeConfigs = [
-            // Blue circle (large)
-            { type: "circle", color: "#0066CC", size: 220, text: "Cure Through\nwonder" },
-            // Yellow circle (large)
-            { type: "circle", color: "#FFD700", size: 220, text: "Cure Through\nwonder" },
-            // Red circle (large)
-            { type: "circle", color: "#DC143C", size: 220, text: "Cure Through\nwonder" },
-            // Orange circle (medium)
-            { type: "circle", color: "#FF7F50", size: 200, text: "Cure\nThrough\nwonder" },
-            // Purple circle (medium)
-            { type: "circle", color: "#8B5CF6", size: 200, text: "Cure Through\nwonder" },
-
-            // Green rectangles
-            { type: "rectangle", color: "#047857", size: 220, text: "Cure Through\nwonder" },
-            { type: "rectangle", color: "#047857", size: 200, text: "Cure Through\nwonder" },
-            { type: "rectangle", color: "#047857", size: 190, text: "Cure Through\nwonder" },
-
-            // Yellow rectangles
-            { type: "rectangle", color: "#FFD700", size: 210, text: "Cure Through\nwonder" },
-            { type: "rectangle", color: "#FFD700", size: 195, text: "Cure Through\nwonder" },
-
-            // Blue rectangle
-            { type: "rectangle", color: "#0066CC", size: 205, text: "Cure Through\nwonder" },
-
-            // Yellow triangle
-            { type: "triangle", color: "#FFD700", size: 330, text: "Cure Through\nwonder" },
-
-            // Red triangle
-            { type: "triangle", color: "#DC143C", size: 310, text: "Cure Through\nwonder" },
-        ];
-
         const shapes: Matter.Body[] = [];
 
-        shapeConfigs.forEach((config, index) => {
-            const x = Math.random() * (width - 200) + 100;
-            const y = Math.random() * -1500 - 200; // Start above screen
+        activeShapeConfigs.forEach((config) => {
+            const size = config.baseSize * scaleFactor;
+            const x = Math.random() * Math.max(width - size - 20, 20) + size / 2 + 10;
+            const y = Math.random() * -1000 - 150; // Start above screen
 
             let shape: Matter.Body;
 
             if (config.type === "circle") {
-                shape = Bodies.circle(x, y, config.size / 2, {
-                    restitution: 0.5,
-                    friction: 0.1,
+                shape = Bodies.circle(x, y, size / 2, {
+                    restitution: 0.45,
+                    friction: 0.15,
                     density: 0.001,
                     render: {
                         fillStyle: config.color,
                     }
                 });
             } else if (config.type === "rectangle") {
-                shape = Bodies.rectangle(x, y, config.size, config.size, {
-                    restitution: 0.5,
-                    friction: 0.1,
+                shape = Bodies.rectangle(x, y, size, size, {
+                    restitution: 0.45,
+                    friction: 0.15,
                     density: 0.001,
-                    angle: Math.random() * Math.PI / 4,
+                    angle: Math.random() * (Math.PI / 4),
                     render: {
                         fillStyle: config.color,
                     }
                 });
             } else { // triangle
-                shape = Bodies.polygon(x, y, 3, config.size / 2, {
-                    restitution: 0.5,
-                    friction: 0.1,
+                shape = Bodies.polygon(x, y, 3, size / 2, {
+                    restitution: 0.45,
+                    friction: 0.15,
                     density: 0.001,
                     angle: Math.random() * Math.PI,
                     render: {
@@ -128,16 +155,17 @@ const Hero = () => {
                 });
             }
 
-            // Store text data on the body for custom rendering
+            // Store text metadata and scaled size on the body
             (shape as any).customText = config.text;
-            (shape as any).shapeSize = config.size;
+            (shape as any).shapeSize = size;
+            (shape as any).shapeType = config.type;
             shapes.push(shape);
         });
 
         // Add all bodies to the world
         Composite.add(engine.world, [...walls, ...shapes]);
 
-        // Add mouse control
+        // Add mouse / touch control
         const mouse = Mouse.create(canvas);
         const mouseConstraint = MouseConstraint.create(engine, {
             mouse: mouse,
@@ -150,7 +178,7 @@ const Hero = () => {
         Composite.add(engine.world, mouseConstraint);
         render.mouse = mouse;
 
-        // Change specific background text colors when a shape is clicked
+        // Change specific background text colors when a shape is clicked or touched
         Events.on(mouseConstraint, "mousedown", () => {
             const body = mouseConstraint.body;
             if (body && (body as any).customText && body.render.fillStyle) {
@@ -162,26 +190,20 @@ const Hero = () => {
                     if (color === "#FF7F50") return { ...prev, o: color };
                     if (color === "#8B5CF6") return { ...prev, k: color };
                     if (color === "#047857") return { ...prev, g: color };
-                    // For other colors (green, orange, purple), update 'k'
                     return { ...prev, s: "#D0D0D0", h: "#D0D0D0", r: "#D0D0D0", o: "#D0D0D0", k: "#D0D0D0", g: "#D0D0D0" };
                 });
             }
         });
 
-        // Run the engine and renderer
-        const runner = Runner.create();
-        runnerRef.current = runner;
-        Runner.run(runner, engine);
-        Render.run(render);
-
-        // Custom text rendering on top of Matter.js shapes
-        const drawText = () => {
-            const ctx = canvas.getContext("2d");
+        // Exact frame-synchronized text rendering directly inside Matter.js afterRender hook
+        Events.on(render, "afterRender", () => {
+            const ctx = render.context;
             if (!ctx) return;
 
             shapes.forEach((shape) => {
                 const text = (shape as any).customText;
                 const size = (shape as any).shapeSize;
+                const shapeType = (shape as any).shapeType;
                 if (!text) return;
 
                 const pos = shape.position;
@@ -191,34 +213,50 @@ const Hero = () => {
                 ctx.translate(pos.x, pos.y);
                 ctx.rotate(angle);
 
-                // Text styling
-                ctx.fillStyle = "#FFFFFF";
-                ctx.font = `${size > 110 ? 16 : 14}px Inter, sans-serif`;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
+                // Maximum allowable text width inside the shape
+                const maxTextWidth = size * (shapeType === "triangle" ? 0.42 : shapeType === "circle" ? 0.62 : 0.72);
 
-                // Draw multi-line text
-                const lines = text.split("\n");
-                const lineHeight = size > 110 ? 20 : 18;
+                // Dynamic proportional font size
+                let fontSize = Math.min(Math.max(9, Math.floor(size * 0.065)), 14);
+                ctx.font = `600 ${fontSize}px Inter, sans-serif`;
+
+                const lines: string[] = text.split("\n");
+
+                // Auto-fit font size if any line exceeds max allowable width
+                for (const line of lines) {
+                    while (ctx.measureText(line).width > maxTextWidth && fontSize > 7) {
+                        fontSize -= 0.5;
+                        ctx.font = `600 ${fontSize}px Inter, sans-serif`;
+                    }
+                }
+
+                const lineHeight = fontSize * 1.3;
                 const totalHeight = lines.length * lineHeight;
                 const startY = -totalHeight / 2 + lineHeight / 2;
 
-                lines.forEach((line: string, i: number) => {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                lines.forEach((line, i) => {
                     ctx.fillText(line, 0, startY + i * lineHeight);
                 });
 
                 ctx.restore();
             });
+        });
 
-            requestAnimationFrame(drawText);
-        };
-
-        drawText();
+        // Run the engine and renderer
+        const runner = Runner.create();
+        runnerRef.current = runner;
+        Runner.run(runner, engine);
+        Render.run(render);
 
         // Handle window resize
         const handleResize = () => {
-            const newWidth = container.clientWidth;
-            const newHeight = container.clientHeight;
+            if (!containerRef.current || !renderRef.current) return;
+            const newWidth = containerRef.current.clientWidth;
+            const newHeight = containerRef.current.clientHeight;
 
             render.canvas.width = newWidth;
             render.canvas.height = newHeight;
@@ -229,7 +267,7 @@ const Hero = () => {
             Matter.Body.setPosition(bottomWall, { x: newWidth / 2, y: newHeight + wallThickness / 2 });
             Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: newHeight / 2 });
             Matter.Body.setPosition(rightWall, { x: newWidth + wallThickness / 2, y: newHeight / 2 });
-            Matter.Body.setPosition(topWall, { x: newWidth / 2, y: -wallThickness * 1 });
+            Matter.Body.setPosition(topWall, { x: newWidth / 2, y: -wallThickness * 2 });
         };
 
         window.addEventListener("resize", handleResize);
@@ -237,7 +275,6 @@ const Hero = () => {
         // Cleanup function
         return () => {
             window.removeEventListener("resize", handleResize);
-
             if (runnerRef.current && engineRef.current) {
                 Runner.stop(runnerRef.current);
             }
@@ -252,9 +289,6 @@ const Hero = () => {
             }
         };
     }, []);
-
-
-
 
     const svgBg = `
       <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
@@ -271,23 +305,22 @@ const Hero = () => {
         <text x="74" y="74" font-family="Arial" font-size="30" font-weight="bold"
           fill="${bgTextColors.g}">M</text>
       </svg>
-    `.trim()
-
+    `.trim();
 
     return (
         <section
             ref={containerRef}
-            className="relative w-full h-[700px] overflow-hidden bg-[#E8E8E8]"
+            className="relative w-full h-115 sm:h-135 md:h-155 lg:h-175 overflow-hidden bg-[#E8E8E8] select-none"
             style={{
                 backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svgBg)}")`,
-                backgroundSize: "200px",
+                backgroundSize: "clamp(120px, 18vw, 200px)",
                 backgroundRepeat: "repeat"
             }}
         >
             {/* Matter.js Canvas */}
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 w-full h-full pointer-events-auto"
+                className="absolute inset-0 w-full h-full pointer-events-auto touch-pan-y"
             />
         </section>
     );
