@@ -50,7 +50,7 @@ export default function SettingsTabSection() {
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeSettingsTab"
-                                        className="absolute -bottom-[2px] left-0 right-0 h-1 bg-[#2D5A43]"
+                                        className="absolute -bottom-0.5 left-0 right-0 h-1 bg-[#2D5A43]"
                                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                     />
                                 )}
