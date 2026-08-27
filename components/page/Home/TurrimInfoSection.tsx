@@ -56,7 +56,7 @@ export function TurrimInfoSection() {
             {SECTIONS.map((section) => (
                 <section key={section.id} className="w-full relative">
                     {/* Top Image Section - Sticky */}
-                    <div className="sticky top-0 z-0 w-full h-[400px] md:h-[600px]">
+                    <div className="sticky top-0 z-0 w-full h-70 sm:h-95 md:h-120 lg:h-150">
                         <Image
                             src={section.image}
                             alt={section.title}
@@ -68,27 +68,27 @@ export function TurrimInfoSection() {
 
                     {/* Bottom Content Section - Relative to cover the sticky image */}
                     <div
-                        className="relative z-10 w-full text-white py-20 px-6 md:px-12 lg:px-24"
+                        className="relative z-10 w-full text-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-20"
                         style={{ backgroundColor: section.bgColor }}
                     >
-                        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-start">
                             {/* Left Text Content */}
-                            <div className="space-y-8 max-w-2xl text-white">
-                                <h2 className="text-3xl md:text-5xl font-bold leading-tight font-sans uppercase">
+                            <div className="space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl text-white">
+                                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight font-sans uppercase tracking-tight">
                                     {section.title}
                                 </h2>
-                                <p className="text-base md:text-lg leading-relaxed opacity-95 font-light">
+                                <p className="text-sm sm:text-base md:text-lg leading-relaxed opacity-95 font-light">
                                     {section.description}
                                 </p>
                             </div>
 
                             {/* Right Outline Letters */}
-                            <div className="relative w-full flex items-center justify-center lg:justify-end py-8 lg:py-0">
-                                <div className="grid grid-cols-2 gap-x-24 gap-y-16">
+                            <div className="relative w-full flex items-center justify-center lg:justify-end py-4 sm:py-6 lg:py-0">
+                                <div className="grid grid-cols-2 gap-x-10 sm:gap-x-16 md:gap-x-20 lg:gap-x-24 gap-y-6 sm:gap-y-10 md:gap-y-12 lg:gap-y-16">
                                     {section.letters.map((letter, i) => (
                                         <span
                                             key={i}
-                                            className="block font-sans text-8xl md:text-9xl font-light bg-clip-text text-transparent bg-fixed bg-center bg-cover [-webkit-text-stroke:1px_white] select-none"
+                                            className="block font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light bg-clip-text text-transparent bg-fixed bg-center bg-cover [-webkit-text-stroke:1px_white] select-none text-center"
                                             style={{
                                                 backgroundImage: `url(${section.image.src})`
                                             }}
