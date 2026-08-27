@@ -88,7 +88,7 @@ const SidebarItem = ({
                 {isActive && (
                     <motion.div
                         layoutId="active-pill"
-                        className="absolute inset-0 bg-white rounded-xl shadow-lg shadow-black/20 -z-10"
+                        className="absolute inset-0 bg-white rounded-xl shadow-md -z-10"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                     />
                 )}
@@ -109,7 +109,7 @@ const SidebarContent = ({
     onClose?: () => void;
 }) => {
     return (
-        <div className="h-full flex flex-col justify-between bg-[#064228] text-white">
+        <div className="h-full w-full flex flex-col justify-between bg-[#064228] text-white select-none">
             <div>
                 {/* Logo Section */}
                 <div className="px-6 py-5 sm:py-6 flex items-center justify-between">
@@ -192,7 +192,7 @@ const Header = ({
     }
 
     return (
-        <header className="px-4 sm:px-6 md:px-8 py-3.5 sm:py-4 md:py-5 flex items-center justify-between bg-white border-b border-zinc-100 sticky top-0 z-30 shadow-xs">
+        <header className="px-6 md:px-8 py-4 sm:py-5 flex items-center justify-between bg-white border-b border-zinc-100 sticky top-0 z-30 shadow-xs">
             <div className="flex items-center gap-3 sm:gap-4">
                 {/* Mobile Hamburger Toggle Button */}
                 <button
@@ -282,7 +282,7 @@ export default function DashboardLayout({
     return (
         <div className="flex h-screen w-full bg-[#f8f9fa] overflow-hidden">
             {/* Desktop Fixed Sidebar */}
-            <aside className="hidden lg:flex w-72 xl:w-80 h-full shrink-0 shadow-2xl z-20">
+            <aside className="hidden lg:flex w-72 xl:w-80 h-full shrink-0 z-20 border-r border-black/5">
                 <SidebarContent pathname={pathname} />
             </aside>
 
@@ -325,7 +325,7 @@ export default function DashboardLayout({
                 <Header pathname={pathname} onMenuClick={() => setMobileOpen(true)} />
 
                 {/* Page Content */}
-                <div className="px-3.5 sm:px-6 md:px-8 pt-4 sm:pt-6 pb-12 flex-1">
+                <div className="px-4 sm:px-6 md:px-8 py-5 sm:py-6 flex-1">
                     {children}
                 </div>
             </main>
