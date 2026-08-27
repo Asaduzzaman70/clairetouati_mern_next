@@ -91,7 +91,7 @@ export function CuriosityCarousel() {
                                     className="pl-3 sm:pl-4 md:pl-5 lg:pl-6 basis-[84%] sm:basis-[62%] md:basis-[48%] lg:basis-[35%] xl:basis-[28%] 2xl:basis-[26%] select-none"
                                 >
                                     <div
-                                        className="relative overflow-hidden rounded-[1.75rem] md:rounded-[2rem] min-h-[380px] sm:min-h-[410px] md:min-h-[450px] lg:min-h-[480px] h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-5 md:gap-7 lg:gap-8 transition-transform duration-300 shadow-sm"
+                                        className="relative overflow-hidden rounded-[1.75rem] md:rounded-[2rem] min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-5 md:gap-7 lg:gap-8 transition-transform duration-300 shadow-sm"
                                         style={{ backgroundColor: item.color }}
                                     >
                                         {/* Background Letter */}
