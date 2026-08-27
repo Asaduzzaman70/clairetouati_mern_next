@@ -7,7 +7,7 @@ import { Roboto_Flex } from "next/font/google";
 
 export function TurrimCTA({ content = "Recevoir Turrim" }: { content?: string }) {
     return (
-        <section className="relative w-full py-40 md:py-64 flex items-center justify-center overflow-hidden">
+        <section className="relative w-full py-24 sm:py-32 md:py-48 lg:py-60 flex items-center justify-center overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -20,9 +20,9 @@ export function TurrimCTA({ content = "Recevoir Turrim" }: { content?: string })
             </div>
 
             {/* Content */}
-            <div className="relative z-10 px-4">
+            <div className="relative z-10 px-4 max-w-full">
                 <button
-                    className="bg-black text-white px-16 py-6 md:px-24 md:py-8 rounded-[8px] hover:bg-zinc-800 transition-colors duration-300 font-normal tracking-wide shadow-xl overflow-hidden group"
+                    className="bg-black text-white px-8 py-4 sm:px-12 sm:py-5 md:px-16 md:py-6 lg:px-24 lg:py-8 rounded-xl md:rounded-2xl hover:bg-zinc-900 transition-all duration-300 font-normal tracking-wide shadow-2xl overflow-hidden group cursor-pointer max-w-[92vw] sm:max-w-none"
                     aria-label="Recevoir Turrim"
                 >
                     <InteractiveText text={content} />
@@ -65,7 +65,6 @@ function InteractiveText({ text }: { text: string }) {
 
         const update = () => {
             // Smoothly interpolate current cursor position towards target
-            // Factor 0.1 for smooth, organic lag
             if (currentX === -9999) {
                 currentX = targetX;
                 currentY = targetY;
@@ -87,27 +86,18 @@ function InteractiveText({ text }: { text: string }) {
                     const distance = Math.sqrt(distX * distX + distY * distY);
 
                     // Max distance of influence
-                    const maxDist = 800; // Increased to cover more area
+                    const maxDist = 600;
                     const intensity = Math.max(0, 1 - Math.min(distance, maxDist) / maxDist);
 
                     // Non-linear intensity for sharper focus near center
                     const easeIntensity = Math.pow(intensity, 2);
 
                     // Interpolate values
-                    // Weight: 100 to 1000
                     const weight = 100 + (900 * easeIntensity);
-
-                    // Width: 100 to 151 (Roboto Flex max width is usually 151)
                     const width = 100 + (51 * easeIntensity);
-
-                    // Slant: Keep at 0 (no italic effect)
                     const slant = 0;
 
-                    // Opacity: Always 1 for solid white
-                    const opacity = 1;
-
                     charSpan.style.fontVariationSettings = `'wght' ${weight}, 'wdth' ${width}, 'slnt' ${slant}`;
-                    charSpan.style.opacity = opacity.toString();
                 });
             }
 
@@ -124,7 +114,7 @@ function InteractiveText({ text }: { text: string }) {
     }, []);
 
     return (
-        <div ref={containerRef} className={`${robotoFlex.className} flex justify-center items-center text-xl md:text-8xl text-white`}>
+        <div ref={containerRef} className={`${robotoFlex.className} flex justify-center items-center text-lg sm:text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-white select-none whitespace-nowrap`}>
             {text.split("").map((char, index) => (
                 <span
                     key={index}
