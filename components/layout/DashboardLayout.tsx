@@ -222,7 +222,7 @@ export default function DashboardLayout({
         <div className="flex h-screen w-full bg-[#f8f9fa]">
             <Sidebar pathname={pathname} />
 
-            <main className="flex-1 h-full overflow-y-auto overflow-x-hidden bg-[#f8f9fa] flex flex-col">
+            <main data-lenis-prevent className="flex-1 h-full overflow-y-auto overflow-x-hidden bg-[#f8f9fa] flex flex-col">
                 <Header pathname={pathname} />
 
                 {/* Page Content */}
