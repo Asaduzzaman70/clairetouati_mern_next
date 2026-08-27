@@ -45,7 +45,7 @@ export function ScienceOfPlaySection() {
                     {cards.map((card, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-[20px] p-8 text-left h-full flex flex-col justify-start space-y-3 shadow-sm hover:shadow-md transition-shadow duration-300"
+                            className="bg-white rounded-4xl p-8 text-left h-full flex flex-col justify-start space-y-3 shadow-sm hover:shadow-md transition-shadow duration-300"
                         >
                             <h3 className="text-xl font-bold text-black">
                                 {card.title}
