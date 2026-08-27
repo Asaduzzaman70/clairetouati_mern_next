@@ -39,30 +39,30 @@ export function OurValuesSection() {
     ];
 
     return (
-        <section className="w-full bg-[#F8F8F8] py-20 px-6 md:px-12 lg:px-24">
-            <div className="container mx-auto space-y-16">
+        <section className="w-full bg-[#F8F8F8] py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-20">
+            <div className="container mx-auto space-y-8 sm:space-y-12 md:space-y-16">
 
                 {/* Header */}
-                <div className="text-center space-y-4">
-                    <span className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-[#4A4A4A]">
+                <div className="text-center space-y-3 sm:space-y-4">
+                    <span className="text-[11px] sm:text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-[#4A4A4A]">
                         OUR VALUES
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-normal text-[#1A1A2E]">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[#1A1A2E] tracking-tight">
                         Our world in color
                     </h2>
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-sm sm:max-w-none mx-auto">
                     {values.map((item, index) => (
                         <div
                             key={index}
-                            className={`rounded-[20px] p-8 h-48 md:h-56 flex flex-col justify-end space-y-2 ${item.bgColor} ${item.textColor} transition-transform hover:scale-[1.02] duration-300`}
+                            className={`rounded-2xl md:rounded-4xl p-6 sm:p-7 md:p-8 min-h-40 sm:h-48 md:h-56 flex flex-col justify-end space-y-1.5 sm:space-y-2 ${item.bgColor} ${item.textColor} transition-transform hover:scale-[1.02] duration-300 shadow-sm`}
                         >
-                            <h3 className="text-xl md:text-2xl font-bold">
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-snug">
                                 {item.title}
                             </h3>
-                            <p className="text-sm md:text-base opacity-90 font-medium">
+                            <p className="text-xs sm:text-sm md:text-base opacity-90 font-medium leading-relaxed">
                                 {item.description}
                             </p>
                         </div>
