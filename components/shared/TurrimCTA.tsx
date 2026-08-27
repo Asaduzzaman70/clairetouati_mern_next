@@ -7,7 +7,7 @@ import { Roboto_Flex } from "next/font/google";
 
 export function TurrimCTA({ content = "Recevoir Turrim" }: { content?: string }) {
     return (
-        <section className="relative w-full py-24 sm:py-32 md:py-48 lg:py-60 flex items-center justify-center overflow-hidden">
+        <section className="relative w-full py-20 sm:py-28 md:py-40 lg:py-56 flex items-center justify-center overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -16,14 +16,15 @@ export function TurrimCTA({ content = "Recevoir Turrim" }: { content?: string })
                     fill
                     className="object-cover"
                     priority
+                    sizes="100vw"
                 />
             </div>
 
             {/* Content */}
             <div className="relative z-10 px-4 max-w-full">
                 <button
-                    className="bg-black text-white px-8 py-4 sm:px-12 sm:py-5 md:px-16 md:py-6 lg:px-24 lg:py-8 rounded-xl md:rounded-2xl hover:bg-zinc-900 transition-all duration-300 font-normal tracking-wide shadow-2xl overflow-hidden group cursor-pointer max-w-[92vw] sm:max-w-none"
-                    aria-label="Recevoir Turrim"
+                    className="bg-black text-white px-6 py-4 sm:px-10 sm:py-5 md:px-16 md:py-6 lg:px-24 lg:py-8 rounded-xl md:rounded-2xl hover:bg-zinc-900 transition-all duration-300 font-normal tracking-wide shadow-2xl overflow-hidden group cursor-pointer max-w-[94vw] sm:max-w-none"
+                    aria-label={content}
                 >
                     <InteractiveText text={content} />
                 </button>
@@ -57,6 +58,25 @@ function InteractiveText({ text }: { text: string }) {
         const handleMouseMove = (e: MouseEvent) => {
             targetX = e.clientX;
             targetY = e.clientY;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (e.touches.length > 0) {
+                targetX = e.touches[0].clientX;
+                targetY = e.touches[0].clientY;
+            }
+        };
+
+        const handleTouchStart = (e: TouchEvent) => {
+            if (e.touches.length > 0) {
+                targetX = e.touches[0].clientX;
+                targetY = e.touches[0].clientY;
+            }
+        };
+
+        const handleTouchEnd = () => {
+            targetX = -9999;
+            targetY = -9999;
         };
 
         const lerp = (start: number, end: number, factor: number) => {
@@ -105,16 +125,23 @@ function InteractiveText({ text }: { text: string }) {
         };
 
         window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("touchmove", handleTouchMove, { passive: true });
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+        window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
         update();
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("touchmove", handleTouchMove);
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchend", handleTouchEnd);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);
 
     return (
-        <div ref={containerRef} className={`${robotoFlex.className} flex justify-center items-center text-lg sm:text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-white select-none whitespace-nowrap`}>
+        <div ref={containerRef} className={`${robotoFlex.className} flex justify-center items-center text-[17px] sm:text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-white select-none whitespace-nowrap`}>
             {text.split("").map((char, index) => (
                 <span
                     key={index}
