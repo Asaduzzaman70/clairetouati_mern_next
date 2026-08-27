@@ -4,13 +4,18 @@ import { Alphabet_a } from "@/public/models/Alphabet_a";
 
 export default function ThreeModelViewer() {
     return (
-        <div className="h-full w-full">
-            <Canvas className="h-[70vh]!">
-                <ambientLight />
-                <OrbitControls enableZoom={false} enablePan={false} />
-                <Alphabet_a position={[0, -2.5, 0]} scale={8} />
+        <div className="w-full h-full">
+            <Canvas
+                className="w-full h-full"
+                camera={{ position: [0, 0, 7], fov: 45 }}
+                gl={{ antialias: true, alpha: true }}
+            >
+                <ambientLight intensity={1.5} />
+                <directionalLight position={[10, 10, 5]} intensity={1} />
+                <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
+                <Alphabet_a position={[0, -2.2, 0]} scale={7} />
                 <Environment preset="forest" />
             </Canvas>
         </div>
-    )
+    );
 }

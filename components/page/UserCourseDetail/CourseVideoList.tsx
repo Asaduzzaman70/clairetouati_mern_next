@@ -56,12 +56,12 @@ export default function CourseVideoList() {
     };
 
     return (
-        <div className="bg-[#F4F4F4] rounded-[20px] overflow-hidden flex flex-col h-fit border border-gray-200/50">
+        <div className="bg-[#F4F4F4] rounded-4xl overflow-hidden flex flex-col h-fit border border-gray-200/50">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6">
                 <div className="relative pt-4 pb-3">
                     <span className="text-[#0D4D36] font-semibold text-sm cursor-pointer">Course content</span>
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#0D4D36] rounded-full" />
+                    <div className="absolute bottom-0 left-0 right-0 h-0.75 bg-[#0D4D36] rounded-full" />
                 </div>
                 <button className="text-gray-400 hover:text-gray-600 transition-colors">
                     <X className="w-5 h-5" />
