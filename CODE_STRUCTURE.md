@@ -133,6 +133,15 @@ clairetouati_next_js_mern_front_end/
 │   │   ├── Overview/                     # Components for /dashboard/overview
 │   │   │   ├── ProgressCourses.tsx       # In-progress course cards with progress bars
 │   │   │   └── StatsSection.tsx          # Key metrics cards (Enrolled, Active, Completed)
+│   │   ├── Playroom/                     # Components for /playroom interactive 3D alphabet
+│   │   │   ├── Playroom3DViewer.tsx      # R3F 3D letter Canvas with OrbitControls & Text3D
+│   │   │   ├── PlayroomAlphabetKeyboard.tsx # 2-row A-Z color badges with active selection
+│   │   │   ├── PlayroomColorFilters.tsx  # Color filter pill selectors (All/Yellow/Orange/Rouge/Purple/Blue/Green)
+│   │   │   ├── PlayroomLetterInfo.tsx    # Header badge, letter cases, sound pronunciation, and color
+│   │   │   ├── PlayroomTipAndActions.tsx # Random generator button and slide tip callout banner
+│   │   │   ├── PlayroomWordCard.tsx      # Example word display card with audio speaker
+│   │   │   ├── index.tsx                 # Main composite Playroom page layout
+│   │   │   └── playroomData.ts           # Letter dataset, color mapping, phonetics, and words
 │   │   ├── Settings/                     # Components for /dashboard/settings
 │   │   │   ├── PasswordSettingsForm.tsx  # Password change form with security checks
 │   │   │   ├── ProfileSettingsForm.tsx   # User profile edit form & avatar upload
