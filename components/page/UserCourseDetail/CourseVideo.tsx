@@ -53,7 +53,7 @@ export default function CourseVideo() {
                 </div>
 
                 {/* Tab Content */}
-                <div className="min-h-[100px]">
+                <div className="min-h-25">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeTab}

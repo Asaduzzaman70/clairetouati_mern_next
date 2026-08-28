@@ -69,7 +69,7 @@ export default function CourseVideoList() {
             </div>
 
             {/* Scrollable List Area */}
-            <div data-lenis-prevent className="max-h-[420px] sm:max-h-[500px] lg:max-h-[calc(100vh-200px)] overflow-y-auto">
+            <div data-lenis-prevent className="max-h-105 sm:max-h-125 lg:max-h-[calc(100vh-200px)] overflow-y-auto">
                 {sections.map((section) => (
                     <div key={section.id} className="flex flex-col border-b border-gray-200/50 last:border-0">
                         {/* Section Header */}
