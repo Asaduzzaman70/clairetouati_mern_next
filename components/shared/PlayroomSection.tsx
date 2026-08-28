@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import ThreeModelViewer from "@/components/shared/ThreeModelViewer";
+import { useRouter } from "next/navigation";
 
 export function PlayroomSection() {
+    const router = useRouter();
     return (
         <section className="w-full bg-white py-14 sm:py-20 md:py-28 lg:py-32 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 md:px-12">
@@ -31,7 +33,7 @@ export function PlayroomSection() {
 
                         <div className="pt-2 sm:pt-4">
                             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="inline-block w-full sm:w-auto">
-                                <button className="w-full sm:w-auto bg-[#E8E8E8] hover:bg-zinc-300 active:scale-95 text-black px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl transition-all duration-200 font-semibold text-sm sm:text-base cursor-pointer shadow-sm text-center">
+                                <button onClick={() => router.push('/playroom')} className="w-full sm:w-auto bg-[#E8E8E8] hover:bg-zinc-300 active:scale-95 text-black px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl transition-all duration-200 font-semibold text-sm sm:text-base cursor-pointer shadow-sm text-center">
                                     Enter the playroom
                                 </button>
                             </motion.div>
