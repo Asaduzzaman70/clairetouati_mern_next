@@ -56,21 +56,23 @@ export function ProductCard({
         : badgeVariantStyles.mint;
 
     const currencySymbol = product.currency || "€";
+    const targetUrl = product.href?.includes("id=")
+        ? product.href
+        : `/playroom?id=${encodeURIComponent(String(product.id))}`;
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -4, transition: { duration: 0.25, ease: "easeOut" } }}
+        <div
             className={cn(
-                "bg-[#FBF9F7] hover:bg-white rounded-2xl sm:rounded-[2rem] p-4 sm:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_16px_36px_rgb(0,0,0,0.08)] border border-border/50 flex flex-col justify-between h-full transition-all duration-300 group select-none",
+                "bg-[#FBF9F7] hover:bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_16px_36px_rgb(0,0,0,0.08)] border border-border/50 flex flex-col justify-between h-full group select-none transition-shadow duration-300",
                 className
             )}
         >
             <div className="flex flex-col gap-3.5 sm:gap-4">
                 {/* Media Container */}
-                <div className="relative w-full aspect-4/3 rounded-xl sm:rounded-[1.2rem] overflow-hidden bg-zinc-100">
+                <Link
+                    href={targetUrl}
+                    className="relative w-full aspect-4/3 rounded-lg sm:rounded-xl overflow-hidden bg-zinc-100 block cursor-pointer"
+                >
                     <Image
                         src={product.image}
                         alt={product.title}
@@ -84,7 +86,7 @@ export function ProductCard({
                         <div className="absolute top-3 left-3 z-10">
                             <span
                                 className={cn(
-                                    "px-3 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-full shadow-xs flex items-center gap-1",
+                                    "px-3 py-1 text-[11px] sm:text-xs font-medium uppercase tracking-wider rounded-md shadow-xs flex items-center gap-1",
                                     badgeStyle.bg,
                                     badgeStyle.text
                                 )}
@@ -95,9 +97,9 @@ export function ProductCard({
                         </div>
                     )}
 
-                    {/* Stock Status Chip (Bottom Left - avoids collision with top badge) */}
+                    {/* Stock Status Chip (Bottom Left) */}
                     <div className="absolute bottom-3 left-3 z-10">
-                        <span className="px-2.5 py-1 text-[11px] font-semibold rounded-full bg-white/95 backdrop-blur-md text-zinc-800 shadow-sm flex items-center gap-1.5 border border-black/5">
+                        <span className="px-2.5 py-1 text-[11px] font-semibold rounded-md bg-white/95 backdrop-blur-md text-zinc-800 shadow-sm flex items-center gap-1.5 border border-black/5">
                             <span
                                 className={cn(
                                     "w-1.5 h-1.5 rounded-full",
@@ -107,11 +109,11 @@ export function ProductCard({
                             {product.inStock !== false ? "In Stock" : "Pre-order"}
                         </span>
                     </div>
-                </div>
+                </Link>
 
                 {/* Category & Rating Row */}
                 <div className="flex items-center justify-between gap-2 pt-0.5">
-                    <span className="px-3 py-1 bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold rounded-full truncate">
+                    <span className="px-2.5 py-0.5 bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold rounded-md truncate">
                         {product.category}
                     </span>
                     <div className="flex items-center gap-1.5 shrink-0">
@@ -127,9 +129,11 @@ export function ProductCard({
 
                 {/* Title & Description with uniform baseline heights */}
                 <div className="space-y-1.5">
-                    <h3 className="text-lg sm:text-xl font-bold text-[#1F2937] group-hover:text-[#064228] transition-colors tracking-tight leading-snug line-clamp-2 min-h-13 sm:min-h-14 flex items-start">
-                        {product.title}
-                    </h3>
+                    <Link href={targetUrl} className="block cursor-pointer">
+                        <h3 className="text-lg sm:text-xl font-bold text-[#1F2937] group-hover:text-[#064228] transition-colors tracking-tight leading-snug line-clamp-2 min-h-13 sm:min-h-14 flex items-start">
+                            {product.title}
+                        </h3>
+                    </Link>
                     <p className="text-xs sm:text-sm text-[#64748b] leading-relaxed line-clamp-2 font-normal h-10">
                         {product.description}
                     </p>
@@ -141,7 +145,7 @@ export function ProductCard({
                         product.features.slice(0, 3).map((feat, idx) => (
                             <span
                                 key={idx}
-                                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-zinc-600 bg-white border border-zinc-200/80 px-2.5 py-1 rounded-full"
+                                className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-zinc-600 bg-white border border-zinc-200/80 px-2.5 py-1 rounded-md"
                             >
                                 <Check className="w-3 h-3 text-[#1da824]" />
                                 {feat}
@@ -171,27 +175,22 @@ export function ProductCard({
 
                 {/* Action CTA Button */}
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    {product.href ? (
-                        <Link href={product.href}>
-                            <Button className="rounded-full bg-[#0a0a0a] hover:bg-[#064228] text-white h-11 px-4 sm:px-5 font-semibold text-xs sm:text-sm shadow-sm gap-1.5 cursor-pointer transition-colors duration-200">
-                                <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                                <span>{actionLabel}</span>
-                                <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                            </Button>
-                        </Link>
-                    ) : (
-                        <Button
+                    <Button
+                        asChild
+                        className="rounded-xl bg-[#0a0a0a] hover:bg-[#064228] text-white h-11 px-4 sm:px-5 font-semibold text-xs sm:text-sm shadow-sm gap-1.5 cursor-pointer transition-colors duration-200"
+                    >
+                        <Link
+                            href={targetUrl}
                             onClick={() => onAction?.(product)}
-                            className="rounded-full bg-[#0a0a0a] hover:bg-[#064228] text-white h-11 px-4 sm:px-5 font-semibold text-xs sm:text-sm shadow-sm gap-1.5 cursor-pointer transition-colors duration-200"
                         >
                             <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             <span>{actionLabel}</span>
                             <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                        </Button>
-                    )}
+                        </Link>
+                    </Button>
                 </motion.div>
             </div>
-        </motion.div>
+        </div>
     );
 }
 

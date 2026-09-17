@@ -39,7 +39,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: imageBg,
         features: ["Solid Beechwood", "Montessori Certified", "Ages 3-99"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=turrim-original-discovery",
     },
     {
         id: "abecedaire-architecture-box",
@@ -57,7 +57,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: abImg1,
         features: ["29 Letter Stamps", "36 Activity Cards", "Pedagogical Guide"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=abecedaire-architecture-box",
     },
     {
         id: "sensory-motor-therapy-pack",
@@ -74,7 +74,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: imageBg2,
         features: ["Ergonomic Grip", "Sensory Spheres", "Used by Therapists"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=sensory-motor-therapy-pack",
     },
     {
         id: "alphabet-26-sculptures",
@@ -92,7 +92,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: abImg2,
         features: ["26 Full 3D Letters", "Natural Pigments", "Display Ready"],
         inStock: true,
-        href: "/playroom",
+        href: "/playroom?id=alphabet-26-sculptures",
     },
     {
         id: "structural-builder-kit",
@@ -109,7 +109,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: abImg3,
         features: ["Gravity Balancing", "Interlocking Slots", "Creative Guide"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=structural-builder-kit",
     },
     {
         id: "bonjour-community-edition",
@@ -127,7 +127,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: imageBg3,
         features: ["Multi-Student Ready", "Storage Box Included", "Curriculum Access"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=bonjour-community-edition",
     },
     {
         id: "phrase-builder-edition",
@@ -145,7 +145,7 @@ export const PRODUCTS_DATA: Product[] = [
         image: imageBg4,
         features: ["Phonetic Markers", "Sentence Bridges", "Tactile Spacing"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=phrase-builder-edition",
     },
     {
         id: "pocket-traveler-discovery",
@@ -162,6 +162,6 @@ export const PRODUCTS_DATA: Product[] = [
         image: abImg1,
         features: ["Pocket-Sized", "Cotton Drawstring Bag", "Ages 3+"],
         inStock: true,
-        href: "/course",
+        href: "/playroom?id=pocket-traveler-discovery",
     },
 ];
