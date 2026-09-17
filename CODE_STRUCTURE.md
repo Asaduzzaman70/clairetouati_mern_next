@@ -257,6 +257,8 @@ app/
 
 ## 🎨 Design System & Styling Guidelines
 
+> 📘 **For comprehensive AI Agent rules, component blueprints, and complete color tokens, see [DESIGN_SYSTEM_GUIDELINES.md](file:///c:/Users/asdud/Desktop/Softvence/Clairetouati%20II%20Nexuva%20II%20FO3DAC981041/clairetouati_next_js_mern_front_end/DESIGN_SYSTEM_GUIDELINES.md) and [.agents/rules/design-system.md](file:///c:/Users/asdud/Desktop/Softvence/Clairetouati%20II%20Nexuva%20II%20FO3DAC981041/clairetouati_next_js_mern_front_end/.agents/rules/design-system.md).**
+
 ### 1. Tailwind CSS v4 Configuration (`app/globals.css`)
 Tailwind CSS v4 uses a **CSS-first configuration** with `@import "tailwindcss";` and `@theme inline`.
 
