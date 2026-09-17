@@ -4,6 +4,7 @@ import { Testimonials } from "@/components/page/Home/Testimonials";
 import { TurrimCTA } from "@/components/shared/TurrimCTA";
 import { PlayroomSection } from "@/components/shared/PlayroomSection";
 import { TurrimInfoSection } from "@/components/page/Home/TurrimInfoSection";
+import { ProductsSection } from "@/components/page/Home/ProductsSection";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Hero />
       <CuriosityCarousel />
       <PlayroomSection />
+      <ProductsSection />
       <TurrimInfoSection />
       <Testimonials />
       <TurrimCTA />

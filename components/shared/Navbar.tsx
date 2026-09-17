@@ -50,6 +50,7 @@ const Navbar = () => {
     const navLinks = [
         { label: isEnglish ? "Who are we?" : "Qui sommes-nous ?", href: "/about" },
         { label: isEnglish ? "Who It's for?" : "Pour qui ?", href: "/course" },
+        { label: isEnglish ? "Products" : "Produits", href: "/products" },
     ];
 
     return (
@@ -309,6 +310,17 @@ const Navbar = () => {
                                     >
                                         <span className="text-base font-semibold text-foreground">
                                             {isEnglish ? "Who It's for?" : "Pour qui ?"}
+                                        </span>
+                                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+                                    </Link>
+
+                                    <Link
+                                        href="/products"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="flex items-center justify-between p-3.5 rounded-2xl bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/70 dark:hover:bg-zinc-800 transition-all group"
+                                    >
+                                        <span className="text-base font-semibold text-foreground">
+                                            {isEnglish ? "Products" : "Produits"}
                                         </span>
                                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
                                     </Link>
