@@ -266,17 +266,38 @@ export function ProductsPage() {
                 {filteredAndSortedProducts.length > 0 ? (
                     <motion.div
                         layout
+                        transition={{
+                            layout: {
+                                duration: 0.35,
+                                ease: [0.16, 1, 0.3, 1],
+                            },
+                        }}
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
                     >
                         <AnimatePresence mode="popLayout">
                             {filteredAndSortedProducts.map((product) => (
                                 <motion.div
                                     key={product.id}
-                                    layout
-                                    initial={{ opacity: 0, scale: 0.96 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.96 }}
-                                    transition={{ duration: 0.15 }}
+                                    layout="position"
+                                    initial={{ opacity: 0, scale: 0.92, y: 16 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.94,
+                                        y: 10,
+                                        transition: { duration: 0.2, ease: "easeIn" },
+                                    }}
+                                    transition={{
+                                        layout: {
+                                            type: "spring",
+                                            stiffness: 280,
+                                            damping: 28,
+                                            mass: 0.7,
+                                        },
+                                        opacity: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                                        scale: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                                        y: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                                    }}
                                     className="h-full"
                                 >
                                     <ProductCard product={product} />

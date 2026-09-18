@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ProductCard, Product } from "@/components/shared/ProductCard";
-import { Sparkles, ShieldCheck, TreePine, Award, Truck } from "lucide-react";
+import { ProductCard } from "@/components/shared/ProductCard";
+import { Sparkles, ShieldCheck, TreePine, Award, Truck, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PRODUCTS_DATA, PRODUCT_CATEGORIES } from "@/constants/products";
 
@@ -117,17 +119,38 @@ export function ProductsSection() {
                 {/* Products Grid */}
                 <motion.div
                     layout
+                    transition={{
+                        layout: {
+                            duration: 0.35,
+                            ease: [0.16, 1, 0.3, 1],
+                        },
+                    }}
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto"
                 >
                     <AnimatePresence mode="popLayout">
                         {filteredProducts.map((product) => (
                             <motion.div
                                 key={product.id}
-                                layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.3 }}
+                                layout="position"
+                                initial={{ opacity: 0, scale: 0.92, y: 16 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{
+                                    opacity: 0,
+                                    scale: 0.94,
+                                    y: 10,
+                                    transition: { duration: 0.2, ease: "easeIn" },
+                                }}
+                                transition={{
+                                    layout: {
+                                        type: "spring",
+                                        stiffness: 280,
+                                        damping: 28,
+                                        mass: 0.7,
+                                    },
+                                    opacity: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                                    scale: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                                    y: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                                }}
                                 className="h-full"
                             >
                                 <ProductCard product={product} />
@@ -135,6 +158,24 @@ export function ProductsSection() {
                         ))}
                     </AnimatePresence>
                 </motion.div>
+
+                {/* View More Products CTA */}
+                <div className="mt-12 sm:mt-14 flex justify-center">
+                    <motion.div
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        <Button
+                            asChild
+                            className="rounded-full bg-[#064228] hover:bg-[#064228]/90 text-white font-bold text-sm sm:text-base px-8 sm:px-10 h-12 sm:h-13 shadow-[0_4px_20px_rgba(6,66,40,0.2)] hover:shadow-[0_6px_24px_rgba(6,66,40,0.3)] transition-all duration-300 gap-2.5 cursor-pointer group"
+                        >
+                            <Link href="/products">
+                                <span>View More Products</span>
+                                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                            </Link>
+                        </Button>
+                    </motion.div>
+                </div>
 
                 {/* Trust & Guarantee Strip */}
                 <div className="mt-16 sm:mt-20 md:mt-24 pt-10 sm:pt-14 border-t border-zinc-200/80">
