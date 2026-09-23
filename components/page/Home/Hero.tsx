@@ -63,8 +63,8 @@ const Hero = () => {
         engineRef.current = engine;
 
         // Get container dimensions
-        const width = container.clientWidth;
-        const height = container.clientHeight;
+        const width = container.clientWidth || window.innerWidth || 1200;
+        const height = container.clientHeight || 700;
 
         // Calculate responsive scale factor for shapes
         const getScaleFactor = (w: number) => {
@@ -275,17 +275,28 @@ const Hero = () => {
         // Cleanup function
         return () => {
             window.removeEventListener("resize", handleResize);
-            if (runnerRef.current && engineRef.current) {
+            if (runnerRef.current) {
                 Runner.stop(runnerRef.current);
+                runnerRef.current = null;
             }
             if (renderRef.current) {
                 Render.stop(renderRef.current);
+                renderRef.current.textures = {};
+                renderRef.current = null;
+            }
+            if (mouse) {
+                Mouse.clearSourceEvents(mouse);
             }
             if (engineRef.current) {
+                Composite.clear(engineRef.current.world, false);
                 Engine.clear(engineRef.current);
+                engineRef.current = null;
             }
-            if (renderRef.current && renderRef.current.canvas) {
-                renderRef.current.canvas.remove();
+            if (canvas) {
+                const ctx = canvas.getContext("2d");
+                if (ctx) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
             }
         };
     }, []);
