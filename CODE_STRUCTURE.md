@@ -123,7 +123,6 @@ clairetouati_next_js_mern_front_end/
 │   │   ├── Home/                         # Components for / landing page
 │   │   │   ├── CuriosityCarousel.tsx     # Embla carousel with alphabet curiosity cards
 │   │   │   ├── Hero.tsx                  # Matter.js 2D interactive physics shape simulation
-│   │   │   ├── ProductsSection.tsx       # Reusable products collection section with category filters
 │   │   │   ├── Testimonials.tsx          # User & educator testimonials
 │   │   │   └── TurrimInfoSection.tsx     # Product feature highlights & video demo
 │   │   ├── MyCourses/                    # Components for /dashboard/my-courses
@@ -145,8 +144,6 @@ clairetouati_next_js_mern_front_end/
 │   │   │   ├── PlayroomWordCard.tsx      # Example word display card with audio speaker
 │   │   │   ├── index.tsx                 # Main composite Playroom page layout
 │   │   │   └── playroomData.ts           # Letter dataset, color mapping, phonetics, and words
-│   │   ├── Products/                     # Components for /products catalog page
-│   │   │   └── ProductsPage.tsx          # Full products catalog with search, category tabs & sorting
 │   │   ├── Settings/                     # Components for /dashboard/settings
 │   │   │   ├── PasswordSettingsForm.tsx  # Password change form with security checks
 │   │   │   ├── ProfileSettingsForm.tsx   # User profile edit form & avatar upload
@@ -163,15 +160,12 @@ clairetouati_next_js_mern_front_end/
 │   │   ├── Footer.tsx                    # Global public footer with links
 │   │   ├── Navbar.tsx                    # Responsive sticky navbar with auto-hide and language toggle
 │   │   ├── PlayroomSection.tsx           # 3D interactive model playroom preview
-│   │   ├── ProductCard.tsx               # Reusable Montessori/Bauhaus product card with badges & pricing
 │   │   ├── SearchBar.tsx                 # Dashboard filter and course search input
 │   │   ├── ThreeModelViewer.tsx          # React Three Fiber Canvas with OrbitControls
 │   │   └── TurrimCTA.tsx                 # Full-width CTA with mouse-proximity dynamic typography
 │   └── ui/                               # Atomic primitives (Shadcn / Radix)
 │       ├── button.tsx                    # Variant-driven Button component (CVA)
 │       └── carousel.tsx                  # Embla-based customizable Carousel component
-├── constants/                            # Constant configuration and static mappings (extensible)
-│   └── products.ts                       # Canonical Turrim product dataset & category options
 ├── lib/                                  # Core library helper utilities
 │   └── utils.ts                          # `cn()` helper (clsx + tailwind-merge)
 ├── public/                               # Publicly accessible static assets
@@ -219,7 +213,6 @@ app/
 │   ├── /contact                --> Contact Form Page
 │   ├── /course                 --> Course Catalog Page
 │   ├── /course/[courseId]      --> Public Course Details & Curriculum
-│   ├── /products               --> Products Catalog & Creation Workshop
 │   └── /playroom               --> Interactive 3D Alphabet Game Room
 │
 └── dashboard/                  --> Authenticated LMS Workspace (Wrapped with DashboardLayout)

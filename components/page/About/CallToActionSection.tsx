@@ -25,7 +25,7 @@ export function CallToActionSection() {
                         variant="secondary"
                         className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold rounded-xl bg-[#E5E5E5] text-[#1A1A2E] hover:bg-white w-full sm:w-auto"
                     >
-                        <Link href="/products">
+                        <Link href="/playroom">
                             Explore our universe
                         </Link>
                     </Button>
