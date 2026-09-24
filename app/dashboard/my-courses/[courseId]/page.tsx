@@ -4,6 +4,8 @@ import CourseVideoList from "@/components/page/UserCourseDetail/CourseVideoList"
 export default function UserCourseDetailPage() {
     return (
         <section className="w-full space-y-6 sm:space-y-8">
+            {/* Course feature commented out for this version */}
+            {/*
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
                 <div className="w-full lg:flex-3 min-w-0">
                     <CourseVideo />
@@ -12,6 +14,7 @@ export default function UserCourseDetailPage() {
                     <CourseVideoList />
                 </div>
             </div>
+            */}
         </section>
     );
 }

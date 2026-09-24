@@ -18,11 +18,12 @@ const sidebarLinks = [
         href: '/dashboard/overview',
         icon: LayoutDashboard,
     },
-    {
-        name: 'My Courses',
-        href: '/dashboard/my-courses',
-        icon: GraduationCap,
-    },
+    // Course feature commented out for this version
+    // {
+    //     name: 'My Courses',
+    //     href: '/dashboard/my-courses',
+    //     icon: GraduationCap,
+    // },
     {
         name: 'Settings',
         href: '/dashboard/settings',
@@ -164,7 +165,8 @@ const SidebarContent = ({
                 </nav>
             </div>
 
-            {/* Logout Button */}
+            {/* Authentication / Logout Button - Commented out for this version */}
+            {/*
             <div className="p-4 border-t border-white/10">
                 <button
                     className="w-full flex items-center justify-start gap-3.5 px-4 py-3 rounded-xl bg-black/15 hover:bg-black/30 transition-all duration-300 group border border-white/5 cursor-pointer"
@@ -175,6 +177,7 @@ const SidebarContent = ({
                     </span>
                 </button>
             </div>
+            */}
         </div>
     )
 }

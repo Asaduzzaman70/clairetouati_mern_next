@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import bgImage from "@/assets/bg_image.jpg";
 import { Roboto_Flex } from "next/font/google";
 
@@ -22,12 +23,14 @@ export function TurrimCTA({ content = "Recevoir Turrim" }: { content?: string })
 
             {/* Content */}
             <div className="relative z-10 px-4 max-w-full">
-                <button
-                    className="bg-black text-white px-6 py-4 sm:px-10 sm:py-5 md:px-16 md:py-6 lg:px-24 lg:py-8 rounded-xl md:rounded-2xl hover:bg-zinc-900 transition-all duration-300 font-normal tracking-wide shadow-2xl overflow-hidden group cursor-pointer max-w-[94vw] sm:max-w-none"
-                    aria-label={content}
-                >
-                    <InteractiveText text={content} />
-                </button>
+                <Link href="/checkout" className="inline-block">
+                    <button
+                        className="bg-black text-white px-6 py-4 sm:px-10 sm:py-5 md:px-16 md:py-6 lg:px-24 lg:py-8 rounded-xl md:rounded-2xl hover:bg-zinc-900 transition-all duration-300 font-normal tracking-wide shadow-2xl overflow-hidden group cursor-pointer max-w-[94vw] sm:max-w-none"
+                        aria-label={content}
+                    >
+                        <InteractiveText text={content} />
+                    </button>
+                </Link>
             </div>
         </section>
     );

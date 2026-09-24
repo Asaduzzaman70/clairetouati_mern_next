@@ -4,7 +4,8 @@ import { TurrimCTA } from "@/components/shared/TurrimCTA";
 export default function Course() {
     return (
         <div>
-            <CoursePage />
+            {/* Course feature commented out for this version */}
+            {/* <CoursePage /> */}
             <TurrimCTA content="Randcandintheir Tinrrim" />
         </div>
     )

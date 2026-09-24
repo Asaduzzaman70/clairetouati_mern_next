@@ -6,7 +6,8 @@ export default function MyCoursesPage() {
     return (
         <section className="w-full space-y-8">
             <SearchBar />
-            <MyCoursesStpes />
+            {/* Course feature commented out for this version */}
+            {/* <MyCoursesStpes /> */}
         </section>
     );
 }

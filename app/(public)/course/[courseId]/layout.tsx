@@ -8,9 +8,12 @@ export default function CourseDetailLayout({ children }: { children: React.React
                 <div className="flex-7">
                     {children}
                 </div>
+                {/* Course feature commented out for this version */}
+                {/*
                 <div className="flex-3">
                     <ActionButtonSection />
                 </div>
+                */}
             </div>
             <TurrimCTA content="Randcandintheir Tinrrim" />
         </section>

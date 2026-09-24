@@ -55,7 +55,8 @@ const Navbar = () => {
 
     const navLinks = [
         { label: isEnglish ? "Who are we?" : "Qui sommes-nous ?", href: "/about" },
-        { label: isEnglish ? "Who It's for?" : "Pour qui ?", href: "/course" },
+        // Course feature commented out for this version
+        // { label: isEnglish ? "Who It's for?" : "Pour qui ?", href: "/course" },
     ];
 
     return (
@@ -144,17 +145,24 @@ const Navbar = () => {
                     {/* Desktop Right Section */}
                     <div className="hidden lg:flex items-center gap-2 xl:gap-3">
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                            <Button variant="secondary" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
-                                Enter the playroom
-                            </Button>
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                            <Link href="/sign-in">
-                                <Button variant="outline" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
-                                    Get Turim
+                            <Link href="/playroom">
+                                <Button variant="secondary" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
+                                    Enter the playroom
                                 </Button>
                             </Link>
                         </motion.div>
+
+                        {/* Get Turrim CTA Button */}
+                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                            <Link href="/checkout">
+                                <Button variant="outline" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
+                                    {isEnglish ? "Get Turrim" : "Obtenir Turrim"}
+                                </Button>
+                            </Link>
+                        </motion.div>
+
+                        {/* Sign Up commented out for this version */}
+                        {/*
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                             <Link href="/sign-up">
                                 <Button variant="default" className="font-semibold text-base xl:text-lg h-11 px-5 xl:px-6 rounded-full shadow-sm cursor-pointer">
@@ -162,6 +170,7 @@ const Navbar = () => {
                                 </Button>
                             </Link>
                         </motion.div>
+                        */}
 
                         {/* Language Switcher */}
                         <div className="flex items-center bg-secondary rounded-full p-1 gap-1 ml-1 xl:ml-2 relative overflow-hidden">
@@ -313,6 +322,8 @@ const Navbar = () => {
                                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
                                     </Link>
 
+                                    {/* Course feature commented out for this version */}
+                                    {/*
                                     <Link
                                         href="/course"
                                         onClick={() => setMobileMenuOpen(false)}
@@ -323,8 +334,10 @@ const Navbar = () => {
                                         </span>
                                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
                                     </Link>
+                                    */}
 
-                                    <button
+                                    <Link
+                                        href="/playroom"
                                         onClick={() => setMobileMenuOpen(false)}
                                         className="flex items-center justify-between p-3.5 rounded-2xl bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/70 dark:hover:bg-zinc-800 transition-all group text-left w-full cursor-pointer"
                                     >
@@ -332,26 +345,25 @@ const Navbar = () => {
                                             {isEnglish ? "Enter the playroom" : "Entrer dans la salle de jeu"}
                                         </span>
                                         <Sparkles className="w-4 h-4 text-amber-500" />
-                                    </button>
+                                    </Link>
                                 </div>
 
                                 <div className="h-px w-full bg-border" />
 
-                                {/* Action Buttons */}
                                 <div className="space-y-3">
-                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground px-2">
-                                        Account
-                                    </p>
-                                    <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)} className="block w-full">
+                                    <Link href="/checkout" onClick={() => setMobileMenuOpen(false)} className="block w-full">
                                         <Button variant="outline" className="w-full h-12 rounded-xl text-base font-semibold border-zinc-300 dark:border-zinc-700">
                                             {isEnglish ? "Get Turrim" : "Obtenir Turrim"}
                                         </Button>
                                     </Link>
+                                    {/* Sign Up commented out for this version */}
+                                    {/*
                                     <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)} className="block w-full">
                                         <Button variant="default" className="w-full h-12 rounded-xl text-base font-semibold bg-[#1F2937] hover:bg-black text-white shadow-md">
                                             {isEnglish ? "Sign Up" : "S'inscrire"}
                                         </Button>
                                     </Link>
+                                    */}
                                 </div>
                             </div>
 
