@@ -333,6 +333,14 @@ const Hero = () => {
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full pointer-events-auto touch-pan-y"
             />
+
+            {/* Top White Shade / Gradient between Navbar and Hero */}
+            <div
+                className="absolute top-0 left-0 right-0 h-24 sm:h-28 md:h-32 lg:h-36 pointer-events-none z-10"
+                style={{
+                    background: "linear-gradient(to bottom, #FFFFFF 0%, rgba(255, 255, 255, 0.85) 30%, rgba(255, 255, 255, 0.4) 65%, rgba(255, 255, 255, 0) 100%)",
+                }}
+            />
         </section>
     );
 };

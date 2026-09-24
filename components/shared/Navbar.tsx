@@ -14,6 +14,11 @@ const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { scrollY } = useScroll();
     const [hidden, setHidden] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        setIsScrolled(scrollY.get() > 10);
+    }, [scrollY]);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() ?? 0;
@@ -22,6 +27,7 @@ const Navbar = () => {
         } else {
             setHidden(false);
         }
+        setIsScrolled(latest > 10);
     });
 
     // Close mobile menu on resize to desktop breakpoint
@@ -62,7 +68,12 @@ const Navbar = () => {
                 initial={{ y: -20, opacity: 0 }}
                 animate={hidden ? "hidden" : "visible"}
                 transition={{ duration: 0.45, ease: "easeInOut" }}
-                className="sticky top-0 left-0 right-0 z-40 w-full bg-background/80 backdrop-blur-xl border-b border-black/4 dark:border-white/8"
+                className={cn(
+                    "sticky top-0 left-0 right-0 z-40 w-full bg-background/80 backdrop-blur-xl border-b transition-colors duration-300",
+                    isScrolled
+                        ? "border-black/4 dark:border-white/8"
+                        : "border-transparent"
+                )}
             >
                 <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4 lg:py-5">
                     {/* Desktop Left Section */}
