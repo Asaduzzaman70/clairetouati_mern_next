@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import logo from '@/assets/logo.png'
 import userAvatar from '@/assets/user.jpg'
+import LanguageToggle from '@/components/shared/LanguageToggle'
 
 // --- Types & Constants ---
 
@@ -228,6 +229,7 @@ const Header = ({
             </div>
 
             <div className="flex items-center gap-2.5 sm:gap-4">
+                <LanguageToggle variant="mobile" />
                 <Link href="/dashboard/notifications">
                     <motion.button
                         whileHover={{ scale: 1.05 }}

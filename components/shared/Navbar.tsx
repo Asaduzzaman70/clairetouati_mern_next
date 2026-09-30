@@ -8,9 +8,11 @@ import { Menu, X, ArrowRight, Sparkles, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import LanguageToggle from "@/components/shared/LanguageToggle";
 
 const Navbar = () => {
-    const [isEnglish, setIsEnglish] = useState(true);
+    const { isEnglish } = useLanguage();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { scrollY } = useScroll();
     const [hidden, setHidden] = useState(false);
@@ -173,78 +175,12 @@ const Navbar = () => {
                         */}
 
                         {/* Language Switcher */}
-                        <div className="flex items-center bg-secondary rounded-full p-1 gap-1 ml-1 xl:ml-2 relative overflow-hidden">
-                            <button
-                                onClick={() => setIsEnglish(true)}
-                                className={cn(
-                                    "w-9 h-9 xl:w-10 xl:h-10 rounded-full flex items-center justify-center text-sm xl:text-base font-medium transition-colors relative z-10 cursor-pointer",
-                                    isEnglish ? "text-white" : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                EN
-                                {isEnglish && (
-                                    <motion.div
-                                        layoutId="lang-bg-desktop"
-                                        className="absolute inset-0 bg-[#1da824] rounded-full shadow-md -z-10"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                            </button>
-                            <button
-                                onClick={() => setIsEnglish(false)}
-                                className={cn(
-                                    "w-9 h-9 xl:w-10 xl:h-10 rounded-full flex items-center justify-center text-sm xl:text-base font-medium transition-colors relative z-10 cursor-pointer",
-                                    !isEnglish ? "text-white" : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                FR
-                                {!isEnglish && (
-                                    <motion.div
-                                        layoutId="lang-bg-desktop"
-                                        className="absolute inset-0 bg-[#1da824] rounded-full shadow-md -z-10"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                            </button>
-                        </div>
+                        <LanguageToggle variant="desktop" />
                     </div>
 
                     {/* Mobile Right: Quick Language Switcher */}
                     <div className="flex lg:hidden items-center gap-2">
-                        <div className="flex items-center bg-secondary rounded-full p-0.5 gap-0.5 relative overflow-hidden">
-                            <button
-                                onClick={() => setIsEnglish(true)}
-                                className={cn(
-                                    "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-colors relative z-10 cursor-pointer",
-                                    isEnglish ? "text-white" : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                EN
-                                {isEnglish && (
-                                    <motion.div
-                                        layoutId="lang-bg-mobile-bar"
-                                        className="absolute inset-0 bg-[#1da824] rounded-full shadow-sm -z-10"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                            </button>
-                            <button
-                                onClick={() => setIsEnglish(false)}
-                                className={cn(
-                                    "w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-colors relative z-10 cursor-pointer",
-                                    !isEnglish ? "text-white" : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                FR
-                                {!isEnglish && (
-                                    <motion.div
-                                        layoutId="lang-bg-mobile-bar"
-                                        className="absolute inset-0 bg-[#1da824] rounded-full shadow-sm -z-10"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                            </button>
-                        </div>
+                        <LanguageToggle variant="mobile" />
                     </div>
                 </div>
             </motion.nav>
@@ -374,40 +310,7 @@ const Navbar = () => {
                                     <span>Language</span>
                                 </div>
 
-                                <div className="flex items-center bg-zinc-200 dark:bg-zinc-800 rounded-full p-1 gap-1 relative overflow-hidden">
-                                    <button
-                                        onClick={() => setIsEnglish(true)}
-                                        className={cn(
-                                            "w-9 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors relative z-10 cursor-pointer",
-                                            isEnglish ? "text-white" : "text-muted-foreground hover:text-foreground"
-                                        )}
-                                    >
-                                        EN
-                                        {isEnglish && (
-                                            <motion.div
-                                                layoutId="lang-bg-drawer"
-                                                className="absolute inset-0 bg-[#1da824] rounded-full shadow-sm -z-10"
-                                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                            />
-                                        )}
-                                    </button>
-                                    <button
-                                        onClick={() => setIsEnglish(false)}
-                                        className={cn(
-                                            "w-9 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors relative z-10 cursor-pointer",
-                                            !isEnglish ? "text-white" : "text-muted-foreground hover:text-foreground"
-                                        )}
-                                    >
-                                        FR
-                                        {!isEnglish && (
-                                            <motion.div
-                                                layoutId="lang-bg-drawer"
-                                                className="absolute inset-0 bg-[#1da824] rounded-full shadow-sm -z-10"
-                                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                            />
-                                        )}
-                                    </button>
-                                </div>
+                                <LanguageToggle variant="drawer" />
                             </div>
                         </motion.aside>
                     </div>
