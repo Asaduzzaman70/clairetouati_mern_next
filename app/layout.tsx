@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,11 +30,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${geistMono.variable} antialiased font-sans`}
       >
-        <SmoothScrollProvider>
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
-        </SmoothScrollProvider>
+        <QueryProvider>
+          <SmoothScrollProvider>
+            <LanguageProvider>
+              {children}
+            </LanguageProvider>
+          </SmoothScrollProvider>
+        </QueryProvider>
       </body>
     </html>
   );
