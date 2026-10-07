@@ -2,22 +2,25 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ALPHABET_DATA, ColorCategory, LetterItem } from "./playroomData";
+import { LetterItem } from "./playroomData";
 import { cn } from "@/lib/utils";
 
 interface PlayroomAlphabetKeyboardProps {
+  alphabetList: LetterItem[];
   selectedLetter: LetterItem;
-  activeFilter: "All" | ColorCategory;
+  activeFilter: string;
   onSelectLetter: (letter: LetterItem) => void;
 }
 
 export default function PlayroomAlphabetKeyboard({
+  alphabetList,
   selectedLetter,
   activeFilter,
   onSelectLetter,
 }: PlayroomAlphabetKeyboardProps) {
-  const row1 = ALPHABET_DATA.slice(0, 13); // A to M
-  const row2 = ALPHABET_DATA.slice(13, 26); // N to Z
+  const midPoint = Math.ceil(alphabetList.length / 2);
+  const row1 = alphabetList.slice(0, midPoint);
+  const row2 = alphabetList.slice(midPoint);
 
   const renderKey = (item: LetterItem) => {
     const isSelected = selectedLetter.letter === item.letter;
@@ -25,7 +28,7 @@ export default function PlayroomAlphabetKeyboard({
 
     return (
       <motion.button
-        key={item.letter}
+        key={item.letter || item.id}
         whileHover={{ scale: isMatchFilter ? 1.08 : 1.02, y: -1 }}
         whileTap={{ scale: 0.94 }}
         onClick={() => onSelectLetter(item)}
@@ -50,13 +53,13 @@ export default function PlayroomAlphabetKeyboard({
 
   return (
     <div className="w-full flex flex-col gap-1.5 sm:gap-2.5 mt-3 sm:mt-4">
-      {/* Row 1: A to M */}
-      <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
+      {/* Row 1 */}
+      <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1 sm:gap-1.5 w-full">
         {row1.map(renderKey)}
       </div>
 
-      {/* Row 2: N to Z */}
-      <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
+      {/* Row 2 */}
+      <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1 sm:gap-1.5 w-full">
         {row2.map(renderKey)}
       </div>
     </div>

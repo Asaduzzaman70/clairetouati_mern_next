@@ -1,19 +1,22 @@
 "use client";
 
-import React from "react";
-import { COLOR_FILTERS, ColorCategory } from "./playroomData";
+import { ColorFilterOption } from "./playroomData";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface PlayroomColorFiltersProps {
-  activeFilter: "All" | ColorCategory;
-  onSelectFilter: (filterId: "All" | ColorCategory) => void;
+  filters: ColorFilterOption[];
+  activeFilter: string;
+  onSelectFilter: (filterId: string) => void;
 }
 
 export default function PlayroomColorFilters({
+  filters,
   activeFilter,
   onSelectFilter,
 }: PlayroomColorFiltersProps) {
+  if (!filters || filters.length <= 1) return null;
+
   return (
     <div className="w-full flex flex-col gap-2.5">
       <span className="text-xs sm:text-sm font-normal text-gray-700">
@@ -21,7 +24,7 @@ export default function PlayroomColorFilters({
       </span>
 
       <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-        {COLOR_FILTERS.map((filter) => {
+        {filters.map((filter) => {
           const isSelected = activeFilter === filter.id;
 
           if (filter.id === "All") {
@@ -50,7 +53,7 @@ export default function PlayroomColorFilters({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
               type="button"
-              onClick={() => onSelectFilter(filter.id as ColorCategory)}
+              onClick={() => onSelectFilter(filter.id)}
               className={cn(
                 "px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer shadow-2xs",
                 isSelected
