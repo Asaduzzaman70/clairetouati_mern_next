@@ -9,11 +9,17 @@ interface OrderSuccessSectionProps {
     email: string;
     quantity: number;
     total: number;
+    orderNumber?: string;
+    productTitle?: string;
 }
 
-export function OrderSuccessSection({ email, quantity, total }: OrderSuccessSectionProps) {
-    const orderNumber = "TRM-784291";
-
+export function OrderSuccessSection({
+    email,
+    quantity,
+    total,
+    orderNumber = "TRM-784291",
+    productTitle = "Turrim™ Wooden Alphabet",
+}: OrderSuccessSectionProps) {
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
@@ -42,7 +48,7 @@ export function OrderSuccessSection({ email, quantity, total }: OrderSuccessSect
             <div className="bg-white rounded-2xl p-5 text-left border border-zinc-200/80 space-y-2.5 shadow-xs">
                 <div className="flex items-center justify-between text-sm">
                     <span className="text-zinc-500">Kit Ordered</span>
-                    <span className="font-semibold text-[#1F2937]">Turrim™ Wooden Alphabet (x{quantity})</span>
+                    <span className="font-semibold text-[#1F2937]">{productTitle} (x{quantity})</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                     <span className="text-zinc-500">Dispatch Speed</span>

@@ -1,13 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Plus, Minus, Tag, Check, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import abImg1 from "@/assets/ab_img_1.png";
+import { Product } from "@/hooks/api/products";
 
 interface OrderSummarySectionProps {
+    product?: Product | null;
+    isLoading?: boolean;
     quantity: number;
     unitPrice: number;
     subtotal: number;
@@ -21,6 +24,8 @@ interface OrderSummarySectionProps {
 }
 
 export function OrderSummarySection({
+    product,
+    isLoading = false,
     quantity,
     unitPrice,
     subtotal,
@@ -32,70 +37,115 @@ export function OrderSummarySection({
     onPromoCodeChange,
     onApplyPromo,
 }: OrderSummarySectionProps) {
+    const [imgError, setImgError] = useState(false);
+
+    const productTitle = product?.title || "Turrim™ Tactile Kit";
+    const productImgSrc = (!imgError && product?.images && product.images.length > 0) ? product.images[0] : abImg1;
+    const maxStock = product?.stock && product.stock > 0 ? Math.min(product.stock, 20) : 10;
+    const hasDiscount = Boolean(product?.originalPrice && product.originalPrice > unitPrice);
+
     return (
         <div className="space-y-4">
             {/* Main Order Card */}
             <div className="bg-[#F9FAFB] rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-zinc-200/80 shadow-xs space-y-4">
-                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-[#1F2937]">
-                    Order Summary
-                </h2>
+                <div className="flex items-center justify-between">
+                    <h2 className="text-lg sm:text-xl font-bold tracking-tight text-[#1F2937]">
+                        Order Summary
+                    </h2>
+                    {product?.stock !== undefined && (
+                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                            product.stock > 10
+                                ? "bg-emerald-100/80 text-emerald-800"
+                                : "bg-amber-100/80 text-amber-800"
+                        }`}>
+                            {product.stock > 10 ? "In Stock" : `Only ${product.stock} left`}
+                        </span>
+                    )}
+                </div>
 
                 {/* Product Item Preview */}
-                <div className="flex gap-3.5 items-start pb-4 border-b border-zinc-200/70">
-                    <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-xl overflow-hidden bg-white shrink-0 border border-zinc-200/80 shadow-xs">
-                        <Image
-                            src={abImg1}
-                            alt="Turrim Tactile Wooden Alphabet"
-                            fill
-                            className="object-cover"
-                        />
+                {isLoading ? (
+                    <div className="flex gap-3.5 items-start pb-4 border-b border-zinc-200/70 animate-pulse">
+                        <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-xl bg-zinc-200 shrink-0" />
+                        <div className="flex-1 space-y-2">
+                            <div className="w-24 h-4 bg-zinc-200 rounded" />
+                            <div className="w-40 h-5 bg-zinc-200 rounded" />
+                            <div className="w-32 h-3.5 bg-zinc-200 rounded" />
+                        </div>
                     </div>
-
-                    <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap gap-1.5 mb-1">
-                            <span className="px-2 py-0.5 rounded-full bg-[#E8F0EA] text-[#064228] text-[10px] font-bold">
-                                Beechwood
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full bg-[#FEF08A] text-[#1A1A2E] text-[10px] font-bold">
-                                Montessori
-                            </span>
+                ) : (
+                    <div className="flex gap-3.5 items-start pb-4 border-b border-zinc-200/70">
+                        <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-xl overflow-hidden bg-white shrink-0 border border-zinc-200/80 shadow-xs">
+                            <Image
+                                src={productImgSrc}
+                                alt={productTitle}
+                                fill
+                                sizes="(max-width: 640px) 80px, 88px"
+                                className="object-cover"
+                                onError={() => setImgError(true)}
+                            />
                         </div>
 
-                        <h3 className="font-bold text-base text-[#1F2937] leading-snug">
-                            Turrim™ Tactile Kit
-                        </h3>
-                        <p className="text-xs text-zinc-500 mt-0.5 line-clamp-1">
-                            26 tactile blocks, sensory cards & guidebook.
-                        </p>
-
-                        {/* Quantity Counter with Theme Colors */}
-                        <div className="flex items-center justify-between mt-2.5 pt-0.5">
-                            <div className="flex items-center border border-zinc-200 rounded-full px-2 py-0.5 bg-white shadow-xs">
-                                <button
-                                    type="button"
-                                    onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
-                                    className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-[#E8F0EA] hover:text-[#064228] transition-colors cursor-pointer text-zinc-600 active:scale-95"
-                                    aria-label="Decrease quantity"
-                                >
-                                    <Minus className="w-3 h-3" />
-                                </button>
-                                <span className="px-2.5 text-xs sm:text-sm font-bold text-[#1F2937]">{quantity}</span>
-                                <button
-                                    type="button"
-                                    onClick={() => onQuantityChange(quantity + 1)}
-                                    className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-[#E8F0EA] hover:text-[#064228] transition-colors cursor-pointer text-zinc-600 active:scale-95"
-                                    aria-label="Increase quantity"
-                                >
-                                    <Plus className="w-3 h-3" />
-                                </button>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap gap-1.5 mb-1 items-center">
+                                <span className="px-2 py-0.5 rounded-full bg-[#E8F0EA] text-[#064228] text-[10px] font-bold">
+                                    Official Product
+                                </span>
+                                {hasDiscount && product?.discountPercentage ? (
+                                    <span className="px-2 py-0.5 rounded-full bg-[#FEF08A] text-[#1A1A2E] text-[10px] font-bold">
+                                        Save {product.discountPercentage}%
+                                    </span>
+                                ) : (
+                                    <span className="px-2 py-0.5 rounded-full bg-[#FEF08A] text-[#1A1A2E] text-[10px] font-bold">
+                                        Montessori
+                                    </span>
+                                )}
                             </div>
 
-                            <span className="text-base font-black text-[#064228]">
-                                €{(unitPrice * quantity).toFixed(2)}
-                            </span>
+                            <h3 className="font-bold text-base text-[#1F2937] leading-snug line-clamp-1">
+                                {productTitle}
+                            </h3>
+                            <div className="flex items-baseline gap-2 mt-0.5">
+                                <span className="text-xs text-zinc-500 font-medium">
+                                    Unit Price: €{unitPrice.toFixed(2)}
+                                </span>
+                                {hasDiscount && product?.originalPrice && (
+                                    <span className="text-[11px] text-zinc-400 line-through">
+                                        €{product.originalPrice.toFixed(2)}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Quantity Counter with Theme Colors */}
+                            <div className="flex items-center justify-between mt-2.5 pt-0.5">
+                                <div className="flex items-center border border-zinc-200 rounded-full px-2 py-0.5 bg-white shadow-xs">
+                                    <button
+                                        type="button"
+                                        onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
+                                        className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-[#E8F0EA] hover:text-[#064228] transition-colors cursor-pointer text-zinc-600 active:scale-95"
+                                        aria-label="Decrease quantity"
+                                    >
+                                        <Minus className="w-3 h-3" />
+                                    </button>
+                                    <span className="px-2.5 text-xs sm:text-sm font-bold text-[#1F2937]">{quantity}</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => onQuantityChange(Math.min(maxStock, quantity + 1))}
+                                        disabled={quantity >= maxStock}
+                                        className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-[#E8F0EA] hover:text-[#064228] transition-colors cursor-pointer text-zinc-600 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                                        aria-label="Increase quantity"
+                                    >
+                                        <Plus className="w-3 h-3" />
+                                    </button>
+                                </div>
+
+                                <span className="text-base font-black text-[#064228]">
+                                    €{(unitPrice * quantity).toFixed(2)}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
 
                 {/* Promo Code Input with Brand Green Button */}
                 <form onSubmit={onApplyPromo} className="flex gap-2">
