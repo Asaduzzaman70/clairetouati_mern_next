@@ -15,7 +15,7 @@ export default function PlayroomSkeleton() {
 
             {/* Keyboard Skeletons (Row 1 & 2) */}
             <div className="w-full flex flex-col gap-1.5 sm:gap-2.5 mt-3 sm:mt-4">
-              <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1 sm:gap-1.5 w-full">
+              <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
                 {Array.from({ length: 13 }).map((_, i) => (
                   <div
                     key={`sk-k1-${i}`}
@@ -23,7 +23,7 @@ export default function PlayroomSkeleton() {
                   />
                 ))}
               </div>
-              <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1 sm:gap-1.5 w-full">
+              <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
                 {Array.from({ length: 13 }).map((_, i) => (
                   <div
                     key={`sk-k2-${i}`}

@@ -54,12 +54,12 @@ export default function PlayroomAlphabetKeyboard({
   return (
     <div className="w-full flex flex-col gap-1.5 sm:gap-2.5 mt-3 sm:mt-4">
       {/* Row 1 */}
-      <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1 sm:gap-1.5 w-full">
+      <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
         {row1.map(renderKey)}
       </div>
 
       {/* Row 2 */}
-      <div className="grid grid-cols-[repeat(13,minmax(0,1fr))] gap-1 sm:gap-1.5 w-full">
+      <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
         {row2.map(renderKey)}
       </div>
     </div>
