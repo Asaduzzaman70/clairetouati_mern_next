@@ -13,24 +13,14 @@ export default function PlayroomSkeleton() {
               <div className="w-32 h-32 md:w-44 md:h-44 rounded-full bg-gray-200/80 animate-ping opacity-25" />
             </div>
 
-            {/* Keyboard Skeletons (Row 1 & 2) */}
-            <div className="w-full flex flex-col gap-1.5 sm:gap-2.5 mt-3 sm:mt-4">
-              <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
-                {Array.from({ length: 13 }).map((_, i) => (
-                  <div
-                    key={`sk-k1-${i}`}
-                    className="w-full aspect-square max-w-8 sm:max-w-9 md:max-w-9.5 rounded-md sm:rounded-lg bg-gray-200 animate-pulse"
-                  />
-                ))}
-              </div>
-              <div className="grid grid-cols-13 gap-1 sm:gap-1.5 w-full">
-                {Array.from({ length: 13 }).map((_, i) => (
-                  <div
-                    key={`sk-k2-${i}`}
-                    className="w-full aspect-square max-w-8 sm:max-w-9 md:max-w-9.5 rounded-md sm:rounded-lg bg-gray-200 animate-pulse"
-                  />
-                ))}
-              </div>
+            {/* Keyboard Skeletons */}
+            <div className="w-full flex flex-wrap items-center justify-start gap-2 sm:gap-2.5 mt-3 sm:mt-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={`sk-k-${i}`}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-gray-200 shrink-0"
+                />
+              ))}
             </div>
           </div>
 
