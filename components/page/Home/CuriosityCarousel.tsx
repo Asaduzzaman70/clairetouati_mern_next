@@ -5,8 +5,6 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
@@ -118,27 +116,62 @@ export function CuriosityCarousel() {
                         </CarouselContent>
 
                         {/* Laptop & Desktop Side Arrows */}
-                        <CarouselPrevious className="hidden md:flex absolute -left-4 lg:-left-6 xl:-left-8 top-1/2 -translate-y-1/2 border-none text-[#996300] bg-transparent hover:bg-transparent shadow-none w-9 h-9 lg:w-11 lg:h-11 cursor-pointer z-20 transition-transform hover:scale-110 active:scale-95">
-                            <svg className="w-7 h-7 lg:w-9 lg:h-9" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 5L6 12L18 19V5Z" />
+                        <button
+                            type="button"
+                            onClick={() => api?.scrollPrev()}
+                            className="hidden md:flex absolute -left-5 md:-left-8 lg:-left-12 xl:-left-14 top-1/2 -translate-y-1/2 text-[#FFCE00] hover:text-[#DCA500] bg-transparent border-none p-2 cursor-pointer z-20 transition-all duration-200 hover:scale-110 active:scale-95 items-center justify-center focus:outline-none"
+                            aria-label="Previous slide"
+                        >
+                            <svg
+                                className="w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-15 lg:w-14 lg:h-17 transition-transform drop-shadow-[0_2px_8px_rgba(255,206,0,0.25)]"
+                                viewBox="0 0 24 28"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M22 3L3 14L22 25Z" />
                             </svg>
-                        </CarouselPrevious>
-                        <CarouselNext className="hidden md:flex absolute -right-4 lg:-right-6 xl:-right-8 top-1/2 -translate-y-1/2 border-none text-[#996300] bg-transparent hover:bg-transparent shadow-none w-9 h-9 lg:w-11 lg:h-11 cursor-pointer z-20 transition-transform hover:scale-110 active:scale-95">
-                            <svg className="w-7 h-7 lg:w-9 lg:h-9" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 5L18 12L6 19V5Z" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => api?.scrollNext()}
+                            className="hidden md:flex absolute -right-5 md:-right-8 lg:-right-12 xl:-right-14 top-1/2 -translate-y-1/2 text-[#FFCE00] hover:text-[#DCA500] bg-transparent border-none p-2 cursor-pointer z-20 transition-all duration-200 hover:scale-110 active:scale-95 items-center justify-center focus:outline-none"
+                            aria-label="Next slide"
+                        >
+                            <svg
+                                className="w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-15 lg:w-14 lg:h-17 transition-transform drop-shadow-[0_2px_8px_rgba(255,206,0,0.25)]"
+                                viewBox="0 0 24 28"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M2 3L21 14L2 25Z" />
                             </svg>
-                        </CarouselNext>
+                        </button>
                     </Carousel>
 
                     {/* Mobile Navigation Controls (Below the Cards) */}
                     <div className="flex md:hidden items-center justify-center gap-6 mt-6">
                         <button
+                            type="button"
                             onClick={() => api?.scrollPrev()}
-                            className="p-2 text-[#996300] hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+                            className="p-2 text-[#FFCE00] hover:text-[#DCA500] hover:scale-110 active:scale-95 transition-transform cursor-pointer focus:outline-none"
                             aria-label="Previous slide"
                         >
-                            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 5L6 12L18 19V5Z" />
+                            <svg
+                                className="w-7 h-9 transition-transform"
+                                viewBox="0 0 24 28"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M22 3L3 14L22 25Z" />
                             </svg>
                         </button>
 
@@ -146,13 +179,14 @@ export function CuriosityCarousel() {
                         <div className="flex items-center gap-1.5">
                             {Array.from({ length: count }).map((_, index) => (
                                 <button
+                                    type="button"
                                     key={index}
                                     onClick={() => api?.scrollTo(index)}
                                     aria-label={`Go to slide ${index + 1}`}
                                     className={cn(
                                         "h-2 rounded-full transition-all duration-300 cursor-pointer",
                                         current === index
-                                            ? "w-6 bg-[#996300]"
+                                            ? "w-6 bg-[#FFCE00]"
                                             : "w-2 bg-zinc-300 hover:bg-zinc-400"
                                     )}
                                 />
@@ -160,12 +194,21 @@ export function CuriosityCarousel() {
                         </div>
 
                         <button
+                            type="button"
                             onClick={() => api?.scrollNext()}
-                            className="p-2 text-[#996300] hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+                            className="p-2 text-[#FFCE00] hover:text-[#DCA500] hover:scale-110 active:scale-95 transition-transform cursor-pointer focus:outline-none"
                             aria-label="Next slide"
                         >
-                            <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 5L18 12L6 19V5Z" />
+                            <svg
+                                className="w-7 h-9 transition-transform"
+                                viewBox="0 0 24 28"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinejoin="round"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M2 3L21 14L2 25Z" />
                             </svg>
                         </button>
                     </div>
