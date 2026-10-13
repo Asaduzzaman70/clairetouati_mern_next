@@ -14,33 +14,38 @@ import { cn } from "@/lib/utils";
 const curiosityItems = [
     {
         title: "ATTENTIVE",
-        description: "The present moment is where learning happens. Observing, listening, and attuning deeply to others is what allows us to adjust the play experience, and create meaningful, inclusive and supportive interactions.",
+        description: "The gentleness that sees what others miss. Observing, listening, adjusting. Every gesture counts: a guiding hand, a reassuring gaze, an object that helps to understand differently. At Turrim, attention is never passive—it is active, vibrant, and creates connections.",
         letter: "A",
-        color: "#DC9F12", // Gold
+        color: "#FFCE00",
+        background: "linear-gradient(359deg, rgba(255, 206, 0, 0.00) 40.91%, #DCA500 93.29%), #FFCE00",
     },
     {
-        title: "ATTENTIVE",
-        description: "The present moment is where learning happens. Observing, listening, and attuning deeply to others is what allows us to adjust the play experience, and create meaningful, inclusive and supportive interactions.",
+        title: "BRAVE",
+        description: "Curiosity is a silent courage. Daring to learn differently, thinking outside the box, doing things differently. Every exploration, however small, opens a path. Play then becomes an adventure where confidence grows by progressing step by step.",
         letter: "B",
-        color: "#FF7E4D", // Coral/Orange
+        color: "#EB5E28",
+        background: "linear-gradient(359deg, rgba(235, 94, 40, 0.00) 40.91%, #C84B19 93.29%), #E85D04",
     },
     {
-        title: "ATTENTIVE",
-        description: "The present moment is where learning happens. Observing, listening, and attuning deeply to others is what allows us to adjust the play experience, and create meaningful, inclusive and supportive interactions.",
+        title: "CREATIVE",
+        description: "Imagination transforms the everyday into wonder. Free exploration, inventing games, and reimagining the world together fosters resilience, flexibility, and endless joy.",
         letter: "C",
-        color: "#8B0D1B", // Deep Red
+        color: "#8B0D1B",
+        background: "linear-gradient(359deg, rgba(139, 13, 27, 0.00) 40.91%, #6B0813 93.29%), #8B0D1B",
     },
     {
-        title: "ATTENTIVE",
-        description: "The present moment is where learning happens. Observing, listening, and attuning deeply to others is what allows us to adjust the play experience, and create meaningful, inclusive and supportive interactions.",
+        title: "DYNAMIC",
+        description: "Growth thrives in purposeful movement. Action, energy, and experimentation give curiosity its playful momentum to connect minds and spark shared discovery.",
         letter: "D",
-        color: "#4C259D", // Deep Purple
+        color: "#4C259D",
+        background: "linear-gradient(359deg, rgba(76, 37, 157, 0.00) 40.91%, #351575 93.29%), #4C259D",
     },
     {
-        title: "ATTENTIVE",
-        description: "The present moment is where learning happens. Observing, listening, and attuning deeply to others is what allows us to adjust the play experience, and create meaningful, inclusive and supportive interactions.",
+        title: "EMPATHETIC",
+        description: "True connection begins with heartfelt understanding. Celebrating diversity, listening with open hearts, and nurturing supportive bonds that embrace every child.",
         letter: "E",
-        color: "#DC9F12", // Gold
+        color: "#FFCE00",
+        background: "linear-gradient(359deg, rgba(255, 206, 0, 0.00) 40.91%, #DCA500 93.29%), #FFCE00",
     },
 ];
 
@@ -91,8 +96,8 @@ export function CuriosityCarousel() {
                                     className="pl-3 sm:pl-4 md:pl-5 lg:pl-6 basis-[84%] sm:basis-[62%] md:basis-[48%] lg:basis-[35%] xl:basis-[30%] 2xl:basis-[30%] select-none"
                                 >
                                     <div
-                                        className="relative overflow-hidden rounded-[1.75rem] md:rounded-[2rem] min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-5 md:gap-7 lg:gap-8 transition-transform duration-300 shadow-sm"
-                                        style={{ backgroundColor: item.color }}
+                                        className="relative overflow-hidden rounded-xl md:rounded-2xl min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-4 md:gap-6 transition-transform duration-300 shadow-sm"
+                                        style={{ background: item.background }}
                                     >
                                         {/* Background Letter */}
                                         <span className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 md:-bottom-12 md:-right-8 lg:-bottom-16 lg:-right-10 text-[200px] sm:text-[260px] md:text-[340px] lg:text-[400px] xl:text-[460px] font-black text-white opacity-10 leading-none select-none pointer-events-none group-hover:opacity-15 transition-all duration-700">
@@ -100,26 +105,10 @@ export function CuriosityCarousel() {
                                         </span>
 
                                         <div className="relative z-10">
-                                            <h3
-                                                className={cn(
-                                                    "text-lg sm:text-xl lg:text-xl font-bold tracking-wider uppercase mb-3 sm:mb-4 md:mb-6 lg:mb-8",
-                                                    item.color === "#DC9F12" && "text-foreground",
-                                                    item.color === "#FF7E4D" && "text-white",
-                                                    item.color === "#8B0D1B" && "text-white",
-                                                    item.color === "#4C259D" && "text-white"
-                                                )}
-                                            >
+                                            <h3 className="text-xl sm:text-2xl font-bold tracking-wide uppercase mb-3 sm:mb-4 md:mb-5 text-white">
                                                 {item.title}
                                             </h3>
-                                            <p
-                                                className={cn(
-                                                    "text-sm sm:text-base lg:text-[16px] xl:text-lg leading-[1.6] lg:leading-[1.65] font-medium opacity-95",
-                                                    item.color === "#DC9F12" && "text-foreground",
-                                                    item.color === "#FF7E4D" && "text-white",
-                                                    item.color === "#8B0D1B" && "text-white",
-                                                    item.color === "#4C259D" && "text-white"
-                                                )}
-                                            >
+                                            <p className="text-sm sm:text-base lg:text-[17px] leading-[1.65] font-normal italic text-white/95">
                                                 {item.description}
                                             </p>
                                         </div>
