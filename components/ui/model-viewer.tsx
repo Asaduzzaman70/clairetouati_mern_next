@@ -67,9 +67,35 @@ export function ModelViewer({
   const [isClient, setIsClient] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const modelViewerElementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     setIsClient(true);
+
+    // Suppress known benign third-party warnings (Lit dev notices, legacy GLTF extensions, updateSource logs)
+    if (typeof window !== "undefined") {
+      const originalWarn = console.warn;
+      console.warn = (...args: any[]) => {
+        if (
+          typeof args[0] === "string" &&
+          (args[0].includes("KHR_materials_pbrSpecularGlossiness") ||
+            args[0].includes("change-in-update") ||
+            args[0].includes("Lit is in dev mode"))
+        ) {
+          return;
+        }
+        originalWarn.apply(console, args);
+      };
+
+      const originalInfo = console.info;
+      console.info = (...args: any[]) => {
+        if (typeof args[0] === "string" && args[0].includes("$updateSource")) {
+          return;
+        }
+        originalInfo.apply(console, args);
+      };
+    }
+
     import("@google/model-viewer").catch((err) => {
       console.warn("Failed to load @google/model-viewer:", err);
     });
@@ -154,6 +180,14 @@ export function ModelViewer({
       enterTimerRef.current = null;
     }
 
+    // If there was no active URL previously, mount immediately without exit delay
+    if (!activeUrl) {
+      setActiveUrl(modelUrl);
+      setActiveColor(color);
+      setActiveFallbackText(fallbackText);
+      return;
+    }
+
     setIsTransitioning(true);
     setIsReady(false);
 
@@ -185,6 +219,61 @@ export function ModelViewer({
     };
   }, []);
 
+  // Universal visibility watchdog: guarantees the 3D model is never stuck at opacity-0
+  // after route redirects, cached loads, or missed event triggers
+  useEffect(() => {
+    if (!activeUrl) return;
+
+    const watchdog = setTimeout(() => {
+      setIsTransitioning(false);
+      setIsReady(true);
+    }, 750);
+
+    return () => clearTimeout(watchdog);
+  }, [activeUrl]);
+
+  const isStl = isStlModel(activeUrl);
+
+  useEffect(() => {
+    if (isStl || !activeUrl || !isClient) return;
+
+    let isMounted = true;
+    const el = modelViewerElementRef.current;
+    if (!el) return;
+
+    const onModelReady = () => {
+      if (isMounted) {
+        handleLoaded();
+      }
+    };
+
+    // If model is already loaded (from cache or fast load before effect runs)
+    if ((el as any).loaded) {
+      onModelReady();
+      return;
+    }
+
+    el.addEventListener("load", onModelReady);
+    el.addEventListener("error", onModelReady);
+    el.addEventListener("model-visibility", onModelReady);
+
+    // If custom element hasn't finished defining yet, wait for definition then check loaded
+    if (typeof customElements !== "undefined" && customElements.whenDefined) {
+      customElements.whenDefined("model-viewer").then(() => {
+        if (isMounted && el && (el as any).loaded) {
+          onModelReady();
+        }
+      });
+    }
+
+    return () => {
+      isMounted = false;
+      el.removeEventListener("load", onModelReady);
+      el.removeEventListener("error", onModelReady);
+      el.removeEventListener("model-visibility", onModelReady);
+    };
+  }, [activeUrl, isStl, isClient, handleLoaded]);
+
   if (!isClient) {
     return (
       <div className={cn("w-full h-full flex items-center justify-center select-none", className)}>
@@ -213,8 +302,6 @@ export function ModelViewer({
       </div>
     );
   }
-
-  const isStl = isStlModel(activeUrl);
 
   return (
     <div
@@ -253,8 +340,9 @@ export function ModelViewer({
           />
         ) : (
           <model-viewer
+            key={activeUrl}
+            ref={modelViewerElementRef}
             src={activeUrl}
-            onLoad={handleLoaded}
             alt={`3D Model for ${activeFallbackText}`}
             camera-controls={cameraControls ? "" : undefined}
             auto-rotate={autoRotate ? "" : undefined}
