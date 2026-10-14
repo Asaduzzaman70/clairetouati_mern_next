@@ -11,7 +11,6 @@ interface Playroom3DViewerProps {
 export default function Playroom3DViewer({ currentLetter }: Playroom3DViewerProps) {
   return (
     <ModelViewer
-      key={currentLetter.letter || currentLetter.id}
       modelUrl={currentLetter.modelURL}
       fallbackText={currentLetter.letter}
       color={currentLetter.colorHex}

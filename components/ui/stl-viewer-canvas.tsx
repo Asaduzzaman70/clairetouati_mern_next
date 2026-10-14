@@ -37,6 +37,9 @@ export function isStlModel(url?: string | null, fileName?: string | null): boole
   return false;
 }
 
+// In-memory ArrayBuffer cache for instant model switching without re-downloading
+const stlBufferCache = new Map<string, ArrayBuffer>();
+
 export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasProps>(
   function StlViewerCanvas(
     {
@@ -53,18 +56,38 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
   ) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [showLoadingUi, setShowLoadingUi] = useState(false);
+    const [isModelVisible, setIsModelVisible] = useState(false);
     const [loadError, setLoadError] = useState<string | null>(null);
     const [progress, setProgress] = useState(0);
 
-    // Three.js internal references
+    // Three.js internal references (persistent across model swaps)
     const sceneRef = useRef<THREE.Scene | null>(null);
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const controlsRef = useRef<OrbitControls | null>(null);
     const meshRef = useRef<THREE.Mesh | null>(null);
+    const gridRef = useRef<THREE.GridHelper | null>(null);
     const materialRef = useRef<THREE.MeshStandardMaterial | null>(null);
     const defaultCameraStateRef = useRef<{ position: THREE.Vector3; target: THREE.Vector3 } | null>(null);
     const animationFrameIdRef = useRef<number | null>(null);
+    const currentScaleRef = useRef(0.001);
+    const targetScaleRef = useRef(1.0);
+
+    // Debounce loading overlay display: only show if download/parse takes > 450ms
+    useEffect(() => {
+      let timer: NodeJS.Timeout | null = null;
+      if (isLoading) {
+        timer = setTimeout(() => {
+          setShowLoadingUi(true);
+        }, 450);
+      } else {
+        setShowLoadingUi(false);
+      }
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
+    }, [isLoading]);
 
     // Expose resetCamera and takeScreenshot to parent component
     useImperativeHandle(ref, () => ({
@@ -84,7 +107,7 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
       },
     }));
 
-    // Update material color dynamically when prop changes
+    // Update material color dynamically when prop changes (in-place, 0ms latency)
     useEffect(() => {
       if (materialRef.current) {
         try {
@@ -95,7 +118,7 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
       }
     }, [color]);
 
-    // Update auto-rotate on controls
+    // Update auto-rotate on controls dynamically
     useEffect(() => {
       if (controlsRef.current) {
         controlsRef.current.autoRotate = autoRotate;
@@ -103,28 +126,26 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
       }
     }, [autoRotate, autoRotateSpeed]);
 
-    // Main Three.js Scene Setup & Model Loader
+    // 1. One-time Three.js Engine Mount: Scene, Camera, WebGLRenderer, Lights & Loop
     useEffect(() => {
       const container = containerRef.current;
-      if (!container || !modelUrl) return;
+      if (!container) return;
 
-      let isMounted = true;
-      setIsLoading(true);
-      setLoadError(null);
-      setProgress(0);
+      container.innerHTML = "";
 
-      // 1. Scene
+      const width = container.clientWidth || 600;
+      const height = container.clientHeight || 500;
+
+      // Scene
       const scene = new THREE.Scene();
       sceneRef.current = scene;
 
-      // 2. Camera
-      const width = container.clientWidth || 600;
-      const height = container.clientHeight || 500;
+      // Camera
       const camera = new THREE.PerspectiveCamera(45, width / height, 0.05, 1000);
       camera.position.set(5, 4, 5);
       cameraRef.current = camera;
 
-      // 3. Renderer with high-definition PBR tone mapping
+      // High-performance WebGL Renderer with PBR tone mapping
       const renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
@@ -137,11 +158,9 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
       renderer.toneMappingExposure = 1.2;
       rendererRef.current = renderer;
 
-      // Clean old canvas if any
-      container.innerHTML = "";
       container.appendChild(renderer.domElement);
 
-      // 4. OrbitControls
+      // OrbitControls
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.06;
@@ -151,7 +170,7 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
       controls.maxDistance = 500;
       controlsRef.current = controls;
 
-      // 5. Lighting Setup (balanced studio illumination)
+      // Balanced Studio Lighting
       const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
       scene.add(ambientLight);
 
@@ -166,78 +185,157 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
       const hemiLight = new THREE.HemisphereLight(0xffffff, 0x333333, 0.7);
       scene.add(hemiLight);
 
-      // 6. Animation Loop
+      // Animation Loop with organic 3D scale blooming
       const animate = () => {
-        if (!isMounted) return;
         animationFrameIdRef.current = requestAnimationFrame(animate);
+
+        if (meshRef.current) {
+          if (currentScaleRef.current < 0.999) {
+            currentScaleRef.current += (targetScaleRef.current - currentScaleRef.current) * 0.08;
+            meshRef.current.scale.set(
+              currentScaleRef.current,
+              currentScaleRef.current,
+              currentScaleRef.current
+            );
+          } else if (currentScaleRef.current !== 1.0 && targetScaleRef.current === 1.0) {
+            currentScaleRef.current = 1.0;
+            meshRef.current.scale.set(1, 1, 1);
+          }
+        }
+
         controls.update();
         renderer.render(scene, camera);
       };
       animate();
 
-      // 7. Load & Parse STL file using STLLoader
-      const loader = new STLLoader();
+      // Responsive Canvas ResizeObserver
+      const resizeObserver = new ResizeObserver((entries) => {
+        if (!entries || !entries.length) return;
+        const entry = entries[0];
+        const w = entry.contentRect.width;
+        const h = entry.contentRect.height;
+        if (w > 0 && h > 0) {
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        }
+      });
+      resizeObserver.observe(container);
 
-      // Convert http:// to https:// if running on HTTPS host to prevent mixed content warnings
+      return () => {
+        resizeObserver.disconnect();
+        if (animationFrameIdRef.current) {
+          cancelAnimationFrame(animationFrameIdRef.current);
+        }
+        controls.dispose();
+        renderer.dispose();
+        if (container.contains(renderer.domElement)) {
+          container.removeChild(renderer.domElement);
+        }
+      };
+    }, []); // Runs ONCE on mount
+
+    // 2. Geometry Loader & Model Swap (Canvas and WebGL context remain permanently mounted)
+    useEffect(() => {
+      if (!modelUrl) return;
+
+      let isMounted = true;
+      setIsLoading(true);
+      setLoadError(null);
+      setProgress(0);
+
+      const loader = new STLLoader();
       const secureUrl =
         typeof window !== "undefined" && window.location.protocol === "https:"
           ? modelUrl.replace(/^http:\/\//i, "https://")
           : modelUrl;
 
-      // Fetch with arrayBuffer for robust CORS & progress tracking
-      fetch(secureUrl)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP Error ${response.status}: Failed to download STL file from CDN`);
-          }
-          const contentLength = response.headers.get("content-length");
-          const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
-
-          if (!response.body || totalBytes === 0) {
-            return response.arrayBuffer();
-          }
-
-          const reader = response.body.getReader();
-          let loadedBytes = 0;
-          const chunks: Uint8Array[] = [];
-
-          function readStream(): Promise<ArrayBuffer> {
-            return reader.read().then(({ done, value }) => {
-              if (done) {
-                const combined = new Uint8Array(loadedBytes);
-                let offset = 0;
-                for (const chunk of chunks) {
-                  combined.set(chunk, offset);
-                  offset += chunk.length;
-                }
-                return combined.buffer;
+      // Check cache first for instantaneous rendering
+      const cached = stlBufferCache.get(secureUrl);
+      const fetchBuffer = cached
+        ? Promise.resolve(cached)
+        : fetch(secureUrl)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP Error ${response.status}: Failed to download STL file from CDN`);
               }
-              if (value) {
-                chunks.push(value);
-                loadedBytes += value.length;
-                if (totalBytes > 0 && isMounted) {
-                  const pct = Math.min(Math.round((loadedBytes / totalBytes) * 100), 99);
-                  setProgress(pct);
-                }
+              const contentLength = response.headers.get("content-length");
+              const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
+
+              if (!response.body || totalBytes === 0) {
+                return response.arrayBuffer();
               }
+
+              const reader = response.body.getReader();
+              let loadedBytes = 0;
+              const chunks: Uint8Array[] = [];
+
+              function readStream(): Promise<ArrayBuffer> {
+                return reader.read().then(({ done, value }) => {
+                  if (done) {
+                    const combined = new Uint8Array(loadedBytes);
+                    let offset = 0;
+                    for (const chunk of chunks) {
+                      combined.set(chunk, offset);
+                      offset += chunk.length;
+                    }
+                    return combined.buffer;
+                  }
+                  if (value) {
+                    chunks.push(value);
+                    loadedBytes += value.length;
+                    if (totalBytes > 0 && isMounted) {
+                      const pct = Math.min(Math.round((loadedBytes / totalBytes) * 100), 99);
+                      setProgress(pct);
+                    }
+                  }
+                  return readStream();
+                });
+              }
+
               return readStream();
+            })
+            .then((buf) => {
+              stlBufferCache.set(secureUrl, buf);
+              return buf;
             });
-          }
 
-          return readStream();
-        })
+      fetchBuffer
         .then((arrayBuffer) => {
           if (!isMounted) return;
+
+          const scene = sceneRef.current;
+          const camera = cameraRef.current;
+          const controls = controlsRef.current;
+          if (!scene || !camera || !controls) return;
 
           // Parse geometry
           const geometry = loader.parse(arrayBuffer);
           geometry.computeVertexNormals();
-          geometry.center(); // Centers the geometry around (0, 0, 0)
+          geometry.center();
           geometry.computeBoundingBox();
           geometry.computeBoundingSphere();
 
           const boundingSphere = geometry.boundingSphere;
           const radius = boundingSphere ? boundingSphere.radius : 1.5;
+
+          // Clean previous mesh & grid
+          if (meshRef.current) {
+            scene.remove(meshRef.current);
+            meshRef.current.geometry.dispose();
+            if (Array.isArray(meshRef.current.material)) {
+              meshRef.current.material.forEach((m) => m.dispose());
+            } else {
+              meshRef.current.material.dispose();
+            }
+            meshRef.current = null;
+          }
+
+          if (gridRef.current) {
+            scene.remove(gridRef.current);
+            gridRef.current.geometry.dispose();
+            gridRef.current = null;
+          }
 
           // Setup PBR Material
           let parsedColor = 0xffc700;
@@ -255,10 +353,13 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
           materialRef.current = material;
 
           const mesh = new THREE.Mesh(geometry, material);
+          currentScaleRef.current = 0.001;
+          targetScaleRef.current = 1.0;
+          mesh.scale.set(0.001, 0.001, 0.001);
           meshRef.current = mesh;
           scene.add(mesh);
 
-          // Add subtle CAD Edge lines for high visual clarity
+          // Subtle CAD Edge lines for high visual clarity
           try {
             const edges = new THREE.EdgesGeometry(geometry, 28);
             const lineMaterial = new THREE.LineBasicMaterial({
@@ -269,16 +370,17 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
             const lineSegments = new THREE.LineSegments(edges, lineMaterial);
             mesh.add(lineSegments);
           } catch {
-            // EdgesGeometry optional
+            // Optional
           }
 
-          // Add grounding grid under the model
+          // Grounding grid under the model (if enabled)
           if (showGrid) {
             const gridHelper = new THREE.GridHelper(radius * 3.5, 14, 0x888888, 0x333333);
             gridHelper.position.y = -radius * 1.05;
             const gridMaterial = gridHelper.material as THREE.Material;
             gridMaterial.transparent = true;
             gridMaterial.opacity = 0.4;
+            gridRef.current = gridHelper;
             scene.add(gridHelper);
           }
 
@@ -298,6 +400,7 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
           };
 
           setIsLoading(false);
+          setIsModelVisible(true);
           setProgress(100);
           onLoaded?.();
         })
@@ -309,34 +412,10 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
           onError?.(errorMsg);
         });
 
-      // 8. ResizeObserver for responsive canvas
-      const resizeObserver = new ResizeObserver((entries) => {
-        if (!entries || !entries.length || !isMounted) return;
-        const entry = entries[0];
-        const w = entry.contentRect.width;
-        const h = entry.contentRect.height;
-        if (w > 0 && h > 0) {
-          camera.aspect = w / h;
-          camera.updateProjectionMatrix();
-          renderer.setSize(w, h);
-        }
-      });
-      resizeObserver.observe(container);
-
-      // Cleanup
       return () => {
         isMounted = false;
-        resizeObserver.disconnect();
-        if (animationFrameIdRef.current) {
-          cancelAnimationFrame(animationFrameIdRef.current);
-        }
-        controls.dispose();
-        renderer.dispose();
-        if (container.contains(renderer.domElement)) {
-          container.removeChild(renderer.domElement);
-        }
       };
-    }, [modelUrl, showGrid, color, autoRotate, autoRotateSpeed, onError, onLoaded]);
+    }, [modelUrl, showGrid]);
 
     return (
       <div className={`relative w-full h-full min-h-60 select-none overflow-hidden ${className}`}>
@@ -347,8 +426,8 @@ export const StlViewerCanvas = forwardRef<StlViewerCanvasRef, StlViewerCanvasPro
           title="Drag to rotate • Scroll to zoom • Right-click to pan"
         />
 
-        {/* Loading Overlay */}
-        {isLoading && (
+        {/* Loading Overlay (only shown on slow downloads > 350ms to prevent visual flash) */}
+        {showLoadingUi && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/80 backdrop-blur-xs transition-opacity p-4">
             <div className="relative size-14 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full border-3 border-amber-500/20 border-t-amber-500 animate-spin" />
