@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { StlViewerCanvas, isStlModel } from "@/components/ui/stl-viewer-canvas";
 
 // TypeScript declaration for Google's <model-viewer> web component
 declare module "react" {
@@ -45,6 +46,7 @@ export interface ModelViewerProps {
   cameraControls?: boolean;
   shadowIntensity?: number | string;
   exposure?: number | string;
+  showGrid?: boolean;
   className?: string;
 }
 
@@ -56,6 +58,7 @@ export function ModelViewer({
   cameraControls = true,
   shadowIntensity = "1",
   exposure = "1.15",
+  showGrid = false,
   className,
 }: ModelViewerProps) {
   const [isClient, setIsClient] = useState(false);
@@ -92,6 +95,28 @@ export function ModelViewer({
         >
           {fallbackText}
         </span>
+      </div>
+    );
+  }
+
+  const isStl = isStlModel(modelUrl);
+
+  if (isStl) {
+    return (
+      <div
+        className={cn(
+          "w-full h-full relative flex items-center justify-center overflow-hidden select-none",
+          className
+        )}
+        title="Slide or drag to rotate 3D model"
+      >
+        <StlViewerCanvas
+          modelUrl={modelUrl}
+          color={color}
+          autoRotate={autoRotate}
+          showGrid={showGrid}
+          className="w-full h-full"
+        />
       </div>
     );
   }
