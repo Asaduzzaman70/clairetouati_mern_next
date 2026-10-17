@@ -46,22 +46,41 @@ const curiosityItems = [
         color: "#005EB8",
         background: "linear-gradient(359deg, rgba(0, 94, 184, 0.00) 40.91%, #004281 93.29%), #005EB8",
     },
+    {
+        title: "FOCUS",
+        description: "True connection begins with heartfelt understanding. Celebrating diversity, listening with open hearts, and nurturing supportive bonds that embrace every child.",
+        letter: "F",
+        color: "#008037",
+        background: "linear-gradient(359deg, rgba(0, 128, 55, 0.00) 40.91%, #005A27 93.29%), #008037",
+    }
 ];
 
 export function CuriosityCarousel() {
     const [api, setApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
     const [count, setCount] = React.useState(0);
+    const [canScrollPrev, setCanScrollPrev] = React.useState(false);
+    const [canScrollNext, setCanScrollNext] = React.useState(false);
 
     React.useEffect(() => {
         if (!api) return;
 
-        setCount(api.scrollSnapList().length);
-        setCurrent(api.selectedScrollSnap());
-
-        api.on("select", () => {
+        const updateState = () => {
+            setCount(api.scrollSnapList().length);
             setCurrent(api.selectedScrollSnap());
-        });
+            setCanScrollPrev(api.canScrollPrev());
+            setCanScrollNext(api.canScrollNext());
+        };
+
+        updateState();
+
+        api.on("select", updateState);
+        api.on("reInit", updateState);
+
+        return () => {
+            api.off("select", updateState);
+            api.off("reInit", updateState);
+        };
     }, [api]);
 
     return (
@@ -88,7 +107,7 @@ export function CuriosityCarousel() {
                         setApi={setApi}
                         opts={{
                             align: "start",
-                            loop: true,
+                            loop: false,
                             dragFree: true,
                         }}
                         className="w-full relative px-0 md:px-8 lg:px-10"
@@ -100,7 +119,7 @@ export function CuriosityCarousel() {
                                     className="pl-3 sm:pl-4 md:pl-5 lg:pl-6 basis-[84%] sm:basis-[62%] md:basis-[48%] lg:basis-[35%] xl:basis-[30%] 2xl:basis-[30%] select-none"
                                 >
                                     <div
-                                        className="relative overflow-hidden rounded-xl md:rounded-2xl min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-4 md:gap-6 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1"
+                                        className="relative overflow-hidden rounded-xl md:rounded-2xl min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-4 md:gap-6 transition-all duration-300 shadow-sm"
                                         style={{ background: item.background }}
                                     >
                                         {/* Background Letter */}
@@ -125,7 +144,13 @@ export function CuriosityCarousel() {
                         <button
                             type="button"
                             onClick={() => api?.scrollPrev()}
-                            className="hidden md:flex absolute -left-5 md:-left-8 lg:-left-12 xl:-left-14 top-1/2 -translate-y-1/2 text-[#FFCE00] hover:text-[#DCA500] bg-transparent border-none p-2 cursor-pointer z-20 transition-all duration-200 hover:scale-110 active:scale-95 items-center justify-center focus:outline-none"
+                            disabled={!canScrollPrev}
+                            className={cn(
+                                "hidden md:flex absolute -left-5 md:-left-8 lg:-left-12 xl:-left-14 top-1/2 -translate-y-1/2 text-[#FFCE00] bg-transparent border-none p-2 z-20 transition-all duration-200 items-center justify-center focus:outline-none",
+                                canScrollPrev
+                                    ? "hover:text-[#DCA500] cursor-pointer hover:scale-110 active:scale-95"
+                                    : "opacity-25 cursor-not-allowed pointer-events-none"
+                            )}
                             aria-label="Previous slide"
                         >
                             <svg
@@ -143,7 +168,13 @@ export function CuriosityCarousel() {
                         <button
                             type="button"
                             onClick={() => api?.scrollNext()}
-                            className="hidden md:flex absolute -right-5 md:-right-8 lg:-right-12 xl:-right-14 top-1/2 -translate-y-1/2 text-[#FFCE00] hover:text-[#DCA500] bg-transparent border-none p-2 cursor-pointer z-20 transition-all duration-200 hover:scale-110 active:scale-95 items-center justify-center focus:outline-none"
+                            disabled={!canScrollNext}
+                            className={cn(
+                                "hidden md:flex absolute -right-5 md:-right-8 lg:-right-12 xl:-right-14 top-1/2 -translate-y-1/2 text-[#FFCE00] bg-transparent border-none p-2 z-20 transition-all duration-200 items-center justify-center focus:outline-none",
+                                canScrollNext
+                                    ? "hover:text-[#DCA500] cursor-pointer hover:scale-110 active:scale-95"
+                                    : "opacity-25 cursor-not-allowed pointer-events-none"
+                            )}
                             aria-label="Next slide"
                         >
                             <svg
@@ -165,7 +196,13 @@ export function CuriosityCarousel() {
                         <button
                             type="button"
                             onClick={() => api?.scrollPrev()}
-                            className="p-2 text-[#FFCE00] hover:text-[#DCA500] hover:scale-110 active:scale-95 transition-transform cursor-pointer focus:outline-none"
+                            disabled={!canScrollPrev}
+                            className={cn(
+                                "p-2 text-[#FFCE00] transition-transform focus:outline-none",
+                                canScrollPrev
+                                    ? "hover:text-[#DCA500] hover:scale-110 active:scale-95 cursor-pointer"
+                                    : "opacity-25 cursor-not-allowed pointer-events-none"
+                            )}
                             aria-label="Previous slide"
                         >
                             <svg
@@ -202,7 +239,13 @@ export function CuriosityCarousel() {
                         <button
                             type="button"
                             onClick={() => api?.scrollNext()}
-                            className="p-2 text-[#FFCE00] hover:text-[#DCA500] hover:scale-110 active:scale-95 transition-transform cursor-pointer focus:outline-none"
+                            disabled={!canScrollNext}
+                            className={cn(
+                                "p-2 text-[#FFCE00] transition-transform focus:outline-none",
+                                canScrollNext
+                                    ? "hover:text-[#DCA500] hover:scale-110 active:scale-95 cursor-pointer"
+                                    : "opacity-25 cursor-not-allowed pointer-events-none"
+                            )}
                             aria-label="Next slide"
                         >
                             <svg

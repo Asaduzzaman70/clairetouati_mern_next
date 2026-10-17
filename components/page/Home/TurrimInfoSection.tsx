@@ -122,7 +122,7 @@ function RotatedLetter({
         <div className="flex items-center justify-center">
             <span
                 ref={spanRef}
-                className="inline-block font-mirrut text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light bg-clip-text text-transparent bg-no-repeat [-webkit-text-stroke:1px_white] select-none text-center origin-center"
+                className="inline-block font-mirrut text-7xl sm:text-8xl md:text-9xl lg:text-[10.5rem] xl:text-[12rem] font-light bg-clip-text text-transparent bg-no-repeat [-webkit-text-stroke:1px_white] md:[-webkit-text-stroke:1.5px_white] select-none text-center origin-center leading-none"
                 style={{
                     backgroundImage: `url(${imageSrc})`,
                     transform: `rotate(${rotation}deg)`,
@@ -176,7 +176,7 @@ export function TurrimInfoSection() {
                                 <StaggerContainer
                                     staggerDelay={0.12}
                                     delayChildren={0.15}
-                                    className="grid grid-cols-2 w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl gap-x-24 sm:gap-x-36 md:gap-x-48 lg:gap-x-60 xl:gap-x-72 gap-y-8 sm:gap-y-12 md:gap-y-16 lg:gap-y-20"
+                                    className="grid grid-cols-2 w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl gap-x-16 sm:gap-x-24 md:gap-x-32 lg:gap-x-40 xl:gap-x-48 gap-y-8 sm:gap-y-12 md:gap-y-14 lg:gap-y-16"
                                 >
                                     {section.letters.map((letter, i) => (
                                         <StaggerItem key={i} yOffset={24} duration={0.6}>
