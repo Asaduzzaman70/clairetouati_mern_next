@@ -47,9 +47,14 @@ function mulberry32(seed: number) {
 }
 
 interface BgColors {
-    s: string; h: string; r: string; k: string; o: string; g: string;
+    yellow: string;
+    orange: string;
+    red: string;
+    purple: string;
+    blue: string;
+    green: string;
 }
-type ColorGroup = "s" | "h" | "r" | "o" | "k" | "g";
+type ColorGroup = "yellow" | "orange" | "red" | "purple" | "blue" | "green";
 
 interface TokenDef {
     text: string;
@@ -59,58 +64,69 @@ interface TokenDef {
 }
 
 const TOKENS: TokenDef[] = [
-    // Yellow tokens (group 'h')
-    { text: "A", group: "h", baseSize: 54 },
-    { text: "H", group: "h", baseSize: 52 },
-    { text: "M", group: "h", baseSize: 56 },
-    { text: "Q", group: "h", baseSize: 54 },
-    { text: "S", group: "h", baseSize: 50 },
-    { text: "Y", group: "h", baseSize: 52 },
-    { text: "A", group: "h", baseSize: 54 },
-    { text: "Q", group: "h", baseSize: 52 },
+    // Yellow tokens - AGMSY
+    { text: "A", group: "yellow", baseSize: 54 },
+    { text: "G", group: "yellow", baseSize: 54 },
+    { text: "M", group: "yellow", baseSize: 56 },
+    { text: "S", group: "yellow", baseSize: 50 },
+    { text: "Y", group: "yellow", baseSize: 52 },
+    { text: "A", group: "yellow", baseSize: 54 },
+    { text: "G", group: "yellow", baseSize: 52 },
+    { text: "M", group: "yellow", baseSize: 56 },
+    { text: "S", group: "yellow", baseSize: 50 },
+    { text: "Y", group: "yellow", baseSize: 52 },
 
-    // Green tokens (group 'g')
-    { text: "F", group: "g", baseSize: 52 },
-    { text: "L", group: "g", baseSize: 50 },
-    { text: "V", group: "g", baseSize: 50 },
-    { text: "W", group: "g", baseSize: 54 },
-    { text: "X", group: "g", baseSize: 52 },
-    { text: "X", group: "g", baseSize: 50 },
-    { text: "Q", group: "g", baseSize: 52 },
+    // Orange tokens - BHNTZ
+    { text: "B", group: "orange", baseSize: 52 },
+    { text: "H", group: "orange", baseSize: 52 },
+    { text: "N", group: "orange", baseSize: 52 },
+    { text: "T", group: "orange", baseSize: 56 },
+    { text: "Z", group: "orange", baseSize: 50 },
+    { text: "B", group: "orange", baseSize: 54 },
+    { text: "H", group: "orange", baseSize: 52 },
+    { text: "N", group: "orange", baseSize: 52 },
+    { text: "T", group: "orange", baseSize: 54 },
+    { text: "Z", group: "orange", baseSize: 50 },
 
-    // Red tokens (group 'r')
-    { text: "C", group: "r", baseSize: 52 },
-    { text: "D", group: "r", baseSize: 54 },
-    { text: "O", group: "r", baseSize: 52 },
-    { text: "R", group: "r", baseSize: 56 },
-    { text: "Z", group: "r", baseSize: 50 },
-    { text: "H", group: "r", baseSize: 52 },
-    { text: "Q", group: "r", baseSize: 54 },
+    // Red tokens - CIOU
+    { text: "C", group: "red", baseSize: 52 },
+    { text: "I", group: "red", baseSize: 50 },
+    { text: "O", group: "red", baseSize: 52 },
+    { text: "U", group: "red", baseSize: 54 },
+    { text: "C", group: "red", baseSize: 54 },
+    { text: "I", group: "red", baseSize: 50 },
+    { text: "O", group: "red", baseSize: 52 },
+    { text: "U", group: "red", baseSize: 54 },
 
-    // Blue tokens (group 's')
-    { text: "B", group: "s", baseSize: 52 },
-    { text: "E", group: "s", baseSize: 50 },
-    { text: "J", group: "s", baseSize: 52 },
-    { text: "N", group: "s", baseSize: 52 },
-    { text: "T", group: "s", baseSize: 56 },
-    { text: "B", group: "s", baseSize: 54 },
-    { text: "Q", group: "s", baseSize: 52 },
+    // Purple tokens - DJPV
+    { text: "D", group: "purple", baseSize: 54 },
+    { text: "J", group: "purple", baseSize: 52 },
+    { text: "P", group: "purple", baseSize: 50 },
+    { text: "V", group: "purple", baseSize: 52 },
+    { text: "D", group: "purple", baseSize: 52 },
+    { text: "J", group: "purple", baseSize: 54 },
+    { text: "P", group: "purple", baseSize: 50 },
+    { text: "V", group: "purple", baseSize: 52 },
 
-    // Orange tokens (group 'o')
-    { text: "I", group: "o", baseSize: 52 },
-    { text: "K", group: "o", baseSize: 52 },
-    { text: "P", group: "o", baseSize: 50 },
-    { text: "U", group: "o", baseSize: 54 },
-    { text: "O", group: "o", baseSize: 52 },
-    { text: "Q", group: "o", baseSize: 52 },
+    // Blue tokens - EKQW
+    { text: "E", group: "blue", baseSize: 52 },
+    { text: "K", group: "blue", baseSize: 52 },
+    { text: "Q", group: "blue", baseSize: 54 },
+    { text: "W", group: "blue", baseSize: 56 },
+    { text: "E", group: "blue", baseSize: 50 },
+    { text: "K", group: "blue", baseSize: 54 },
+    { text: "Q", group: "blue", baseSize: 52 },
+    { text: "W", group: "blue", baseSize: 54 },
 
-    // Purple tokens (group 'k')
-    { text: "G", group: "k", baseSize: 54 },
-    { text: "K", group: "k", baseSize: 52 },
-    { text: "M", group: "k", baseSize: 56 },
-    { text: "R", group: "k", baseSize: 54 },
-    { text: "G", group: "k", baseSize: 52 },
-    { text: "Q", group: "k", baseSize: 54 },
+    // Green tokens - FLRX
+    { text: "F", group: "green", baseSize: 52 },
+    { text: "L", group: "green", baseSize: 50 },
+    { text: "R", group: "green", baseSize: 54 },
+    { text: "X", group: "green", baseSize: 52 },
+    { text: "F", group: "green", baseSize: 54 },
+    { text: "L", group: "green", baseSize: 50 },
+    { text: "R", group: "green", baseSize: 52 },
+    { text: "X", group: "green", baseSize: 50 },
 ];
 
 interface ZJellyTransform {
@@ -170,13 +186,7 @@ function drawBackground(
     const rand = mulberry32(42); // fixed seed for stable layout
 
     const getGroupColor = (group: ColorGroup, defaultGray: string): string => {
-        if (group === "s") return colors.s !== "#D0D0D0" ? colors.s : defaultGray;
-        if (group === "h") return colors.h !== "#D0D0D0" ? colors.h : defaultGray;
-        if (group === "r") return colors.r !== "#D0D0D0" ? colors.r : defaultGray;
-        if (group === "o") return colors.o !== "#D0D0D0" ? colors.o : defaultGray;
-        if (group === "k") return colors.k !== "#D0D0D0" ? colors.k : defaultGray;
-        if (group === "g") return colors.g !== "#D0D0D0" ? colors.g : defaultGray;
-        return defaultGray;
+        return colors[group] !== "#D0D0D0" ? colors[group] : defaultGray;
     };
 
     const getAnim = (group: ColorGroup): ZJellyTransform => {
@@ -245,12 +255,12 @@ function drawBackground(
 
 const Hero = () => {
     const [bgTextColors, setBgTextColors] = useState<BgColors>({
-        s: "#D0D0D0",
-        h: "#D0D0D0",
-        r: "#D0D0D0",
-        k: "#D0D0D0",
-        o: "#D0D0D0",
-        g: "#D0D0D0",
+        yellow: "#D0D0D0",
+        orange: "#D0D0D0",
+        red: "#D0D0D0",
+        purple: "#D0D0D0",
+        blue: "#D0D0D0",
+        green: "#D0D0D0",
     });
 
     const bgCanvasRef = useRef<HTMLCanvasElement>(null);   // static background canvas
@@ -262,12 +272,12 @@ const Hero = () => {
 
     // Track Z-axis jelly bounce animation start time per group
     const jellyStartsRef = useRef<Record<ColorGroup, number>>({
-        s: 0,
-        h: 0,
-        r: 0,
-        k: 0,
-        o: 0,
-        g: 0,
+        yellow: 0,
+        orange: 0,
+        red: 0,
+        purple: 0,
+        blue: 0,
+        green: 0,
     });
     const prevColorsRef = useRef<BgColors>(bgTextColors);
     const animIdRef = useRef<number | null>(null);
@@ -301,7 +311,7 @@ const Hero = () => {
 
     // Z-axis jelly bounce animation trigger on block clicks
     useEffect(() => {
-        const groups: ColorGroup[] = ["s", "h", "r", "k", "o", "g"];
+        const groups: ColorGroup[] = ["yellow", "orange", "red", "purple", "blue", "green"];
         const prev = prevColorsRef.current;
         const now = performance.now();
 
@@ -497,13 +507,20 @@ const Hero = () => {
             if (body && (body as any).customText && body.render.fillStyle) {
                 const color = body.render.fillStyle as string;
                 setBgTextColors(prev => {
-                    if (color === "#0066CC") return { ...prev, s: color };
-                    if (color === "#FFD700") return { ...prev, h: color };
-                    if (color === "#DC143C") return { ...prev, r: color };
-                    if (color === "#FF7F50") return { ...prev, o: color };
-                    if (color === "#8B5CF6") return { ...prev, k: color };
-                    if (color === "#047857") return { ...prev, g: color };
-                    return { ...prev, s: "#D0D0D0", h: "#D0D0D0", r: "#D0D0D0", o: "#D0D0D0", k: "#D0D0D0", g: "#D0D0D0" };
+                    if (color === "#FFD700") return { ...prev, yellow: color };
+                    if (color === "#FF7F50") return { ...prev, orange: color };
+                    if (color === "#DC143C") return { ...prev, red: color };
+                    if (color === "#8B5CF6") return { ...prev, purple: color };
+                    if (color === "#0066CC") return { ...prev, blue: color };
+                    if (color === "#047857") return { ...prev, green: color };
+                    return {
+                        yellow: "#D0D0D0",
+                        orange: "#D0D0D0",
+                        red: "#D0D0D0",
+                        purple: "#D0D0D0",
+                        blue: "#D0D0D0",
+                        green: "#D0D0D0",
+                    };
                 });
             }
         });
