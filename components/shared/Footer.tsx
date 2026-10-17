@@ -12,6 +12,12 @@ const Footer = () => {
                     Instagram.
                 </Link>
                 <Link
+                    href="/contact"
+                    className="text-lg font-medium text-foreground hover:opacity-70 transition-opacity"
+                >
+                    Contact us.
+                </Link>
+                <Link
                     href="/legal"
                     className="text-lg font-medium text-foreground hover:opacity-70 transition-opacity"
                 >

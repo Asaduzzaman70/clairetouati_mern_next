@@ -12,6 +12,7 @@ import { MethodInActionSection } from "@/components/page/About/MethodInActionSec
 import { CallToActionSection } from "@/components/page/About/CallToActionSection";
 import { TurrimCTA } from "@/components/shared/TurrimCTA";
 import { PlayroomSection } from "@/components/shared/PlayroomSection";
+import ContactSection from "@/components/shared/ContactSection";
 
 export default function AboutPage() {
     return (
@@ -28,7 +29,8 @@ export default function AboutPage() {
             <ScienceDesignSection />
             <MethodInActionSection />
             <PlayroomSection />
-            <CallToActionSection />
+            {/* <CallToActionSection /> */}
+            <ContactSection />
             <TurrimCTA />
         </main>
     );
