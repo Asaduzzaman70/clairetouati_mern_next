@@ -6,33 +6,33 @@ import { mirrut } from "@/lib/fonts";
 
 const baseShapeConfigs = [
     // Blue circle (large)
-    { type: "circle", color: "#0066CC", baseSize: 200, text: "Cure Through\nwonder" },
+    { type: "circle", color: "#0066CC", baseSize: 260, text: "Cure Through\nwonder" },
     // Yellow circle (large)
-    { type: "circle", color: "#FFD700", baseSize: 200, text: "Cure Through\nwonder" },
+    { type: "circle", color: "#FFD700", baseSize: 260, text: "Cure Through\nwonder" },
     // Red circle (large)
-    { type: "circle", color: "#DC143C", baseSize: 200, text: "Cure Through\nwonder" },
+    { type: "circle", color: "#DC143C", baseSize: 260, text: "Cure Through\nwonder" },
     // Orange circle (medium)
-    { type: "circle", color: "#FF7F50", baseSize: 180, text: "Cure Through\nwonder" },
+    { type: "circle", color: "#FF7F50", baseSize: 235, text: "Cure Through\nwonder" },
     // Purple circle (medium)
-    { type: "circle", color: "#8B5CF6", baseSize: 180, text: "Cure Through\nwonder" },
+    { type: "circle", color: "#8B5CF6", baseSize: 235, text: "Cure Through\nwonder" },
 
     // Green rectangles
-    { type: "rectangle", color: "#047857", baseSize: 200, text: "Cure Through\nwonder" },
-    { type: "rectangle", color: "#047857", baseSize: 180, text: "Cure Through\nwonder" },
-    { type: "rectangle", color: "#047857", baseSize: 170, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#047857", baseSize: 255, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#047857", baseSize: 240, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#047857", baseSize: 230, text: "Cure Through\nwonder" },
 
     // Yellow rectangles
-    { type: "rectangle", color: "#FFD700", baseSize: 190, text: "Cure Through\nwonder" },
-    { type: "rectangle", color: "#FFD700", baseSize: 175, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#FFD700", baseSize: 245, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#FFD700", baseSize: 235, text: "Cure Through\nwonder" },
 
     // Blue rectangle
-    { type: "rectangle", color: "#0066CC", baseSize: 185, text: "Cure Through\nwonder" },
+    { type: "rectangle", color: "#0066CC", baseSize: 238, text: "Cure Through\nwonder" },
 
     // Yellow triangle
-    { type: "triangle", color: "#FFD700", baseSize: 250, text: "Cure Through\nwonder" },
+    { type: "triangle", color: "#FFD700", baseSize: 320, text: "Cure Through\nwonder" },
 
     // Red triangle
-    { type: "triangle", color: "#DC143C", baseSize: 240, text: "Cure Through\nwonder" },
+    { type: "triangle", color: "#DC143C", baseSize: 310, text: "Cure Through\nwonder" },
 ];
 
 // Seeded PRNG (mulberry32) – gives a stable, deterministic random sequence
@@ -164,7 +164,7 @@ function drawBackground(
     groupAnims?: Record<ColorGroup, ZJellyTransform>
 ) {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#E8E8E8";
+    ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, width, height);
 
     const rand = mulberry32(42); // fixed seed for stable layout
@@ -381,10 +381,10 @@ const Hero = () => {
 
         // Calculate responsive scale factor for shapes
         const getScaleFactor = (w: number) => {
-            if (w < 400) return 0.52;
-            if (w < 640) return 0.62;
-            if (w < 768) return 0.72;
-            if (w < 1024) return 0.85;
+            if (w < 400) return 0.54;
+            if (w < 640) return 0.65;
+            if (w < 768) return 0.76;
+            if (w < 1024) return 0.88;
             return 1;
         };
 
@@ -439,8 +439,8 @@ const Hero = () => {
 
             if (config.type === "circle") {
                 shape = Bodies.circle(x, y, size / 2, {
-                    restitution: 0.45,
-                    friction: 0.15,
+                    restitution: 0.52,
+                    friction: 0.12,
                     density: 0.001,
                     render: {
                         fillStyle: config.color,
@@ -448,8 +448,8 @@ const Hero = () => {
                 });
             } else if (config.type === "rectangle") {
                 shape = Bodies.rectangle(x, y, size, size, {
-                    restitution: 0.45,
-                    friction: 0.15,
+                    restitution: 0.52,
+                    friction: 0.12,
                     density: 0.001,
                     angle: Math.random() * (Math.PI / 4),
                     render: {
@@ -458,8 +458,8 @@ const Hero = () => {
                 });
             } else { // triangle
                 shape = Bodies.polygon(x, y, 3, size / 2, {
-                    restitution: 0.45,
-                    friction: 0.15,
+                    restitution: 0.52,
+                    friction: 0.12,
                     density: 0.001,
                     angle: Math.random() * Math.PI,
                     render: {
@@ -530,7 +530,7 @@ const Hero = () => {
                 const maxTextWidth = size * (shapeType === "triangle" ? 0.42 : shapeType === "circle" ? 0.62 : 0.72);
 
                 // Dynamic proportional font size
-                let fontSize = Math.min(Math.max(9, Math.floor(size * 0.065)), 14);
+                let fontSize = Math.min(Math.max(9.5, Math.floor(size * 0.065)), 15.5);
                 ctx.font = `600 ${fontSize}px Inter, sans-serif`;
 
                 const lines: string[] = text.split("\n");

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image, { StaticImageData } from "next/image";
 import imageBg from "@/assets/image_bg.png";
 import imageBg2 from "@/assets/image_bg_2.png";
@@ -13,6 +14,7 @@ interface SectionData {
     title: string;
     description: string;
     letters: string[];
+    rotations: number[];
 }
 
 const SECTIONS: SectionData[] = [
@@ -23,6 +25,7 @@ const SECTIONS: SectionData[] = [
         title: "Turrim, much more than a wooden game",
         description: "Turrim is a simple object that you pick up, touch, intuitive wooden toy that invites exploration. Built from basic shapes, Turrim is a method based on movement, curiosity, and experimentation. A tool that supports learning, rehabilitation, and confidence at any age.",
         letters: ["F", "L", "X", "R"],
+        rotations: [-18, 14, -22, 6],
     },
     {
         id: 2,
@@ -31,6 +34,7 @@ const SECTIONS: SectionData[] = [
         title: "THE BODY LEARNS BEFORE THE MIND",
         description: "Before words, there are gestures. Touching, stacking, moving objects helps shape the way we understand motion, balance, and relation. Turrim creates motion as a tool for action, not reflection, and profoundly human learning ground.",
         letters: ["E", "k", "W", "Q"],
+        rotations: [-15, 18, -20, -6],
     },
     {
         id: 3,
@@ -39,6 +43,7 @@ const SECTIONS: SectionData[] = [
         title: "SECURITY UNLEASHES CURIOSITY",
         description: "We explore best when we feel confident. Our products are designed to create a clear setting, reassuring shapes and materials where exploration happens naturally, without fear of mistakes. When stress disappears, curiosity thrives.",
         letters: ["D", "J", "V", "P"],
+        rotations: [-20, -12, -24, 0], // Matches screenshot exactly
     },
     {
         id: 4,
@@ -47,8 +52,86 @@ const SECTIONS: SectionData[] = [
         title: "WONDER MAKES YOU GROW",
         description: "Learning isn't about ticking boxes, it's about being surprised. A moment of wonder, a small success, a feeling of \"I can do it\" transforms the entire experience. A sense of wonder then becomes driving force, a gentle strength that leads to autonomy.",
         letters: ["B", "H", "T", "N"],
+        rotations: [-16, 15, -22, 8],
     },
 ];
+
+function RotatedLetter({
+    letter,
+    imageSrc,
+    rotation,
+}: {
+    letter: string;
+    imageSrc: string;
+    rotation: number;
+}) {
+    const spanRef = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+        const span = spanRef.current;
+        if (!span) return;
+
+        let rafId: number;
+
+        const updatePosition = () => {
+            if (!span) return;
+            const rect = span.getBoundingClientRect();
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+
+            // Distance from center of the span to the center of the viewport
+            const screenOffsetX = vw / 2 - (rect.left + rect.width / 2);
+            const screenOffsetY = vh / 2 - (rect.top + rect.height / 2);
+
+            // Project screen-space offset into the rotated coordinate system of the span
+            const rad = (rotation * Math.PI) / 180;
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+
+            const localX = screenOffsetX * cos + screenOffsetY * sin;
+            const localY = -screenOffsetX * sin + screenOffsetY * cos;
+
+            // Viewport cover dimensions (16:9 aspect ratio standard for hero images)
+            const coverWidth = Math.max(vw, (vh * 16) / 9);
+            const coverHeight = Math.max(vh, (vw * 9) / 16);
+
+            span.style.backgroundSize = `${coverWidth}px ${coverHeight}px`;
+            span.style.backgroundPosition = `calc(50% + ${localX}px) calc(50% + ${localY}px)`;
+        };
+
+        const onScrollOrResize = () => {
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(updatePosition);
+        };
+
+        window.addEventListener("scroll", onScrollOrResize, { passive: true });
+        window.addEventListener("resize", onScrollOrResize, { passive: true });
+
+        // Initial paint
+        updatePosition();
+
+        return () => {
+            window.removeEventListener("scroll", onScrollOrResize);
+            window.removeEventListener("resize", onScrollOrResize);
+            cancelAnimationFrame(rafId);
+        };
+    }, [rotation]);
+
+    return (
+        <div className="flex items-center justify-center">
+            <span
+                ref={spanRef}
+                className="inline-block font-mirrut text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light bg-clip-text text-transparent bg-no-repeat [-webkit-text-stroke:1px_white] select-none text-center origin-center"
+                style={{
+                    backgroundImage: `url(${imageSrc})`,
+                    transform: `rotate(${rotation}deg)`,
+                }}
+            >
+                {letter}
+            </span>
+        </div>
+    );
+}
 
 export function TurrimInfoSection() {
     return (
@@ -84,17 +167,14 @@ export function TurrimInfoSection() {
 
                             {/* Right Outline Letters */}
                             <div className="relative w-full flex items-center justify-center lg:justify-end py-4 sm:py-6 lg:py-0">
-                                <div className="grid grid-cols-2 gap-x-10 sm:gap-x-16 md:gap-x-20 lg:gap-x-24 gap-y-6 sm:gap-y-10 md:gap-y-12 lg:gap-y-16">
+                                <div className="grid grid-cols-2 w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl gap-x-24 sm:gap-x-36 md:gap-x-48 lg:gap-x-60 xl:gap-x-72 gap-y-8 sm:gap-y-12 md:gap-y-16 lg:gap-y-20">
                                     {section.letters.map((letter, i) => (
-                                        <span
+                                        <RotatedLetter
                                             key={i}
-                                            className="block font-mirrut text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light bg-clip-text text-transparent bg-fixed bg-center bg-cover [-webkit-text-stroke:1px_white] select-none text-center"
-                                            style={{
-                                                backgroundImage: `url(${section.image.src})`,
-                                            }}
-                                        >
-                                            {letter}
-                                        </span>
+                                            letter={letter}
+                                            imageSrc={section.image.src}
+                                            rotation={section.rotations[i] ?? 0}
+                                        />
                                     ))}
                                 </div>
                             </div>
