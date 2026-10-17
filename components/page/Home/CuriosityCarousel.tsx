@@ -7,6 +7,7 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@/components/ui/carousel";
+import { FadeIn, TextReveal } from "@/components/animated";
 import { cn } from "@/lib/utils";
 
 const curiosityItems = [
@@ -68,16 +69,21 @@ export function CuriosityCarousel() {
             <div className="container mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12 md:mb-14 lg:mb-16 px-4">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e293b] mb-3 md:mb-4 tracking-tight">
-                        Where curiosity connects worlds
-                    </h2>
-                    <p className="text-[#64748b] max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium">
-                        Making playful intelligence a joyful force for children, parents, educators and all those who never stop learning.
-                    </p>
+                    <TextReveal
+                        as="h2"
+                        text="Where curiosity connects worlds"
+                        mode="words"
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e293b] mb-3 md:mb-4 tracking-tight justify-center"
+                    />
+                    <FadeIn direction="up" delay={0.25} duration={0.6}>
+                        <p className="text-[#64748b] max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium">
+                            Making playful intelligence a joyful force for children, parents, educators and all those who never stop learning.
+                        </p>
+                    </FadeIn>
                 </div>
 
                 {/* Carousel Container */}
-                <div className="relative group/carousel">
+                <FadeIn direction="up" delay={0.35} duration={0.7} distance={30} className="relative group/carousel">
                     <Carousel
                         setApi={setApi}
                         opts={{
@@ -94,7 +100,7 @@ export function CuriosityCarousel() {
                                     className="pl-3 sm:pl-4 md:pl-5 lg:pl-6 basis-[84%] sm:basis-[62%] md:basis-[48%] lg:basis-[35%] xl:basis-[30%] 2xl:basis-[30%] select-none"
                                 >
                                     <div
-                                        className="relative overflow-hidden rounded-xl md:rounded-2xl min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-4 md:gap-6 transition-transform duration-300 shadow-sm"
+                                        className="relative overflow-hidden rounded-xl md:rounded-2xl min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-4 md:gap-6 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1"
                                         style={{ background: item.background }}
                                     >
                                         {/* Background Letter */}
@@ -212,7 +218,7 @@ export function CuriosityCarousel() {
                             </svg>
                         </button>
                     </div>
-                </div>
+                </FadeIn>
             </div>
         </section>
     );

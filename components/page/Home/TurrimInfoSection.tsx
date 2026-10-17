@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image, { StaticImageData } from "next/image";
+import { FadeIn, TextReveal, StaggerContainer, StaggerItem } from "@/components/animated";
 import imageBg from "@/assets/image_bg.png";
 import imageBg2 from "@/assets/image_bg_2.png";
 import imageBg3 from "@/assets/image_bg_3.png";
@@ -157,26 +158,36 @@ export function TurrimInfoSection() {
                         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-start">
                             {/* Left Text Content */}
                             <div className="space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl text-white">
-                                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight font-sans uppercase tracking-tight">
-                                    {section.title}
-                                </h2>
-                                <p className="text-sm sm:text-base md:text-lg leading-relaxed opacity-95 font-light">
-                                    {section.description}
-                                </p>
+                                <TextReveal
+                                    as="h2"
+                                    text={section.title}
+                                    mode="words"
+                                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight font-sans uppercase tracking-tight"
+                                />
+                                <FadeIn direction="up" delay={0.25} duration={0.6}>
+                                    <p className="text-sm sm:text-base md:text-lg leading-relaxed opacity-95 font-light">
+                                        {section.description}
+                                    </p>
+                                </FadeIn>
                             </div>
 
                             {/* Right Outline Letters */}
                             <div className="relative w-full flex items-center justify-center lg:justify-end py-4 sm:py-6 lg:py-0">
-                                <div className="grid grid-cols-2 w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl gap-x-24 sm:gap-x-36 md:gap-x-48 lg:gap-x-60 xl:gap-x-72 gap-y-8 sm:gap-y-12 md:gap-y-16 lg:gap-y-20">
+                                <StaggerContainer
+                                    staggerDelay={0.12}
+                                    delayChildren={0.15}
+                                    className="grid grid-cols-2 w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl gap-x-24 sm:gap-x-36 md:gap-x-48 lg:gap-x-60 xl:gap-x-72 gap-y-8 sm:gap-y-12 md:gap-y-16 lg:gap-y-20"
+                                >
                                     {section.letters.map((letter, i) => (
-                                        <RotatedLetter
-                                            key={i}
-                                            letter={letter}
-                                            imageSrc={section.image.src}
-                                            rotation={section.rotations[i] ?? 0}
-                                        />
+                                        <StaggerItem key={i} yOffset={24} duration={0.6}>
+                                            <RotatedLetter
+                                                letter={letter}
+                                                imageSrc={section.image.src}
+                                                rotation={section.rotations[i] ?? 0}
+                                            />
+                                        </StaggerItem>
                                     ))}
-                                </div>
+                                </StaggerContainer>
                             </div>
                         </div>
                     </div>

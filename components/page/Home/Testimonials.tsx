@@ -8,6 +8,7 @@ import {
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
+import { FadeIn, TextReveal } from "@/components/animated";
 import user from "@/assets/user.jpg";
 import { cn } from "@/lib/utils";
 
@@ -56,11 +57,14 @@ export function Testimonials() {
     return (
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
-                <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-center text-[#2F312F] uppercase mb-8 sm:mb-10 md:mb-14 lg:mb-16 tracking-tight px-2">
-                    THEIR DAILY LIVES, THEIR WORDS, THEIR RESULTS
-                </h2>
+                <TextReveal
+                    as="h2"
+                    text="THEIR DAILY LIVES, THEIR WORDS, THEIR RESULTS"
+                    mode="words"
+                    className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-center text-[#2F312F] uppercase mb-8 sm:mb-10 md:mb-14 lg:mb-16 tracking-tight px-2 justify-center"
+                />
 
-                <div className="relative max-w-5xl lg:max-w-6xl mx-auto">
+                <FadeIn direction="up" delay={0.2} duration={0.6} distance={30} className="relative max-w-5xl lg:max-w-6xl mx-auto">
                     <Carousel
                         setApi={setApi}
                         opts={{
@@ -202,7 +206,7 @@ export function Testimonials() {
                             </button>
                         </div>
                     </Carousel>
-                </div>
+                </FadeIn>
             </div>
         </section>
     );
