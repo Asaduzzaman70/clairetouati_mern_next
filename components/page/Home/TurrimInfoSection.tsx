@@ -88,9 +88,9 @@ export function TurrimInfoSection() {
                                     {section.letters.map((letter, i) => (
                                         <span
                                             key={i}
-                                            className="block font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light bg-clip-text text-transparent bg-fixed bg-center bg-cover [-webkit-text-stroke:1px_white] select-none text-center"
+                                            className="block font-mirrut text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light bg-clip-text text-transparent bg-fixed bg-center bg-cover [-webkit-text-stroke:1px_white] select-none text-center"
                                             style={{
-                                                backgroundImage: `url(${section.image.src})`
+                                                backgroundImage: `url(${section.image.src})`,
                                             }}
                                         >
                                             {letter}

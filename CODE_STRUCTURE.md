@@ -276,9 +276,11 @@ Tailwind CSS v4 uses a **CSS-first configuration** with `@import "tailwindcss";`
 - **Border Radius**: Defined through CSS token `--radius: 0.625rem;` with scalable calc functions (`radius-sm`, `radius-md`, `radius-lg`, `radius-xl`, `radius-2xl`, etc.).
 
 ### 2. Typography
-- **Primary Body & Display**: `Inter` (via `next/font/google` variable `--font-inter`).
+- **Primary Body & Display**: `Inclusive Sans` (local font loaded in `lib/fonts.ts` via `--font-inclusive-sans`, applied as default `font-sans` and `font-inclusive`), fallback to `Inter` (`--font-inter`).
+- **Decorative / Display Serif**: `Mirrut` (local font loaded in `lib/fonts.ts` via `--font-mirrut`, utility `font-mirrut`).
 - **Monospace**: `Geist_Mono` (variable `--font-geist-mono`).
 - **Interactive Experimental**: `Roboto_Flex` with dynamic variable font axes.
+- **3D WebGL Typography**: `helvetiker_regular.typeface.json` & `helvetiker_bold.typeface.json` (`THREE_FONTS`).
 
 ---
 

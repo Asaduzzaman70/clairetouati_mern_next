@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
+import { inclusiveSans, inclusiveSansVariable, mirrut } from "@/lib/fonts";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${geistMono.variable} antialiased font-sans`}
+        className={`${inclusiveSans.variable} ${inclusiveSansVariable.variable} ${mirrut.variable} ${inter.variable} ${geistMono.variable} antialiased font-sans`}
       >
         <QueryProvider>
           <SmoothScrollProvider>

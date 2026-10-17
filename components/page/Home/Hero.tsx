@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Matter from "matter-js";
+import { mirrut } from "@/lib/fonts";
 
 const baseShapeConfigs = [
     // Blue circle (large)
@@ -58,84 +59,58 @@ interface TokenDef {
 }
 
 const TOKENS: TokenDef[] = [
-    // Yellow tokens (activated by Yellow blocks -> group 'h')
-    { text: "HAS", group: "h", baseSize: 50 },
-    { text: "HAS", group: "h", baseSize: 54 },
-    { text: "HAS", group: "h", baseSize: 46 },
-    { text: "U", group: "h", baseSize: 60 },
-    { text: "Y", group: "h", baseSize: 52 },
-    { text: "S", group: "h", baseSize: 48 },
+    // Yellow tokens (group 'h')
+    { text: "A", group: "h", baseSize: 54 },
+    { text: "H", group: "h", baseSize: 52 },
     { text: "M", group: "h", baseSize: 56 },
-    { text: "A", group: "h", baseSize: 50 },
-    { text: "", group: "h", baseSize: 8, isDot: true },
+    { text: "Q", group: "h", baseSize: 54 },
+    { text: "S", group: "h", baseSize: 50 },
+    { text: "Y", group: "h", baseSize: 52 },
+    { text: "A", group: "h", baseSize: 54 },
+    { text: "Q", group: "h", baseSize: 52 },
 
-    // Green tokens (activated by Green blocks -> group 'g')
-    { text: "+", group: "g", baseSize: 54 },
-    { text: "+", group: "g", baseSize: 50 },
-    { text: "F", group: "g", baseSize: 56 },
-    { text: "L", group: "g", baseSize: 52 },
-    { text: "M", group: "g", baseSize: 58 },
-    { text: "W", group: "g", baseSize: 52 },
-    { text: "V", group: "g", baseSize: 48 },
-    { text: "", group: "g", baseSize: 7, isDot: true },
+    // Green tokens (group 'g')
+    { text: "F", group: "g", baseSize: 52 },
+    { text: "L", group: "g", baseSize: 50 },
+    { text: "V", group: "g", baseSize: 50 },
+    { text: "W", group: "g", baseSize: 54 },
+    { text: "X", group: "g", baseSize: 52 },
+    { text: "X", group: "g", baseSize: 50 },
+    { text: "Q", group: "g", baseSize: 52 },
 
-    // Red tokens (activated by Red blocks -> group 'r')
-    { text: "R", group: "r", baseSize: 64 },
-    { text: "H", group: "r", baseSize: 56 },
+    // Red tokens (group 'r')
     { text: "C", group: "r", baseSize: 52 },
+    { text: "D", group: "r", baseSize: 54 },
     { text: "O", group: "r", baseSize: 52 },
-    { text: "Y", group: "r", baseSize: 52 },
-    { text: "HAS", group: "r", baseSize: 48 },
-    { text: "D", group: "r", baseSize: 50 },
-    { text: "", group: "r", baseSize: 8, isDot: true },
+    { text: "R", group: "r", baseSize: 56 },
+    { text: "Z", group: "r", baseSize: 50 },
+    { text: "H", group: "r", baseSize: 52 },
+    { text: "Q", group: "r", baseSize: 54 },
 
-    // Blue tokens (activated by Blue blocks -> group 's')
-    { text: "T", group: "s", baseSize: 65 },
-    { text: "T", group: "s", baseSize: 58 },
-    { text: "T", group: "s", baseSize: 62 },
-    { text: "B", group: "s", baseSize: 50 },
-    { text: "N", group: "s", baseSize: 52 },
+    // Blue tokens (group 's')
+    { text: "B", group: "s", baseSize: 52 },
     { text: "E", group: "s", baseSize: 50 },
-    { text: "", group: "s", baseSize: 7, isDot: true },
+    { text: "J", group: "s", baseSize: 52 },
+    { text: "N", group: "s", baseSize: 52 },
+    { text: "T", group: "s", baseSize: 56 },
+    { text: "B", group: "s", baseSize: 54 },
+    { text: "Q", group: "s", baseSize: 52 },
 
-    // Orange tokens (activated by Orange blocks -> group 'o')
-    { text: "I", group: "o", baseSize: 58 },
+    // Orange tokens (group 'o')
     { text: "I", group: "o", baseSize: 52 },
-    { text: "HAS", group: "o", baseSize: 46 },
-    { text: "P", group: "o", baseSize: 48 },
-    { text: "K", group: "o", baseSize: 50 },
+    { text: "K", group: "o", baseSize: 52 },
+    { text: "P", group: "o", baseSize: 50 },
     { text: "U", group: "o", baseSize: 54 },
-    { text: "", group: "o", baseSize: 8, isDot: true },
+    { text: "O", group: "o", baseSize: 52 },
+    { text: "Q", group: "o", baseSize: 52 },
 
-    // Purple tokens (activated by Purple blocks -> group 'k')
-    { text: "R", group: "k", baseSize: 62 },
+    // Purple tokens (group 'k')
+    { text: "G", group: "k", baseSize: 54 },
     { text: "K", group: "k", baseSize: 52 },
     { text: "M", group: "k", baseSize: 56 },
-    { text: "G", group: "k", baseSize: 50 },
-    { text: "E", group: "k", baseSize: 50 },
-    { text: "HAS", group: "k", baseSize: 48 },
-    { text: "", group: "k", baseSize: 7, isDot: true },
-];
-
-const SECONDARY_CHARS = [
-    { text: "D", group: "r" as ColorGroup },
-    { text: "P", group: "o" as ColorGroup },
-    { text: "E", group: "s" as ColorGroup },
-    { text: "N", group: "s" as ColorGroup },
-    { text: "K", group: "k" as ColorGroup },
-    { text: "V", group: "g" as ColorGroup },
-    { text: "B", group: "s" as ColorGroup },
-    { text: "G", group: "k" as ColorGroup },
-    { text: "H", group: "r" as ColorGroup },
-    { text: "A", group: "h" as ColorGroup },
-    { text: "T", group: "s" as ColorGroup },
-    { text: "R", group: "r" as ColorGroup },
-    { text: "C", group: "r" as ColorGroup },
-    { text: "L", group: "g" as ColorGroup },
-    { text: "M", group: "g" as ColorGroup },
-    { text: "S", group: "h" as ColorGroup },
-    { text: "Y", group: "h" as ColorGroup },
-    { text: "I", group: "o" as ColorGroup },
+    { text: "R", group: "k", baseSize: 54 },
+    { text: "G", group: "k", baseSize: 52 },
+    { text: "Q", group: "k", baseSize: 54 },
 ];
 
 interface ZJellyTransform {
@@ -215,13 +190,16 @@ function drawBackground(
         };
     };
 
-    // Dense grid cell size (~72px) so there are no empty gaps
-    const cellSize = 72;
+    // Grid cell size (~88px) accommodating larger typography with balanced spacing
+    const cellSize = 88;
     const cols = Math.ceil(width / cellSize) + 2;
     const rows = Math.ceil(height / cellSize) + 2;
 
     for (let row = -1; row < rows; row++) {
         for (let col = -1; col < cols; col++) {
+            // Slight organic skip (~8%) matching the density in reference design
+            if (rand() < 0.08) continue;
+
             const tokenIdx = Math.floor(rand() * TOKENS.length);
             const token = TOKENS[tokenIdx];
 
@@ -231,17 +209,18 @@ function drawBackground(
             const color = getGroupColor(token.group, defaultGray);
             const anim = getAnim(token.group);
 
-            const jx = (rand() - 0.5) * cellSize * 0.75;
-            const jy = (rand() - 0.5) * cellSize * 0.75;
+            // Controlled jitter to maintain even distribution and prevent collisions
+            const jx = (rand() - 0.5) * cellSize * 0.48;
+            const jy = (rand() - 0.5) * cellSize * 0.48;
             const cx = col * cellSize + cellSize / 2 + jx;
             const cy = row * cellSize + cellSize / 2 + jy;
 
-            // Discrete rotation angles matching screenshot aesthetics (upright, 45°, 90°, 180°, slight tilts)
+            // Discrete rotation angles (upright, slight tilts, 90°, 180°)
             const angleOptions = [0, 0, 0.45, -0.45, Math.PI / 2, -Math.PI / 2, Math.PI, 0.25, -0.25];
             const angle = angleOptions[Math.floor(rand() * angleOptions.length)];
 
             ctx.save();
-            ctx.translate(cx, cy); // Remains exactly in place (NO upward jump)
+            ctx.translate(cx, cy); // Remains exactly in place
             ctx.scale(anim.scale, anim.scale); // Jumps forward along Z-axis
             ctx.rotate(angle);
 
@@ -251,55 +230,14 @@ function drawBackground(
                 ctx.shadowOffsetY = anim.shadowOffsetY;
             }
 
-            if (token.isDot) {
-                ctx.beginPath();
-                ctx.arc(0, 0, token.baseSize, 0, Math.PI * 2);
-                ctx.fillStyle = color;
-                ctx.fill();
-            } else if (token.text === "+") {
-                ctx.font = `900 ${token.baseSize}px Arial, sans-serif`;
-                ctx.fillStyle = color;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText("+", 0, 0);
-            } else {
-                ctx.font = `bold ${token.baseSize}px Arial, sans-serif`;
-                ctx.fillStyle = color;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(token.text, 0, 0);
-            }
+            const mirrutFont = `${mirrut.style.fontFamily}, 'Mirrut', serif`;
+
+            ctx.font = `${token.baseSize}px ${mirrutFont}`;
+            ctx.fillStyle = color;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(token.text, 0, 0);
             ctx.restore();
-
-            // In ~55% of cells, add a secondary letter (also color-grouped) to eliminate any gaps
-            if (rand() > 0.45 && !token.isDot) {
-                const sec = SECONDARY_CHARS[Math.floor(rand() * SECONDARY_CHARS.length)];
-                const sx = cx + (rand() - 0.5) * cellSize * 0.65;
-                const sy = cy + (rand() - 0.5) * cellSize * 0.65;
-                const sAngle = (rand() - 0.5) * Math.PI;
-                const sBase = 24 + rand() * 12; // 24-36px
-                const secAnim = getAnim(sec.group);
-                const sGray = grayShades[Math.floor(rand() * grayShades.length)];
-                const sColor = getGroupColor(sec.group, sGray);
-
-                ctx.save();
-                ctx.translate(sx, sy); // NO upward jump
-                ctx.scale(secAnim.scale, secAnim.scale); // Z-axis jump
-                ctx.rotate(sAngle);
-
-                if (secAnim.shadowBlur > 0.5) {
-                    ctx.shadowColor = "rgba(0, 0, 0, 0.20)";
-                    ctx.shadowBlur = secAnim.shadowBlur;
-                    ctx.shadowOffsetY = secAnim.shadowOffsetY;
-                }
-
-                ctx.font = `bold ${sBase}px Arial, sans-serif`;
-                ctx.fillStyle = sColor;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(sec.text, 0, 0);
-                ctx.restore();
-            }
         }
     }
 }
@@ -345,11 +283,18 @@ const Hero = () => {
         if (ctx) drawBackground(ctx, bgCanvas.width, bgCanvas.height, colors, anims);
     }, []);
 
-    // Initial background paint
+    // Initial background paint + wait for font loading
     useEffect(() => {
         repaintBg(bgTextColors);
         const onResize = () => repaintBg(bgTextColors);
         window.addEventListener("resize", onResize);
+
+        if (typeof document !== "undefined" && document.fonts) {
+            document.fonts.ready.then(() => {
+                repaintBg(bgTextColors);
+            });
+        }
+
         return () => window.removeEventListener("resize", onResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -677,7 +622,7 @@ const Hero = () => {
             {/* Canvas-drawn TURRIM letter background */}
             <canvas
                 ref={bgCanvasRef}
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full font-mirrut"
                 style={{ zIndex: 0 }}
             />
 

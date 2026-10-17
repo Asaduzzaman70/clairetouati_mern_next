@@ -66,9 +66,11 @@ Used across `CuriosityCarousel`, `OurValuesSection`, `TurrimInfoSection`, and `P
 ## 🔤 3. Typography Scale & Guidelines
 
 ### 3.1 Font Families
-- **Primary Body & Display**: `Inter` (configured in `app/layout.tsx` as `--font-inter`, applied via `font-sans`).
+- **Primary Body & Display**: `Inclusive Sans` (configured in `lib/fonts.ts` as `--font-inclusive-sans`, applied as default `font-sans` and `font-inclusive`), with fallback to `Inter` (`--font-inter`).
+- **Decorative / Display Serif**: `Mirrut` (configured in `lib/fonts.ts` as `--font-mirrut`, applied via `font-mirrut`).
 - **Monospace / Code / Timestamps**: `Geist_Mono` (`--font-geist-mono`).
 - **Dynamic Variable Axis Typography**: `Roboto_Flex` (used for mouse-proximity variable axis animations in `TurrimCTA`).
+- **3D Three.js WebGL Typography**: `helvetiker_regular.typeface.json` & `helvetiker_bold.typeface.json` (exported as `THREE_FONTS` in `lib/fonts.ts`).
 
 ### 3.2 Type Scale Reference
 | Level | Tailwind Classes | Usage Context |
