@@ -123,7 +123,7 @@ export function CuriosityCarousel() {
                             aria-label="Previous slide"
                         >
                             <svg
-                                className="w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-15 lg:w-14 lg:h-17 transition-transform drop-shadow-[0_2px_8px_rgba(255,206,0,0.25)]"
+                                className="w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-15 lg:w-14 lg:h-17 rotate-12 hover:rotate-0 transition-transform duration-300 drop-shadow-[0_2px_8px_rgba(255,206,0,0.25)]"
                                 viewBox="0 0 24 28"
                                 fill="currentColor"
                                 stroke="currentColor"
@@ -141,7 +141,7 @@ export function CuriosityCarousel() {
                             aria-label="Next slide"
                         >
                             <svg
-                                className="w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-15 lg:w-14 lg:h-17 transition-transform drop-shadow-[0_2px_8px_rgba(255,206,0,0.25)]"
+                                className="w-9 h-11 sm:w-11 sm:h-13 md:w-12 md:h-15 lg:w-14 lg:h-17 rotate-14 hover:rotate-0 transition-transform duration-300 drop-shadow-[0_2px_8px_rgba(255,206,0,0.25)]"
                                 viewBox="0 0 24 28"
                                 fill="currentColor"
                                 stroke="currentColor"
@@ -163,7 +163,7 @@ export function CuriosityCarousel() {
                             aria-label="Previous slide"
                         >
                             <svg
-                                className="w-7 h-9 transition-transform"
+                                className="w-7 h-9 rotate-12 hover:rotate-0 transition-transform duration-300 drop-shadow-[0_2px_6px_rgba(255,206,0,0.25)]"
                                 viewBox="0 0 24 28"
                                 fill="currentColor"
                                 stroke="currentColor"
@@ -200,7 +200,7 @@ export function CuriosityCarousel() {
                             aria-label="Next slide"
                         >
                             <svg
-                                className="w-7 h-9 transition-transform"
+                                className="w-7 h-9 rotate-14 hover:rotate-0 transition-transform duration-300 drop-shadow-[0_2px_6px_rgba(255,206,0,0.25)]"
                                 viewBox="0 0 24 28"
                                 fill="currentColor"
                                 stroke="currentColor"
