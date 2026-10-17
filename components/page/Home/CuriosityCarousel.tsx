@@ -42,8 +42,8 @@ const curiosityItems = [
         title: "EMPATHETIC",
         description: "True connection begins with heartfelt understanding. Celebrating diversity, listening with open hearts, and nurturing supportive bonds that embrace every child.",
         letter: "E",
-        color: "#FFCE00",
-        background: "linear-gradient(359deg, rgba(255, 206, 0, 0.00) 40.91%, #DCA500 93.29%), #FFCE00",
+        color: "#005EB8",
+        background: "linear-gradient(359deg, rgba(0, 94, 184, 0.00) 40.91%, #004281 93.29%), #005EB8",
     },
 ];
 
@@ -98,7 +98,7 @@ export function CuriosityCarousel() {
                                         style={{ background: item.background }}
                                     >
                                         {/* Background Letter */}
-                                        <span className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 md:-bottom-12 md:-right-8 lg:-bottom-16 lg:-right-10 text-[200px] sm:text-[260px] md:text-[340px] lg:text-[400px] xl:text-[460px] font-black text-white opacity-10 leading-none select-none pointer-events-none group-hover:opacity-15 transition-all duration-700">
+                                        <span className="absolute -bottom-24 -right-6 sm:-bottom-32 sm:-right-8 md:-bottom-38 md:-right-9 lg:-bottom-45 lg:-right-10 xl:-bottom-50 xl:-right-12 text-[260px] sm:text-[320px] md:text-[360px] lg:text-[420px] xl:text-[460px] text-white opacity-50 leading-none select-none pointer-events-none group-hover:opacity-60 transition-all duration-700 font-mirrut -rotate-30">
                                             {item.letter}
                                         </span>
 
