@@ -78,13 +78,13 @@ const Navbar = () => {
                         : "border-transparent"
                 )}
             >
-                <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4 lg:py-5">
+                <div className="container mx-auto relative flex items-center justify-between px-4 py-3 md:py-4 lg:py-5">
                     {/* Desktop Left Section */}
                     <div className="hidden lg:flex items-center gap-2 xl:gap-3">
                         {navLinks.map((link) => (
                             <motion.div key={link.href} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                                 <Link href={link.href}>
-                                    <Button variant="secondary" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
+                                    <Button variant="secondary" className="font-semibold text-sm xl:text-base h-10 xl:h-11 px-3.5 xl:px-5 rounded-full cursor-pointer">
                                         {link.label}
                                     </Button>
                                 </Link>
@@ -124,22 +124,22 @@ const Navbar = () => {
                         </Link>
                     </div>
 
-                    {/* Desktop Center Section (Logo) */}
+                    {/* Desktop Center Section (Logo) - EXACT True Middle */}
                     <Link
                         href="/"
-                        className="hidden lg:flex items-center gap-2.5 md:gap-3 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                        className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 md:gap-3 cursor-pointer transition-transform hover:scale-105 active:scale-95 z-10"
                     >
-                        <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative">
+                        <div className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center relative">
                             <Image
                                 src={logo}
                                 alt="Turrim Logo"
-                                width={48}
-                                height={48}
+                                width={44}
+                                height={44}
                                 priority
                                 className="object-contain"
                             />
                         </div>
-                        <span className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">
+                        <span className="text-2xl md:text-3xl font-bold tracking-tighter text-foreground">
                             turrim
                         </span>
                     </Link>
@@ -148,7 +148,7 @@ const Navbar = () => {
                     <div className="hidden lg:flex items-center gap-2 xl:gap-3">
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                             <Link href="/playroom">
-                                <Button variant="secondary" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
+                                <Button variant="secondary" className="font-semibold text-sm xl:text-base h-10 xl:h-11 px-3.5 xl:px-5 rounded-full cursor-pointer">
                                     Enter the playroom
                                 </Button>
                             </Link>
@@ -157,22 +157,11 @@ const Navbar = () => {
                         {/* Get Turrim CTA Button */}
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                             <Link href="/checkout">
-                                <Button variant="outline" className="font-semibold text-base xl:text-lg h-11 px-4 xl:px-5 rounded-full cursor-pointer">
+                                <Button variant="outline" className="font-semibold text-sm xl:text-base h-10 xl:h-11 px-3.5 xl:px-5 rounded-full cursor-pointer">
                                     {isEnglish ? "Get Turrim" : "Obtenir Turrim"}
                                 </Button>
                             </Link>
                         </motion.div>
-
-                        {/* Sign Up commented out for this version */}
-                        {/*
-                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                            <Link href="/sign-up">
-                                <Button variant="default" className="font-semibold text-base xl:text-lg h-11 px-5 xl:px-6 rounded-full shadow-sm cursor-pointer">
-                                    Sign Up
-                                </Button>
-                            </Link>
-                        </motion.div>
-                        */}
 
                         {/* Language Switcher */}
                         <LanguageToggle variant="desktop" />
