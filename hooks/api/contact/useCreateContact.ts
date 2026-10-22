@@ -4,9 +4,11 @@ import { ContactApiResponse, ContactInquiry, CreateContactPayload } from "./type
 
 export function useCreateContact() {
   return useMutation({
-    mutationFn: async (payload: CreateContactPayload): Promise<ContactInquiry> => {
-      const res = await apiPublic.post<ContactApiResponse>("/contacts", payload);
-      return res.data.data;
+    mutationFn: async (payload: CreateContactPayload): Promise<ContactApiResponse> => {
+      const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await apiPublic.post<ContactApiResponse>("/contacts", payload, { headers });
+      return res.data;
     },
   });
 }

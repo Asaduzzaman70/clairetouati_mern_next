@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useCreateContact } from "@/hooks/api/contact";
+import { getApiErrorMessage, getApiFieldErrors } from "@/lib/api-error";
 import owner from "@/assets/owner.jpg";
 
 export function ContactSection() {
@@ -74,7 +75,7 @@ export function ContactSection() {
         }
 
         try {
-            await createContactMutation.mutateAsync({
+            const response = await createContactMutation.mutateAsync({
                 name: formData.name.trim(),
                 email: formData.email.trim(),
                 subject: formData.subject.trim(),
@@ -83,6 +84,7 @@ export function ContactSection() {
 
             toast.success("Message Sent Successfully!", {
                 description:
+                    response?.message ||
                     "Thank you for contacting us. We will get back to you soon!",
             });
 
@@ -94,13 +96,14 @@ export function ContactSection() {
             });
             setErrors({});
         } catch (error: unknown) {
-            const err = error as { response?: { data?: { message?: string } } };
-            const errorMessage =
-                err.response?.data?.message ||
-                "Failed to send your message. Please try again later.";
+            const fieldErrors = getApiFieldErrors(error);
+            if (Object.keys(fieldErrors).length > 0) {
+                setErrors((prev) => ({ ...prev, ...fieldErrors }));
+            }
 
+            const errorMessage = getApiErrorMessage(error);
             toast.error("Submission Failed", {
-                description: errorMessage,
+                description: errorMessage || "Failed to send your message. Please try again later.",
             });
         }
     };
