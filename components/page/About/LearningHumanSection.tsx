@@ -1,20 +1,32 @@
+"use client";
+
+import { TextReveal, FadeIn } from "@/components/animated";
+
 export function LearningHumanSection() {
-    return (
-        <section className="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-24 text-center">
-            <div className="container max-w-3xl mx-auto flex flex-col items-center space-y-4 sm:space-y-6">
-                <span className="text-[11px] sm:text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-[#4A4A4A]">
-                    PUTTING PEOPLE BACK AT THE HEARTH
-                </span>
+  return (
+    <section className="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-24 text-center overflow-hidden">
+      <div className="container max-w-3xl mx-auto flex flex-col items-center space-y-4 sm:space-y-6">
+        <FadeIn direction="down" delay={0.1} duration={0.5}>
+          <span className="text-[11px] sm:text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-[#4A4A4A]">
+            PUTTING PEOPLE BACK AT THE HEARTH
+          </span>
+        </FadeIn>
 
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#1A1A2E] tracking-tight leading-tight">
-                    Learning, simply human.
-                </h2>
+        <TextReveal
+          as="h2"
+          text="Learning, simply human."
+          mode="words"
+          duration={0.6}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#1A1A2E] tracking-tight leading-tight justify-center"
+        />
 
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed font-light px-2">
-                    The game transcends all ages. It makes learning and rehabilitation
-                    more joyful, smoother, and more natural.
-                </p>
-            </div>
-        </section>
-    );
+        <FadeIn direction="up" delay={0.25} duration={0.6} distance={20}>
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed font-light px-2">
+            The game transcends all ages. It makes learning and rehabilitation
+            more joyful, smoother, and more natural.
+          </p>
+        </FadeIn>
+      </div>
+    </section>
+  );
 }

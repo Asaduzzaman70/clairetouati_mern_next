@@ -1,8 +1,11 @@
+"use client";
+
 import Image, { StaticImageData } from "next/image";
 import abImg1 from "@/assets/ab_img_1.png";
 import abImg2 from "@/assets/ab_img_2.png";
 import abImg3 from "@/assets/ab_img_3.png";
 import { ArchitectureABCSectionData } from "@/hooks/api/cms";
+import { TextReveal, StaggerContainer, StaggerItem } from "@/components/animated";
 
 interface ArchitectureABCSectionProps {
   data?: ArchitectureABCSectionData;
@@ -23,7 +26,7 @@ const DEFAULT_IMAGES: DisplayImageItem[] = [
 export function ArchitectureABCSection({ data }: ArchitectureABCSectionProps) {
   const title =
     data?.title ||
-    "Before Turrim, there was — \nthe ABCs of architecture";
+    "Before Turrim, there was — the ABCs of architecture";
 
   const hasCmsImages = data?.images && data.images.length > 0;
 
@@ -36,15 +39,23 @@ export function ArchitectureABCSection({ data }: ArchitectureABCSectionProps) {
     : DEFAULT_IMAGES;
 
   return (
-    <section className="w-full bg-white py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-6 md:px-12 lg:px-20">
+    <section className="w-full bg-white py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-6 md:px-12 lg:px-20 overflow-hidden">
       <div className="container mx-auto space-y-8 sm:space-y-10 md:space-y-12">
         {/* Title */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl text-center font-normal text-[#2D2D2D] leading-snug sm:leading-tight tracking-tight px-2 whitespace-pre-line">
-          {title}
-        </h2>
+        <TextReveal
+          as="h2"
+          text={title}
+          mode="words"
+          duration={0.6}
+          className="text-2xl sm:text-3xl md:text-4xl text-center font-normal text-[#2D2D2D] leading-snug sm:leading-tight tracking-tight px-2 justify-center"
+        />
 
-        {/* Images Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-sm sm:max-w-none mx-auto">
+        {/* Images Grid with Stagger */}
+        <StaggerContainer
+          staggerDelay={0.15}
+          delayChildren={0.2}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-sm sm:max-w-none mx-auto"
+        >
           {displayList.map((item, index) => {
             const isLastOnTablet =
               index === 2 &&
@@ -52,35 +63,37 @@ export function ArchitectureABCSection({ data }: ArchitectureABCSectionProps) {
             const isStringUrl = typeof item.image === "string";
 
             return (
-              <div
+              <StaggerItem
                 key={item.id}
-                className={`relative aspect-square w-full rounded-2xl md:rounded-3xl overflow-hidden bg-gray-50 shadow-sm group ${
-                  isLastOnTablet || ""
-                }`}
+                yOffset={24}
+                duration={0.6}
+                className={isLastOnTablet || ""}
               >
-                {isStringUrl ? (
-                  <Image
-                    src={item.image as string}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                    unoptimized
-                  />
-                ) : (
-                  <Image
-                    src={item.image as StaticImageData}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    placeholder="blur"
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                  />
-                )}
-              </div>
+                <div className="relative aspect-square w-full rounded-2xl md:rounded-3xl overflow-hidden bg-gray-50 shadow-sm group">
+                  {isStringUrl ? (
+                    <Image
+                      src={item.image as string}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                      unoptimized
+                    />
+                  ) : (
+                    <Image
+                      src={item.image as StaticImageData}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      placeholder="blur"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    />
+                  )}
+                </div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

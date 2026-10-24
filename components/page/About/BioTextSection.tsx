@@ -1,5 +1,8 @@
+"use client";
+
 import { AboutStorySectionData } from "@/hooks/api/cms";
 import { RichTextViewer } from "@/components/shared/RichTextViewer";
+import { FadeIn } from "@/components/animated";
 
 interface BioTextSectionProps {
   data?: AboutStorySectionData;
@@ -13,12 +16,14 @@ const DEFAULT_BIO_HTML = `
 
 export function BioTextSection({ data }: BioTextSectionProps) {
   return (
-    <section className="w-full bg-white py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-6 md:px-12 lg:px-24 flex justify-center">
-      <RichTextViewer
-        content={data?.bioText}
-        fallback={DEFAULT_BIO_HTML}
-        className="container max-w-4xl mx-auto text-center text-base sm:text-lg md:text-xl leading-relaxed sm:leading-[1.8] font-normal sm:font-light [&_p]:mb-6 sm:[&_p]:mb-8 md:[&_p]:mb-10 [&_ul]:inline-block [&_ul]:text-left [&_ol]:inline-block [&_ol]:text-left [&_blockquote]:text-left"
-      />
+    <section className="w-full bg-white py-10 sm:py-14 md:py-16 lg:py-20 px-4 sm:px-6 md:px-12 lg:px-24 flex justify-center overflow-hidden">
+      <FadeIn direction="up" delay={0.2} duration={0.7} distance={24} className="w-full">
+        <RichTextViewer
+          content={data?.bioText}
+          fallback={DEFAULT_BIO_HTML}
+          className="container max-w-4xl mx-auto text-center text-base sm:text-lg md:text-xl leading-relaxed sm:leading-[1.8] font-normal sm:font-light [&_p]:mb-6 sm:[&_p]:mb-8 md:[&_p]:mb-10 [&_ul]:inline-block [&_ul]:text-left [&_ol]:inline-block [&_ol]:text-left [&_blockquote]:text-left"
+        />
+      </FadeIn>
     </section>
   );
 }
