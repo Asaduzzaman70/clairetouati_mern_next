@@ -8,6 +8,8 @@ import imageBg2 from "@/assets/image_bg_2.png";
 import imageBg3 from "@/assets/image_bg_3.png";
 import imageBg4 from "@/assets/image_bg_4.png";
 
+import { useGetHomeCms } from "@/hooks/api/cms";
+
 interface SectionData {
     id: number;
     image: StaticImageData;
@@ -17,6 +19,13 @@ interface SectionData {
     letters: string[];
     rotations: number[];
 }
+
+const defaultRotations: number[][] = [
+    [-18, 14, -22, 6],
+    [-15, 18, -20, -6],
+    [-20, -12, -24, 0],
+    [-16, 15, -22, 8],
+];
 
 const SECTIONS: SectionData[] = [
     {
@@ -135,18 +144,45 @@ function RotatedLetter({
 }
 
 export function TurrimInfoSection() {
+    const { data: homeCms } = useGetHomeCms();
+    const cmsSections = homeCms?.content?.turrimInfo?.sections;
+
+    const sections =
+        cmsSections && cmsSections.length > 0
+            ? cmsSections.map((sec, idx) => {
+                  const fallback = SECTIONS[idx % SECTIONS.length];
+                  const fallbackRotations = defaultRotations[idx % defaultRotations.length];
+                  const imageSrc = sec.imageUrl || fallback.image.src;
+                  return {
+                      id: sec.id || idx + 1,
+                      title: sec.title || fallback.title,
+                      description: sec.description || fallback.description,
+                      bgColor: sec.bgColor || fallback.bgColor,
+                      letters: sec.letters && sec.letters.length > 0 ? sec.letters : fallback.letters,
+                      rotations:
+                          sec.rotations && sec.rotations.length > 0
+                              ? sec.rotations
+                              : fallbackRotations,
+                      imageSrc,
+                  };
+              })
+            : SECTIONS.map((sec, idx) => ({
+                  ...sec,
+                  imageSrc: sec.image.src,
+              }));
+
     return (
         <div className="w-full flex flex-col">
-            {SECTIONS.map((section) => (
+            {sections.map((section) => (
                 <section key={section.id} className="w-full relative">
                     {/* Top Image Section - Sticky */}
                     <div className="sticky top-0 z-0 w-full h-70 sm:h-95 md:h-120 lg:h-150">
                         <Image
-                            src={section.image}
+                            src={section.imageSrc}
                             alt={section.title}
                             fill
                             className="object-cover"
-                            placeholder="blur"
+                            unoptimized={typeof section.imageSrc === "string" && section.imageSrc.startsWith("http")}
                         />
                     </div>
 
@@ -159,6 +195,7 @@ export function TurrimInfoSection() {
                             {/* Left Text Content */}
                             <div className="space-y-4 sm:space-y-6 md:space-y-8 max-w-2xl text-white">
                                 <TextReveal
+                                    key={section.title}
                                     as="h2"
                                     text={section.title}
                                     mode="words"
@@ -182,7 +219,7 @@ export function TurrimInfoSection() {
                                         <StaggerItem key={i} yOffset={24} duration={0.6}>
                                             <RotatedLetter
                                                 letter={letter}
-                                                imageSrc={section.image.src}
+                                                imageSrc={section.imageSrc}
                                                 rotation={section.rotations[i] ?? 0}
                                             />
                                         </StaggerItem>

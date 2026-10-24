@@ -10,7 +10,9 @@ import {
 import { FadeIn, TextReveal } from "@/components/animated";
 import { cn } from "@/lib/utils";
 
-const curiosityItems = [
+import { useGetHomeCms, CuriosityItem } from "@/hooks/api/cms";
+
+const defaultCuriosityItems: CuriosityItem[] = [
     {
         title: "ATTENTIVE",
         description: "The gentleness that sees what others miss. Observing, listening, adjusting. Every gesture counts: a guiding hand, a reassuring gaze, an object that helps to understand differently. At Turrim, attention is never passive—it is active, vibrant, and creates connections.",
@@ -56,6 +58,18 @@ const curiosityItems = [
 ];
 
 export function CuriosityCarousel() {
+    const { data: homeCms } = useGetHomeCms();
+    const cmsCuriosity = homeCms?.content?.curiosity;
+
+    const title = cmsCuriosity?.title || "Where curiosity connects worlds";
+    const subtitle =
+        cmsCuriosity?.subtitle ||
+        "Making playful intelligence a joyful force for children, parents, educators and all those who never stop learning.";
+    const items =
+        cmsCuriosity?.items && cmsCuriosity.items.length > 0
+            ? cmsCuriosity.items
+            : defaultCuriosityItems;
+
     const [api, setApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
     const [count, setCount] = React.useState(0);
@@ -81,7 +95,7 @@ export function CuriosityCarousel() {
             api.off("select", updateState);
             api.off("reInit", updateState);
         };
-    }, [api]);
+    }, [api, items]);
 
     return (
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 bg-white overflow-hidden">
@@ -89,14 +103,15 @@ export function CuriosityCarousel() {
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12 md:mb-14 lg:mb-16 px-4">
                     <TextReveal
+                        key={title}
                         as="h2"
-                        text="Where curiosity connects worlds"
+                        text={title}
                         mode="words"
                         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e293b] mb-3 md:mb-4 tracking-tight justify-center"
                     />
                     <FadeIn direction="up" delay={0.25} duration={0.6}>
                         <p className="text-[#64748b] max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium">
-                            Making playful intelligence a joyful force for children, parents, educators and all those who never stop learning.
+                            {subtitle}
                         </p>
                     </FadeIn>
                 </div>
@@ -113,14 +128,14 @@ export function CuriosityCarousel() {
                         className="w-full relative px-0 md:px-8 lg:px-10"
                     >
                         <CarouselContent className="-ml-3 sm:-ml-4 md:-ml-5 lg:-ml-6">
-                            {curiosityItems.map((item, index) => (
+                            {items.map((item, index) => (
                                 <CarouselItem
                                     key={index}
                                     className="pl-3 sm:pl-4 md:pl-5 lg:pl-6 basis-[84%] sm:basis-[62%] md:basis-[48%] lg:basis-[35%] xl:basis-[30%] 2xl:basis-[30%] select-none"
                                 >
                                     <div
                                         className="relative overflow-hidden rounded-xl md:rounded-2xl min-h-95 sm:min-h-102.5 md:min-h-112.5 lg:min-h-120 h-full p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-start gap-4 md:gap-6 transition-all duration-300 shadow-sm"
-                                        style={{ background: item.background }}
+                                        style={{ background: item.background || item.color || "#FFCE00" }}
                                     >
                                         {/* Background Letter */}
                                         <span className="absolute -bottom-24 -right-6 sm:-bottom-32 sm:-right-8 md:-bottom-38 md:-right-9 lg:-bottom-45 lg:-right-10 xl:-bottom-50 xl:-right-12 text-[260px] sm:text-[320px] md:text-[360px] lg:text-[420px] xl:text-[460px] text-white opacity-50 leading-none select-none pointer-events-none group-hover:opacity-60 transition-all duration-700 font-mirrut -rotate-30">

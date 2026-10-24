@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import {
     Carousel,
     CarouselApi,
@@ -11,8 +11,13 @@ import {
 import { FadeIn, TextReveal } from "@/components/animated";
 import user from "@/assets/user.jpg";
 import { cn } from "@/lib/utils";
+import { useGetHomeCms, TestimonialItem } from "@/hooks/api/cms";
 
-const testimonials = [
+type TestimonialDisplayItem = Omit<TestimonialItem, "image"> & {
+    image?: string | StaticImageData;
+};
+
+const defaultTestimonials: TestimonialDisplayItem[] = [
     {
         image: user,
         quote:
@@ -37,6 +42,15 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+    const { data: homeCms } = useGetHomeCms();
+    const cmsTestimonials = homeCms?.content?.testimonials;
+
+    const title = cmsTestimonials?.title || "THEIR DAILY LIVES, THEIR WORDS, THEIR RESULTS";
+    const items =
+        cmsTestimonials?.items && cmsTestimonials.items.length > 0
+            ? cmsTestimonials.items
+            : defaultTestimonials;
+
     const [api, setApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
     const [count, setCount] = React.useState(0);
@@ -52,14 +66,15 @@ export function Testimonials() {
         api.on("select", () => {
             setCurrent(api.selectedScrollSnap());
         });
-    }, [api]);
+    }, [api, items]);
 
     return (
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
                 <TextReveal
+                    key={title}
                     as="h2"
-                    text="THEIR DAILY LIVES, THEIR WORDS, THEIR RESULTS"
+                    text={title}
                     mode="words"
                     className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-center text-[#2F312F] uppercase mb-8 sm:mb-10 md:mb-14 lg:mb-16 tracking-tight px-2 justify-center"
                 />
@@ -74,14 +89,14 @@ export function Testimonials() {
                         className="w-full relative px-0 md:px-8 lg:px-10"
                     >
                         <CarouselContent>
-                            {testimonials.map((item, index) => (
-                                <CarouselItem key={index}>
+                            {items.map((item, index) => (
+                                <CarouselItem key={item.id ?? index}>
                                     <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8 md:gap-8 lg:gap-14 px-2 sm:px-4 md:px-0">
                                         {/* Image Side */}
                                         <div className="w-full md:w-5/12 lg:w-1/2 flex justify-center md:justify-end">
                                             <div className="relative w-full max-w-sm sm:max-w-md md:max-w-none aspect-4/3 rounded-2xl overflow-hidden bg-[#7EA16B] shadow-sm">
                                                 <Image
-                                                    src={item.image}
+                                                    src={item.image || user}
                                                     alt={item.name}
                                                     fill
                                                     className="object-cover"
