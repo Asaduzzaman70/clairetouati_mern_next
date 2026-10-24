@@ -132,6 +132,7 @@ export function GlobalLoadingScreen({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
       className="fixed inset-0 z-99999 flex flex-col items-center justify-center bg-white dark:bg-black select-none"
+      style={{ zIndex: 99999 }}
       aria-label="Loading page content"
       role="status"
     >

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiPublic } from "@/lib/api-client";
-import { CmsApiResponse, ICmsPageResponse, HomeCmsContent } from "./types";
+import { CmsApiResponse, ICmsPageResponse, HomeCmsContent, AboutCmsContent } from "./types";
 
 export const CMS_QUERY_KEYS = {
   all: ["cms"] as const,
@@ -21,4 +21,8 @@ export function useGetCmsPage<T = Record<string, any>>(slug: string) {
 
 export function useGetHomeCms() {
   return useGetCmsPage<HomeCmsContent>("home");
+}
+
+export function useGetAboutCms() {
+  return useGetCmsPage<AboutCmsContent>("about");
 }

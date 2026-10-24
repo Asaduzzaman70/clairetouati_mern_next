@@ -46,6 +46,82 @@ export interface HomeCmsContent {
   [key: string]: unknown;
 }
 
+export interface AboutStorySectionData {
+  title: string;
+  image?: string;
+  introText: string;
+  bioText: string;
+}
+
+export interface FoundersLetterSectionData {
+  title: string;
+  quote: string;
+  letterBody: string;
+  signature: string;
+  bgColor: string;
+}
+
+export interface ArchitectureABCItem {
+  id: number;
+  title: string;
+  imageUrl?: string;
+}
+
+export interface ArchitectureABCSectionData {
+  title: string;
+  images: ArchitectureABCItem[];
+}
+
+export interface ScienceOfPlayCard {
+  title: string;
+  description: string;
+}
+
+export interface ScienceOfPlaySectionData {
+  badge: string;
+  title: string;
+  description: string;
+  bgColor: string;
+  cards: ScienceOfPlayCard[];
+}
+
+export interface ValueCardItem {
+  id?: number | string;
+  title: string;
+  description: string;
+  bgColor: string;
+  textColor?: string;
+}
+
+export interface OurValuesSectionData {
+  title: string;
+  values: ValueCardItem[];
+}
+
+export interface PrincipleItem {
+  id: number;
+  number: string;
+  title: string;
+  description: string;
+}
+
+export interface OurApproachSectionData {
+  badge: string;
+  title: string;
+  subtitle: string;
+  principles: PrincipleItem[];
+}
+
+export interface AboutCmsContent {
+  story?: AboutStorySectionData;
+  letter?: FoundersLetterSectionData;
+  architecture?: ArchitectureABCSectionData;
+  scienceOfPlay?: ScienceOfPlaySectionData;
+  values?: OurValuesSectionData;
+  approach?: OurApproachSectionData;
+  [key: string]: unknown;
+}
+
 export interface ICmsSeoMetadata {
   metaTitle?: string;
   metaDescription?: string;
