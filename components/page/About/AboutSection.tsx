@@ -1,18 +1,19 @@
 import Image from "next/image";
 import ownerImage from "@/assets/owner.jpg";
 import { AboutStorySectionData } from "@/hooks/api/cms";
+import { RichTextViewer } from "@/components/shared/RichTextViewer";
 
 interface AboutSectionProps {
   data?: AboutStorySectionData;
 }
 
+const DEFAULT_INTRO_HTML = `
+  <p>Claire always introduces herself in the same way:</p>
+  <p>She is an inventor. Since childhood, she has moved forward this way, imagining paths where none yet exist. An endless curiosity drives her to create tools that connect play, science, and learning.</p>
+`;
+
 export function AboutSection({ data }: AboutSectionProps) {
   const title = data?.title || "Claire, inventive";
-  const rawIntro =
-    data?.introText ||
-    "Claire always introduces herself in the same way:\n\nShe is an inventor. Since childhood, she has moved forward this way, imagining paths where none yet exist. An endless curiosity drives her to create tools that connect play, science, and learning.";
-
-  const paragraphs = rawIntro.split(/\n+/).filter(Boolean);
 
   return (
     <section className="w-full bg-white flex justify-center py-10 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-12 lg:px-20">
@@ -49,12 +50,12 @@ export function AboutSection({ data }: AboutSectionProps) {
             )}
           </div>
 
-          {/* Right Column - Description */}
-          <div className="space-y-4 sm:space-y-6 text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed max-w-xl">
-            {paragraphs.map((p, index) => (
-              <p key={index}>{p}</p>
-            ))}
-          </div>
+          {/* Right Column - Description with reusable RichTextViewer */}
+          <RichTextViewer
+            content={data?.introText}
+            fallback={DEFAULT_INTRO_HTML}
+            className="text-base sm:text-lg md:text-xl max-w-xl"
+          />
         </div>
       </div>
     </section>
