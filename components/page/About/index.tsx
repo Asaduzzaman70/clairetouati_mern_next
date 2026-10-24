@@ -40,17 +40,55 @@ export default function AboutPageContent() {
   const content = cmsData?.content;
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-white font-sans">
+    <main className="w-full bg-white font-sans flex flex-col">
+      {/* 1 & 2. About Story & Bio */}
       <AboutSection data={content?.story} />
       <BioTextSection data={content?.story} />
-      <FoundersLetterSection data={content?.letter} />
-      <ArchitectureABCSection data={content?.architecture} />
-      <ScienceOfPlaySection data={content?.scienceOfPlay} />
-      <LearningHumanSection />
+
+      {/* 3 & 4. Sticky Pair 1: Founders Letter (Blue) -> Architecture ABC slides over it */}
+      <div className="relative w-full">
+        <div
+          className="sticky top-0 z-10 w-full"
+          style={{ top: "min(0px, calc(100vh - 100%))" }}
+        >
+          <FoundersLetterSection data={content?.letter} />
+        </div>
+        <div className="relative z-20 w-full bg-white rounded-t-3xl md:rounded-t-[2.5rem] overflow-hidden">
+          <ArchitectureABCSection data={content?.architecture} />
+        </div>
+      </div>
+
+      {/* 5 & 6. Sticky Pair 2: Science of Play (Yellow) -> Learning Human slides over it */}
+      <div className="relative w-full">
+        <div
+          className="sticky top-0 z-10 w-full"
+          style={{ top: "min(0px, calc(100vh - 100%))" }}
+        >
+          <ScienceOfPlaySection data={content?.scienceOfPlay} />
+        </div>
+        <div className="relative z-20 w-full bg-white rounded-t-3xl md:rounded-t-[2.5rem] overflow-hidden">
+          <LearningHumanSection />
+        </div>
+      </div>
+
+      {/* 7 & 8. Our Values & Our Approach */}
       <OurValuesSection data={content?.values} />
       <OurApproachSection data={content?.approach} />
-      <CommunityInclusionSection />
-      <ScienceDesignSection />
+
+      {/* 9 & 10. Sticky Pair 3: Community & Inclusion (Purple) -> Science Design slides over it */}
+      <div className="relative w-full">
+        <div
+          className="sticky top-0 z-10 w-full"
+          style={{ top: "min(0px, calc(100vh - 100%))" }}
+        >
+          <CommunityInclusionSection />
+        </div>
+        <div className="relative z-20 w-full bg-white rounded-t-3xl md:rounded-t-[2.5rem] overflow-hidden">
+          <ScienceDesignSection />
+        </div>
+      </div>
+
+      {/* 11, 12, 13, 14. Remaining sections */}
       <MethodInActionSection />
       <PlayroomSection />
       <ContactSection />
