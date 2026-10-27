@@ -1,10 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Matter from "matter-js";
 import { mirrut } from "@/lib/fonts";
+import { useGetHomeCms } from "@/hooks/api/cms";
+import type { HeroShapeType } from "@/hooks/api/cms/types";
 
-const baseShapeConfigs = [
+const baseShapeConfigs: Array<{
+    type: HeroShapeType;
+    color: string;
+    baseSize: number;
+    text: string;
+}> = [
     // Blue circle (large)
     { type: "circle", color: "#0066CC", baseSize: 260, text: "Cure Through\nwonder" },
     // Yellow circle (large)
@@ -253,7 +260,49 @@ function drawBackground(
 }
 
 
+function matchColorToGroup(colorHex?: string): ColorGroup {
+    if (!colorHex) return "yellow";
+    const clean = colorHex.toLowerCase().trim();
+    if (["#ffd700", "#dc9f12", "#ffd600", "#eab308"].includes(clean)) return "yellow";
+    if (["#ff7f50", "#ff7e4d", "#ff8a50", "#f97316"].includes(clean)) return "orange";
+    if (["#dc143c", "#c8102e", "#c81e3d", "#ef4444"].includes(clean)) return "red";
+    if (["#8b5cf6", "#7c3aed", "#6930c3", "#4c259d"].includes(clean)) return "purple";
+    if (["#0066cc", "#0056d2", "#0264c8", "#3b82f6"].includes(clean)) return "blue";
+    if (["#047857", "#007f3e", "#008037", "#064228", "#10b981"].includes(clean)) return "green";
+
+    // Heuristic hue fallback
+    if (clean.startsWith("#") && clean.length === 7) {
+        const r = parseInt(clean.slice(1, 3), 16);
+        const g = parseInt(clean.slice(3, 5), 16);
+        const b = parseInt(clean.slice(5, 7), 16);
+        if (g > 160 && r > 180 && b < 120) return "yellow";
+        if (r > 200 && g > 70 && b < 100) return "orange";
+        if (r > 170 && g < 70 && b < 100) return "red";
+        if (b > 150 && r > 90) return "purple";
+        if (b > 150 && r < 100) return "blue";
+        if (g > 100 && r < 120 && b < 120) return "green";
+    }
+    return "yellow";
+}
+
 const Hero = () => {
+    // Integrate CMS GET API for Home page
+    const { data: homeCms } = useGetHomeCms();
+    const cmsShapes = homeCms?.content?.hero?.shapes;
+
+    // Dynamically derive shape configs from CMS data or fallback to defaults
+    const shapeConfigs = useMemo(() => {
+        if (cmsShapes && Array.isArray(cmsShapes) && cmsShapes.length > 0) {
+            return cmsShapes.map((s) => ({
+                type: s.type || "circle",
+                color: s.color || "#0066CC",
+                baseSize: Number(s.baseSize) || 240,
+                text: s.text !== undefined ? s.text : "Cure Through\nwonder",
+            }));
+        }
+        return baseShapeConfigs;
+    }, [cmsShapes]);
+
     const [bgTextColors, setBgTextColors] = useState<BgColors>({
         yellow: "#D0D0D0",
         orange: "#D0D0D0",
@@ -402,8 +451,8 @@ const Hero = () => {
 
         // Filter shapes on very small screens to avoid overcrowding
         const activeShapeConfigs = width < 540
-            ? baseShapeConfigs.slice(0, 8)
-            : baseShapeConfigs;
+            ? shapeConfigs.slice(0, Math.min(8, shapeConfigs.length))
+            : shapeConfigs;
 
         // Create renderer
         const render = Render.create({
@@ -506,22 +555,11 @@ const Hero = () => {
             const body = mouseConstraint.body;
             if (body && (body as any).customText && body.render.fillStyle) {
                 const color = body.render.fillStyle as string;
-                setBgTextColors(prev => {
-                    if (color === "#FFD700") return { ...prev, yellow: color };
-                    if (color === "#FF7F50") return { ...prev, orange: color };
-                    if (color === "#DC143C") return { ...prev, red: color };
-                    if (color === "#8B5CF6") return { ...prev, purple: color };
-                    if (color === "#0066CC") return { ...prev, blue: color };
-                    if (color === "#047857") return { ...prev, green: color };
-                    return {
-                        yellow: "#D0D0D0",
-                        orange: "#D0D0D0",
-                        red: "#D0D0D0",
-                        purple: "#D0D0D0",
-                        blue: "#D0D0D0",
-                        green: "#D0D0D0",
-                    };
-                });
+                const group = matchColorToGroup(color);
+                setBgTextColors(prev => ({
+                    ...prev,
+                    [group]: color,
+                }));
             }
         });
 
@@ -564,7 +602,11 @@ const Hero = () => {
                 const totalHeight = lines.length * lineHeight;
                 const startY = -totalHeight / 2 + lineHeight / 2;
 
-                ctx.fillStyle = "#FFFFFF";
+                // High-contrast color rule: dark text on yellow/gold, white text on other colors
+                const isYellow = ["#ffd700", "#ffd600", "#dc9f12", "#eab308"].includes(
+                    ((shape.render.fillStyle as string) || "").toLowerCase()
+                );
+                ctx.fillStyle = isYellow ? "#1A1A2E" : "#FFFFFF";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
 
@@ -629,7 +671,7 @@ const Hero = () => {
                 }
             }
         };
-    }, []);
+    }, [shapeConfigs]);
 
     return (
         <section
