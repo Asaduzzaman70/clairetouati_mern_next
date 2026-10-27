@@ -8,7 +8,7 @@ import { TurrimCTA } from "@/components/shared/TurrimCTA";
 import { PlayroomSection } from "@/components/shared/PlayroomSection";
 import { TurrimInfoSection } from "@/components/page/Home/TurrimInfoSection";
 import { useGetHomeCms } from "@/hooks/api/cms";
-import { GlobalLoadingScreen } from "@/components/shared/GlobalLoadingScreen";
+import { OnboardingLoadingScreen } from "@/components/shared/OnboardingLoadingScreen";
 
 export default function HomePage() {
   const { isLoading } = useGetHomeCms();
@@ -26,7 +26,7 @@ export default function HomePage() {
   const showLoader = isLoading || !minTimeElapsed;
 
   if (showLoader) {
-    return <GlobalLoadingScreen />;
+    return <OnboardingLoadingScreen />;
   }
 
   return (

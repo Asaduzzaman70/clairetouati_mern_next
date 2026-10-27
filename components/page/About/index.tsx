@@ -16,7 +16,7 @@ import { TurrimCTA } from "@/components/shared/TurrimCTA";
 import { PlayroomSection } from "@/components/shared/PlayroomSection";
 import ContactSection from "@/components/shared/ContactSection";
 import { useGetAboutCms } from "@/hooks/api/cms";
-import { GlobalLoadingScreen } from "@/components/shared/GlobalLoadingScreen";
+import { OnboardingLoadingScreen } from "@/components/shared/OnboardingLoadingScreen";
 
 export default function AboutPageContent() {
   const { data: cmsData, isLoading } = useGetAboutCms();
@@ -34,7 +34,7 @@ export default function AboutPageContent() {
   const showLoader = isLoading || !minTimeElapsed;
 
   if (showLoader) {
-    return <GlobalLoadingScreen />;
+    return <OnboardingLoadingScreen />;
   }
 
   const content = cmsData?.content;
