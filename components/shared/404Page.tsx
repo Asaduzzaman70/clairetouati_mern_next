@@ -1161,7 +1161,7 @@ export default function Page404() {
           className="md:hidden fixed bottom-14 right-4 z-30 w-16 h-16 rounded-full bg-[#064228] text-white font-black text-xs flex flex-col items-center justify-center shadow-xl border-3 border-white active:scale-90 transition-transform cursor-pointer select-none"
           aria-label="Tap to Jump"
         >
-          <ArrowUp className="w-5 h-5 stroke-[3]" />
+          <ArrowUp className="w-5 h-5 stroke-3" />
           <span className="text-[9px] tracking-wider uppercase font-bold">JUMP</span>
         </button>
       )}
