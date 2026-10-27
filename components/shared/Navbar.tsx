@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Sparkles, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
+import Logo from "@/components/shared/Logo";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import LanguageToggle from "@/components/shared/LanguageToggle";
 
@@ -106,42 +105,20 @@ const Navbar = () => {
                         <Link
                             href="/"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                            className="flex items-center cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                            aria-label="Turrim Home"
                         >
-                            <div className="w-9 h-9 flex items-center justify-center relative">
-                                <Image
-                                    src={logo}
-                                    alt="Turrim Logo"
-                                    width={36}
-                                    height={36}
-                                    priority
-                                    className="object-contain"
-                                />
-                            </div>
-                            <span className="text-2xl font-bold tracking-tighter text-foreground">
-                                turrim
-                            </span>
+                            <Logo className="h-8 sm:h-9 w-auto" />
                         </Link>
                     </div>
 
                     {/* Desktop Center Section (Logo) - EXACT True Middle */}
                     <Link
                         href="/"
-                        className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 md:gap-3 cursor-pointer transition-transform hover:scale-105 active:scale-95 z-10"
+                        className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center cursor-pointer transition-transform hover:scale-105 active:scale-95 z-10"
+                        aria-label="Turrim Home"
                     >
-                        <div className="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center relative">
-                            <Image
-                                src={logo}
-                                alt="Turrim Logo"
-                                width={44}
-                                height={44}
-                                priority
-                                className="object-contain"
-                            />
-                        </div>
-                        <span className="text-2xl md:text-3xl font-bold tracking-tighter text-foreground">
-                            turrim
-                        </span>
+                        <Logo className="h-10 md:h-11 lg:h-12 xl:h-13 w-auto" />
                     </Link>
 
                     {/* Desktop Right Section */}
@@ -202,21 +179,10 @@ const Navbar = () => {
                                 <Link
                                     href="/"
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center gap-2.5"
+                                    className="flex items-center cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                                    aria-label="Turrim Home"
                                 >
-                                    <div className="w-9 h-9 flex items-center justify-center relative">
-                                        <Image
-                                            src={logo}
-                                            alt="Turrim Logo"
-                                            width={36}
-                                            height={36}
-                                            priority
-                                            className="object-contain"
-                                        />
-                                    </div>
-                                    <span className="text-2xl font-bold tracking-tighter text-foreground">
-                                        turrim
-                                    </span>
+                                    <Logo className="h-8 sm:h-9 w-auto" />
                                 </Link>
 
                                 <motion.button
