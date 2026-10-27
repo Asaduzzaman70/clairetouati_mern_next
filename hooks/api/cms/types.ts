@@ -1,3 +1,17 @@
+export type HeroShapeType = "circle" | "rectangle" | "triangle";
+
+export interface HeroShapeItem {
+  id?: string | number;
+  type: HeroShapeType;
+  color: string;
+  baseSize: number;
+  text?: string;
+}
+
+export interface HeroSectionData {
+  shapes?: HeroShapeItem[];
+}
+
 export interface TurrimPillarItem {
   id: number;
   title: string;
@@ -40,6 +54,7 @@ export interface TestimonialsSectionData {
 }
 
 export interface HomeCmsContent {
+  hero?: HeroSectionData;
   turrimInfo?: TurrimInfoSectionData;
   curiosity?: CuriosityCarouselSectionData;
   testimonials?: TestimonialsSectionData;
